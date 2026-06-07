@@ -1,25 +1,33 @@
 // middleware/upload.js
 const multer = require('multer');
 const path = require('path');
+const os = require('os');
 const fs = require('fs');
 
-const ensureDirectoryExists = (dir) => {
-    if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true });
+const isVercel = Boolean(process.env.VERCEL);
+const UPLOADS_BASE_DIR = process.env.UPLOADS_DIR || (isVercel ? path.join(os.tmpdir(), 'uploads') : path.join(__dirname, '..', 'uploads'));
+
+const resolveUploadPath = (...segments) => path.join(UPLOADS_BASE_DIR, ...segments);
+
+const ensureDirectoryExists = (dirPath) => {
+    const fullPath = resolveUploadPath(dirPath);
+    if (!fs.existsSync(fullPath)) {
+        fs.mkdirSync(fullPath, { recursive: true });
     }
+    return fullPath;
 };
 
 // Create all category folders (for gallery)
 const categories = ['catering', 'astrology', 'wedding', 'matrimony', 'temple', 'construction'];
 categories.forEach(cat => {
-    ensureDirectoryExists(`uploads/${cat}`);
+    ensureDirectoryExists(cat);
 });
 
 // Also create matrimony profiles subfolder (separate from gallery)
-ensureDirectoryExists('uploads/matrimony/profiles');
+ensureDirectoryExists(path.join('matrimony', 'profiles'));
 
-// Create astrology horoscope folder (legacy location)
-ensureDirectoryExists('uploads/astrology/horoscope');
+// Create astrology horoscopes folder
+ensureDirectoryExists(path.join('astrology', 'horoscopes'));
 
 // ============================================
 // GALLERY UPLOAD (your existing - UNCHANGED)
@@ -27,8 +35,8 @@ ensureDirectoryExists('uploads/astrology/horoscope');
 const galleryStorage = multer.diskStorage({
     destination: (req, file, cb) => {
         const category = req.body.category || 'catering';
-        const dir = `uploads/${category}`;
-        ensureDirectoryExists(dir);
+        const dir = resolveUploadPath(category);
+        ensureDirectoryExists(category);
         cb(null, dir);
     },
     filename: (req, file, cb) => {
@@ -62,8 +70,9 @@ const uploadGallery = multer({
 // ============================================
 const matrimonyStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        ensureDirectoryExists('uploads/matrimony/profiles');
-        cb(null, 'uploads/matrimony/profiles/');
+        const dir = resolveUploadPath('matrimony', 'profiles');
+        ensureDirectoryExists(path.join('matrimony', 'profiles'));
+        cb(null, dir);
     },
     filename: (req, file, cb) => {
         const reqId = req.body.req_id || req.reqId || 'TEMP';
@@ -113,8 +122,9 @@ const matrimonyUploadFields = uploadMatrimony.fields([
 // ============================================
 const astrologyStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        ensureDirectoryExists('uploads/astrology/horoscope');
-        cb(null, 'uploads/astrology/horoscope/');
+        const dir = resolveUploadPath('astrology', 'horoscopes');
+        ensureDirectoryExists(path.join('astrology', 'horoscopes'));
+        cb(null, dir);
     },
     filename: (req, file, cb) => {
         const reqId = req.body.req_id || req.reqId || 'TEMP';
