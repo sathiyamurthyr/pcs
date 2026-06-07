@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Astrology Services | Pooja Catering</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandGreen: '#2c5f2d',
+                        brandGreenLight: '#3d7a3e',
+                        brandGreenDark: '#1a331e',
+                        brandGold: '#bfa15f',
+                        brandSoft: '#fffaf0',
+                        brandGreen50: '#f0f7f0',
+                        brandGreen100: '#d4e8d4',
+                        brandGreen200: '#a8d5a8',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f5f7f5; padding: 16px; }
+        .standalone-content { max-width: 1000px; margin: 0 auto; }
+
+        .hero-section {
+            background: linear-gradient(135deg, #2c5f2d, #1a331e);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 32px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .hero-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-section p {
+            opacity: 0.85;
+            font-size: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.15);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(4px);
+        }
+
+        .services-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 32px;
+            max-width: 680px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .service-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px 16px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .service-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(44,95,45,0.1);
+            border-color: #2c5f2d;
+        }
+        .service-card.active {
+            border-color: #2c5f2d;
+            background: #f0f7f0;
+        }
+        .service-card-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 12px;
+            background: linear-gradient(135deg, #f0f7f0, #d4e8d4);
+        }
+        .service-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a331e;
+            margin-bottom: 6px;
+        }
+        .service-card p {
+            color: #777;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        .service-card .card-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            background: #f0f7f0;
+            color: #2c5f2d;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .upload-section, .form-section {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            border: 1px solid #eef2ee;
+            margin-bottom: 24px;
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #f0f7f0;
+        }
+        .section-header h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a331e;
+        }
+        .section-header-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #2c5f2d, #1a331e);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .form-group { margin-bottom: 4px; }
+        .form-group.full-width { grid-column: span 2; }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1a331e;
+            margin-bottom: 8px;
+        }
+        .form-group label .required { color: #dc2626; margin-left: 2px; }
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e8ede8;
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            color: #333;
+            transition: all 0.3s ease;
+            background: #fafbfa;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #2c5f2d;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(44,95,45,0.08);
+        }
+        select.form-control {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%232c5f2d' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
+        }
+        .radio-group { display: flex; gap: 20px; padding: 4px 0; }
+        .radio-item { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .radio-item input[type="radio"] { width: 20px; height: 20px; accent-color: #2c5f2d; cursor: pointer; }
+        .radio-item span { font-size: 14px; color: #444; font-weight: 500; }
+        .datetime-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        .upload-box {
+            border: 2px dashed #d4e8d4;
+            border-radius: 16px;
+            padding: 36px 20px;
+            text-align: center;
+            background: #f8faf8;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .upload-box:hover { border-color: #2c5f2d; background: #f0f7f0; }
+        .file-type-badge {
+            padding: 4px 10px; background: white; border: 1px solid #d4e8d4;
+            border-radius: 20px; font-size: 11px; font-weight: 600; color: #2c5f2d;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #2c5f2d, #1a331e);
+            color: white;
+            padding: 16px 48px;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(44,95,45,0.15);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(44,95,45,0.25); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        .toast {
+            position: fixed; bottom: 24px; right: 24px;
+            background: white; border-left: 4px solid #2c5f2d;
+            padding: 16px 24px; border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            display: flex; align-items: center; gap: 12px;
+            transform: translateY(100px); opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2000; pointer-events: none;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; pointer-events: auto; }
+        .toast.error { border-left-color: #dc2626; }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255,255,255,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .loading-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #d4e8d4;
+            border-top-color: #2c5f2d;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .records-list {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            border: 1px solid #eef2ee;
+        }
+        .record-card {
+            border: 1px solid #e8ede8;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+        .record-card:hover {
+            border-color: #2c5f2d;
+            box-shadow: 0 4px 12px rgba(44,95,45,0.08);
+        }
+        .record-card h4 {
+            font-family: 'Playfair Display', serif;
+            color: #1a331e;
+            margin-bottom: 4px;
+        }
+        .req-id-badge {
+            display: inline-block;
+            background: #2c5f2d;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-in_review { background: #dbeafe; color: #1e40af; }
+        .status-scheduled { background: #e0e7ff; color: #3730a3; }
+        .status-completed { background: #d1fae5; color: #065f46; }
+        .status-cancelled { background: #fee2e2; color: #991b1b; }
+        .attachment-link {
+            display: inline-block;
+            background: #f0f7f0;
+            color: #2c5f2d;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-right: 4px;
+            margin-bottom: 4px;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .services-row { grid-template-columns: 1fr; gap: 16px; }
+            .form-grid, .datetime-grid { grid-template-columns: 1fr; }
+            .form-group.full-width { grid-column: span 1; }
+            body { padding: 12px; }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+
+    <main class="standalone-content">
+        <!-- My Records -->
+        <div id="myHoroscopesSection" class="records-list" style="display: none;">
+            <div class="section-header" style="border-bottom: none; padding-bottom: 0; margin-bottom: 16px;">
+                <div class="section-header-icon"><i class="fa-solid fa-star"></i></div>
+                <h3>My Horoscope Matching Requests</h3>
+            </div>
+            <div id="horoscopesList"></div>
+        </div>
+        <div id="myConsultationsSection" class="records-list" style="display: none;">
+            <div class="section-header" style="border-bottom: none; padding-bottom: 0; margin-bottom: 16px;">
+                <div class="section-header-icon"><i class="fa-solid fa-user-astronaut"></i></div>
+                <h3>My Astro Consultations</h3>
+            </div>
+            <div id="consultationsList"></div>
+        </div>
+
+        <header class="hero-section">
+            <div class="hero-badge">
+                <i class="fa-solid fa-star"></i> Ancient Vedic Astrology
+            </div>
+            <h2>Astrology Services</h2>
+            <p>Select your service: <strong>Horoscope Matching</strong> for chart uploads or <strong>Astro Consultation</strong> for detailed birth coordinate analysis.</p>
+        </header>
+
+        <section class="services-row">
+            <div class="service-card active" id="cardHoroscope" onclick="setServiceMode('horoscope_matching', 'cardHoroscope', 'uploadMode')">
+                <div class="service-card-icon">🔮</div>
+                <h3>Horoscope Matching</h3>
+                <p>Match charts for comprehensive union compatibility analysis.</p>
+                <span class="card-badge">Most Popular</span>
+            </div>
+            <div class="service-card" id="cardConsultation" onclick="setServiceMode('consultation', 'cardConsultation', 'formMode')">
+                <div class="service-card-icon">🧘</div>
+                <h3>Astro Consultation</h3>
+                <p>One-on-one virtual live session query with our scholars.</p>
+                <span class="card-badge">Live Session</span>
+            </div>
+        </section>
+
+        <div id="dynamicFormContainer"></div>
+    </main>
+
+    <div id="toast" class="toast">
+        <i id="toastIcon" class="fa-solid fa-check-circle text-brandGreen text-xl"></i>
+        <span id="toastMessage" class="text-sm font-medium text-gray-700">Processing...</span>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin;
+        let currentMode = 'uploadMode';
+        let currentServiceValue = 'horoscope_matching';
+        let activeCardId = 'cardHoroscope';
+        const container = document.getElementById('dynamicFormContainer');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadMyRecords();
+            initializePage();
+        });
+
+        // Load my records
+        async function loadMyRecords() {
+            const token = getAuthToken();
+            try {
+                // Load horoscopes
+                const hRes = await fetch(`${API_BASE}/api/astrology/my-horoscopes`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const hData = await hRes.json();
+                if (hData.success && hData.horoscopes.length > 0) {
+                    document.getElementById('myHoroscopesSection').style.display = 'block';
+                    document.getElementById('horoscopesList').innerHTML = hData.horoscopes.map(h => `
+                        <div class="record-card">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <h4>Horoscope Matching</h4>
+                                    <span class="req-id-badge">${h.req_id}</span>
+                                    <span class="status-badge status-${h.status}">${h.status}</span>
+                                </div>
+                                <div class="text-sm text-gray-500">${h.attachmentCount} files</div>
+                            </div>
+                            <div class="mb-2">${h.attachmentUrls.map(u => `<a href="${u}" target="_blank" class="attachment-link"><i class="fa-solid fa-file mr-1"></i>View</a>`).join('')}</div>
+                            <p class="text-sm text-gray-600">${h.upload_remarks || 'No remarks'}</p>
+                        </div>
+                    `).join('');
+                }
+
+                // Load consultations
+                const cRes = await fetch(`${API_BASE}/api/astrology/my-consultations`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const cData = await cRes.json();
+                if (cData.success && cData.consultations.length > 0) {
+                    document.getElementById('myConsultationsSection').style.display = 'block';
+                    document.getElementById('consultationsList').innerHTML = cData.consultations.map(c => `
+                        <div class="record-card">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <h4>${c.subject_name}</h4>
+                                    <span class="req-id-badge">${c.req_id}</span>
+                                    <span class="status-badge status-${c.status}">${c.status}</span>
+                                </div>
+                                <div class="text-sm text-gray-500">${c.report_language}</div>
+                            </div>
+                            <p class="text-sm text-gray-600">
+                                <i class="fa-solid fa-calendar mr-1"></i> ${new Date(c.birth_date).toLocaleDateString()}
+                                <i class="fa-solid fa-clock mr-1 ml-2"></i> ${c.birth_time}
+                            </p>
+                            <p class="text-sm text-gray-500 mt-1">${c.birth_place}</p>
+                        </div>
+                    `).join('');
+                }
+            } catch (err) {
+                console.log('No records or not logged in');
+            }
+        }
+
+        function renderUploadMode() {
+            return `
+                <form id="astrologyUploadForm" onsubmit="handleUploadSubmit(event)">
+                    <input type="hidden" name="service_type" value="${currentServiceValue}">
+                    <fieldset class="upload-section">
+                        <div class="section-header">
+                            <div class="section-header-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+                            <h3>Upload Legacy Horoscope Records</h3>
+                        </div>
+
+                        <div class="upload-box" onclick="document.getElementById('chartFileInputDynamic').click()">
+                            <i class="fa-solid fa-file-arrow-up text-4xl text-brandGreen mb-3 block"></i>
+                            <h4 class="text-base font-bold text-brandGreenDark mb-1">Drop charts document packet here</h4>
+                            <p class="text-xs text-gray-400 mb-4">or browse from device</p>
+                            <div class="flex flex-wrap justify-center gap-2 mb-4">
+                                <span class="file-type-badge">PDF</span>
+                                <span class="file-type-badge">JPEG</span>
+                                <span class="file-type-badge">PNG</span>
+                            </div>
+                            <input type="file" id="chartFileInputDynamic" name="horoscope_attachments" multiple accept=".pdf,.jpeg,.jpg,.png" class="hidden" onchange="updateUploadFeedback(this)">
+                            <div id="fileAttachmentFeedbackDynamic" class="text-xs text-brandGreen font-semibold hidden mt-2"></div>
+                        </div>
+
+                        <div class="form-group full-width mt-6">
+                            <label>Description / Remarks <span class="text-gray-400 text-xs font-normal">(optional)</span></label>
+                            <textarea name="upload_remarks" class="form-control h-28 resize-vertical p-4" placeholder="Add any additional notes or context about the uploaded horoscope charts..."></textarea>
+                        </div>
+
+                        <div class="mt-4 text-center text-sm text-gray-500">
+                            <i class="fa-regular fa-note-sticky"></i> Only horoscope chart files required. Personal details can be submitted via consultation mode.
+                        </div>
+                    </fieldset>
+                    <footer class="mt-4 mb-8">
+                        <button type="submit" id="uploadSubmitBtn" class="btn-primary">
+                            <i class="fa-regular fa-file-pdf mr-2"></i> Submit Horoscope Charts
+                        </button>
+                    </footer>
+                </form>
+            `;
+        }
+
+        function renderFormMode() {
+            return `
+                <form id="astrologyFullForm" onsubmit="handleFullFormSubmit(event)">
+                    <input type="hidden" name="service_type" value="${currentServiceValue}">
+
+                    <fieldset class="form-section">
+                        <div class="section-header">
+                            <div class="section-header-icon"><i class="fa-solid fa-hourglass-start"></i></div>
+                            <h3>Coordinate Array Configuration</h3>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label>Full Subject Name <span class="required">*</span></label>
+                                <input type="text" name="subject_name" class="form-control" placeholder="Enter registration target name" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Gender Identification <span class="required">*</span></label>
+                                <div class="radio-group">
+                                    <label class="radio-item">
+                                        <input type="radio" name="gender" value="male" checked>
+                                        <span>Male</span>
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="gender" value="female">
+                                        <span>Female</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Report Language Output <span class="required">*</span></label>
+                                <select name="report_language" class="form-control" required>
+                                    <option value="tamil">Tamil</option>
+                                    <option value="english" selected>English</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label>Birth Date & Time Specifications <span class="required">*</span></label>
+                                <div class="datetime-grid">
+                                    <div><input type="date" name="birth_date" class="form-control" required></div>
+                                    <div><input type="time" name="birth_time" class="form-control" required></div>
+                                    <div>
+                                        <select name="time_period" class="form-control" required>
+                                            <option value="standard">Standard Time (24H)</option>
+                                            <option value="am">AM Period</option>
+                                            <option value="pm">PM Period</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label>Place of Birth / Location Coordinates <span class="required">*</span></label>
+                                <input type="text" name="birth_place" class="form-control" placeholder="City, State, Country context" required>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label>Special Consultation Directives or Context Queries</label>
+                                <textarea name="consultation_notes" class="form-control h-24 resize-vertical p-4" placeholder="Mention specifically if checking for Dosham, Dasa analysis rules, or matching constraints..."></textarea>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <footer class="mt-4 mb-8">
+                        <button type="submit" id="fullFormSubmitBtn" class="btn-primary">
+                            <i class="fa-solid fa-circle-nodes mr-2"></i> Compile & Submit Chart Requirements
+                        </button>
+                    </footer>
+                </form>
+            `;
+        }
+
+        function renderCurrentMode() {
+            if (!container) return;
+            container.innerHTML = currentMode === 'uploadMode' ? renderUploadMode() : renderFormMode();
+        }
+
+        function updateActiveCardStyles(activeElementId) {
+            document.querySelectorAll('.service-card').forEach(card => card.classList.remove('active'));
+            const activeCard = document.getElementById(activeElementId);
+            if (activeCard) activeCard.classList.add('active');
+        }
+
+        window.setServiceMode = function(serviceType, cardId, mode) {
+            currentServiceValue = serviceType;
+            currentMode = mode;
+            activeCardId = cardId;
+            updateActiveCardStyles(cardId);
+            renderCurrentMode();
+        };
+
+        window.updateUploadFeedback = function(inputElement) {
+            const displayDiv = document.getElementById('fileAttachmentFeedbackDynamic');
+            if (inputElement.files && inputElement.files.length > 0) {
+                const fileCount = inputElement.files.length;
+                let fileNamesSummary = Array.from(inputElement.files).map(f => f.name).join(', ');
+                if (fileNamesSummary.length > 45) fileNamesSummary = fileNamesSummary.substring(0, 42) + '...';
+                displayDiv.innerText = `✓ Attached (${fileCount}): ${fileNamesSummary}`;
+                displayDiv.classList.remove('hidden');
+            } else {
+                displayDiv.classList.add('hidden');
+            }
+        };
+
+        // Handle Horoscope Upload Submit
+        window.handleUploadSubmit = async function(event) {
+            event.preventDefault();
+            const form = event.target;
+            const fileInput = document.getElementById('chartFileInputDynamic');
+            const files = fileInput.files;
+            const token = getAuthToken();
+
+            if (!files || files.length === 0) {
+                showToast('Please select at least one horoscope chart file', 'error');
+                return;
+            }
+
+            const submitBtn = document.getElementById('uploadSubmitBtn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Uploading...`;
+            submitBtn.disabled = true;
+            showLoading(true);
+
+            const formData = new FormData(form);
+
+            try {
+                const res = await fetch(`${API_BASE}/api/astrology/horoscope`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    body: formData
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    showToast(`Horoscope submitted! Request ID: ${data.reqId}`, 'success');
+                    setTimeout(() => window.location.reload(), 2000);
+                } else {
+                    showToast(data.message || 'Submission failed', 'error');
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+            } catch (error) {
+                showToast('Network error', 'error');
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            } finally {
+                showLoading(false);
+            }
+        };
+
+        // Handle Consultation Form Submit
+        window.handleFullFormSubmit = async function(event) {
+            event.preventDefault();
+            const form = event.target;
+            const token = getAuthToken();
+
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const submitBtn = document.getElementById('fullFormSubmitBtn');
+            const originalContent = submitBtn.innerHTML;
+            submitBtn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Processing...`;
+            submitBtn.disabled = true;
+            showLoading(true);
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const res = await fetch(`${API_BASE}/api/astrology/consultation`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await res.json();
+
+                if (result.success) {
+                    showToast(`Consultation submitted! Request ID: ${result.reqId}`, 'success');
+                    setTimeout(() => window.location.reload(), 2000);
+                } else {
+                    showToast(result.message || 'Submission failed', 'error');
+                    submitBtn.innerHTML = originalContent;
+                    submitBtn.disabled = false;
+                }
+            } catch (error) {
+                showToast('Network error', 'error');
+                submitBtn.innerHTML = originalContent;
+                submitBtn.disabled = false;
+            } finally {
+                showLoading(false);
+            }
+        };
+
+        function initializePage() {
+            currentMode = 'uploadMode';
+            currentServiceValue = 'horoscope_matching';
+            activeCardId = 'cardHoroscope';
+            updateActiveCardStyles('cardHoroscope');
+            renderCurrentMode();
+        }
+
+        function getAuthToken() {
+            return localStorage.getItem('token') || 
+                   localStorage.getItem('authToken') || 
+                   sessionStorage.getItem('token') ||
+                   sessionStorage.getItem('authToken') ||
+                   '';
+        }
+
+        function showLoading(show) {
+            const overlay = document.getElementById('loadingOverlay');
+            if (show) overlay.classList.add('show');
+            else overlay.classList.remove('show');
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            const toastIcon = document.getElementById('toastIcon');
+
+            toastMessage.textContent = message;
+
+            if (type === 'error') {
+                toast.classList.add('error');
+                toastIcon.className = 'fa-solid fa-circle-xmark text-red-600 text-xl';
+            } else {
+                toast.classList.remove('error');
+                toastIcon.className = 'fa-solid fa-check-circle text-brandGreen text-xl';
+            }
+
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 4000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Content</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: { 
+                extend: { 
+                    colors: { 
+                        brandGreen: '#2c5f2d', 
+                        brandGold: '#bfa15f', 
+                        brandDark: '#1a331e', 
+                        brandSoft: '#fffaf0' 
+                    }, 
+                    fontFamily: { 
+                        sans: ['Inter', 'sans-serif'], 
+                        serif: ['Playfair Display', 'serif'] 
+                    },
+                    keyframes: {
+                        gentleFloat: {
+                            '0%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-6px)' },
+                            '100%': { transform: 'translateY(0px)' }
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-200% 0' },
+                            '100%': { backgroundPosition: '200% 0' }
+                        },
+                        iconSpin: {
+                            '0%': { transform: 'rotate(0deg) scale(1)' },
+                            '50%': { transform: 'rotate(8deg) scale(1.08)' },
+                            '100%': { transform: 'rotate(0deg) scale(1)' }
+                        }
+                    },
+                    animation: {
+                        gentleFloat: 'gentleFloat 1.8s ease-in-out infinite',
+                        shimmer: 'shimmer 2.5s infinite linear',
+                        iconSpin: 'iconSpin 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards'
+                    }
+                } 
+            }
+        }
+    </script>
+    <style>
+        .service-card {
+            transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transform-origin: center;
+            will-change: transform, box-shadow;
+        }
+        .service-card:hover {
+            transform: translateY(-12px) scale(1.01);
+        }
+        .service-icon {
+            transition: transform 0.3s ease, filter 0.2s;
+            display: inline-block;
+        }
+        .service-card:hover .service-icon {
+            animation: iconSpin 0.55s cubic-bezier(0.34, 1.2, 0.64, 1) forwards;
+        }
+        .card-quote {
+            transition: all 0.25s linear;
+        }
+        .service-card:hover .card-quote {
+            color: #c2a25b;
+            letter-spacing: 0.3px;
+            transform: translateX(2px);
+        }
+        .service-card:hover .service-title {
+            background: linear-gradient(135deg, #2c5f2d 0%, #bfa15f 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .hero-shine {
+            background: linear-gradient(110deg, transparent 25%, rgba(255,255,245,0.2) 45%, rgba(255,245,200,0.25) 55%, transparent 70%);
+            background-size: 200% 100%;
+            animation: shimmer 6s infinite;
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50 text-gray-800 antialiased p-2">
+
+    <section class="hero bg-gradient-to-br from-brandDark to-brandGreen text-white text-center py-20 px-4 relative overflow-hidden rounded-2xl shadow-md">
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1547949003-9792a18a2601?auto=format&fit=crop&q=80')] opacity-10 bg-cover bg-center mix-blend-overlay"></div>
+        <div class="container mx-auto relative z-10 max-w-4xl">
+            <h2 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight drop-shadow-sm">Authentic & Pure Vegetarian Catering</h2>
+            <div class="h-1 w-24 bg-brandGold mx-auto mb-6 rounded-full"></div>
+            <p class="text-sm sm:text-base lg:text-lg font-medium tracking-wide max-w-3xl mx-auto uppercase border border-white/20 p-4 bg-black/20 backdrop-blur-sm rounded-xl hero-shine">
+                ✨ ISO Certified Catering | Astrology | Wedding Planning | Constructions | Matrimony | Temple Sevaigal ✨
+            </p>
+        </div>
+    </section>
+
+    <section class="py-16 bg-white mt-4 rounded-2xl shadow-sm border border-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-gray-900 mb-2">Our Core Services</h2>
+                <div class="inline-block bg-amber-50 border border-amber-200/60 rounded-full px-6 py-2 mt-2">
+                    <div class="font-serif italic text-brandGreen font-medium">"Taste of Home. Sight of Stars. Strength of Structure."</div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <div class="service-card border border-gray-100 rounded-3xl p-8 bg-white shadow-sm hover:shadow-2xl text-center cursor-pointer" onclick="location.href='services.html'">
+                    <div class="text-5xl mb-5"><span class="service-icon">🍛</span></div>
+                    <h3 class="service-title text-xl font-bold text-brandGreen mb-3">Catering Service</h3>
+                    <p class="text-gray-600 text-sm">Pure Veg for All | Weddings, Birthday, Receptions, Corporate Events</p>
+                    <div class="border-t border-dashed border-amber-300 pt-4 mt-4"><p class="card-quote font-serif italic text-brandGold text-sm">"Nourishing traditions, one feast at a time."</p></div>
+                </div>
+                <div class="service-card border border-gray-100 rounded-3xl p-8 bg-white shadow-sm hover:shadow-2xl text-center cursor-pointer" onclick="location.href='services.html'">
+                    <div class="text-5xl mb-5"><span class="service-icon">🔮</span></div>
+                    <h3 class="service-title text-xl font-bold text-brandGreen mb-3">Astrology Service</h3>
+                    <p class="text-gray-600 text-sm">Jadhagam, Arudam, Marriage Porutham, Nalla Neram, Name Selection</p>
+                    <div class="border-t border-dashed border-amber-300 pt-4 mt-4"><p class="card-quote font-serif italic text-brandGold text-sm">"Guiding your destiny with the wisdom of stars."</p></div>
+                </div>
+                <div class="service-card border border-gray-100 rounded-3xl p-8 bg-white shadow-sm hover:shadow-2xl text-center cursor-pointer" onclick="location.href='services.html'">
+                    <div class="text-5xl mb-5"><span class="service-icon">💒</span></div>
+                    <h3 class="service-title text-xl font-bold text-brandGreen mb-3">Wedding Events</h3>
+                    <p class="text-gray-600 text-sm">Complete Wedding Management | Decorations, Music, Photography</p>
+                    <div class="border-t border-dashed border-amber-300 pt-4 mt-4"><p class="card-quote font-serif italic text-brandGold text-sm">"Crafting your fairy tale, one detail at a time."</p></div>
+                </div>
+                <div class="service-card border border-gray-100 rounded-3xl p-8 bg-white shadow-sm hover:shadow-2xl text-center cursor-pointer" onclick="location.href='services.html'">
+                    <div class="text-5xl mb-5"><span class="service-icon">💑</span></div>
+                    <h3 class="service-title text-xl font-bold text-brandGreen mb-3">Matrimony Service</h3>
+                    <p class="text-gray-600 text-sm">Bride & Groom Matching | Bio-data Management | Wedding Coordination</p>
+                    <div class="border-t border-dashed border-amber-300 pt-4 mt-4"><p class="card-quote font-serif italic text-brandGold text-sm">"Where hearts meet and families unite."</p></div>
+                </div>
+                <div class="service-card border border-gray-100 rounded-3xl p-8 bg-white shadow-sm hover:shadow-2xl text-center cursor-pointer" onclick="location.href='services.html'">
+                    <div class="text-5xl mb-5"><span class="service-icon">🛕</span></div>
+                    <h3 class="service-title text-xl font-bold text-brandGreen mb-3">Temple Services</h3>
+                    <p class="text-gray-600 text-sm">Temple Functions | Special Poojas | Rituals & Ceremonies</p>
+                    <div class="border-t border-dashed border-amber-300 pt-4 mt-4"><p class="card-quote font-serif italic text-brandGold text-sm">"Connecting you with the divine."</p></div>
+                </div>
+                <div class="service-card border border-gray-100 rounded-3xl p-8 bg-white shadow-sm hover:shadow-2xl text-center cursor-pointer" onclick="location.href='services.html'">
+                    <div class="text-5xl mb-5"><span class="service-icon">🏗️</span></div>
+                    <h3 class="service-title text-xl font-bold text-brandGreen mb-3">Constructions</h3>
+                    <p class="text-gray-600 text-sm">Individual Houses, Row Houses, Flats, Offices with Govt Approvals</p>
+                    <div class="border-t border-dashed border-amber-300 pt-4 mt-4"><p class="card-quote font-serif italic text-brandGold text-sm">"Building dreams, brick by trusted brick."</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="bg-brandSoft py-8 border border-amber-100 rounded-2xl mt-4">
+        <div class="container mx-auto px-4 flex flex-wrap justify-center gap-8 text-center">
+            <div class="flex items-center gap-3"><i class="fa-regular fa-clock text-brandGold text-2xl"></i><span class="text-sm font-medium">25+ Years of Trust</span></div>
+            <div class="flex items-center gap-3"><i class="fa-solid fa-certificate text-brandGold text-2xl"></i><span class="text-sm font-medium">ISO 9001-2015 Certified</span></div>
+            <div class="flex items-center gap-3"><i class="fa-regular fa-thumbs-up text-brandGold text-2xl"></i><span class="text-sm font-medium">5000+ Happy Events</span></div>
+            <div class="flex items-center gap-3"><i class="fa-solid fa-leaf text-brandGold text-2xl"></i><span class="text-sm font-medium">Pure Veg Commitment</span></div>
+        </div>
+    </section>
+
+</body>
+</html>

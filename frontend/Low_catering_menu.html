@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>யுகா கேட்டரிங் சர்வீஸ் - Yuga Catering Services</title>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Thambi+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Baloo Thambi 2', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2d5a27 0%, #4a8c3f 50%, #2d5a27 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: linear-gradient(180deg, #7cb342 0%, #8bc34a 30%, #a5d6a7 100%);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            overflow: hidden;
+            border: 4px solid #5a8c3f;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(180deg, #4a8c3f 0%, #66bb6a 50%, #81c784 100%);
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+            border-bottom: 3px solid #388e3c;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .logo-circle {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(145deg, #fff 0%, #e8f5e9 100%);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid #ff9800;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .logo-circle .catering-text {
+            font-size: 10px;
+            font-weight: 800;
+            color: #2e7d32;
+            letter-spacing: 1px;
+        }
+
+        .logo-circle .yuga-text {
+            font-size: 22px;
+            font-weight: 900;
+            color: #ff9800;
+            line-height: 1;
+        }
+
+        .logo-circle .service-text {
+            font-size: 9px;
+            font-weight: 700;
+            color: #2e7d32;
+        }
+
+        .main-title {
+            text-align: center;
+        }
+
+        .main-title .brand-name {
+            font-size: 52px;
+            font-weight: 900;
+            color: #ffeb3b;
+            text-shadow: 3px 3px 0 #e65100, -1px -1px 0 #e65100, 1px -1px 0 #e65100, -1px 1px 0 #e65100;
+            letter-spacing: 3px;
+            line-height: 1.1;
+        }
+
+        .main-title .subtitle {
+            font-size: 28px;
+            font-weight: 800;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-top: 5px;
+        }
+
+        .main-title .tagline {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fffde7;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+            margin-top: 8px;
+            letter-spacing: 1px;
+        }
+
+        .main-title .sub-tagline {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            margin-top: 5px;
+            background: rgba(0,0,0,0.15);
+            display: inline-block;
+            padding: 5px 20px;
+            border-radius: 20px;
+        }
+
+        /* Packages Section */
+        .packages-section {
+            padding: 25px 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .package-card {
+            background: linear-gradient(180deg, #fff9c4 0%, #fffde7 100%);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            border: 2px solid #8bc34a;
+            transition: transform 0.3s ease;
+        }
+
+        .package-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .package-header {
+            background: linear-gradient(90deg, #8bc34a 0%, #aed581 100%);
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid #689f38;
+        }
+
+        .package-icon {
+            width: 32px;
+            height: 32px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .package-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #1b5e20;
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+        }
+
+        .package-content {
+            padding: 15px;
+        }
+
+        .menu-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .menu-column h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #e65100;
+            margin-bottom: 8px;
+            padding-bottom: 4px;
+            border-bottom: 2px dashed #ffcc80;
+        }
+
+        .menu-item {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            padding: 3px 0;
+            line-height: 1.4;
+        }
+
+        .menu-item.highlight {
+            color: #c62828;
+            font-weight: 700;
+        }
+
+        /* HIG has 3 columns */
+        .package-card.hig .menu-columns {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .package-card.hig .menu-column h4 {
+            font-size: 12px;
+        }
+
+        .package-card.hig .menu-item {
+            font-size: 11px;
+        }
+
+        /* Food images */
+        .food-images {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 15px;
+            flex-wrap: wrap;
+        }
+
+        .food-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(180deg, #4a8c3f 0%, #2e7d32 100%);
+            padding: 25px 20px;
+            text-align: center;
+            color: #fff;
+            border-top: 3px solid #388e3c;
+        }
+
+        .contact-name {
+            font-size: 22px;
+            font-weight: 800;
+            color: #ffeb3b;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+
+        .address {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            margin-bottom: 5px;
+        }
+
+        .landmark {
+            font-size: 14px;
+            font-weight: 600;
+            color: #c8e6c9;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .packages-section {
+                grid-template-columns: 1fr;
+            }
+            .package-card.hig .menu-columns {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .main-title .brand-name {
+                font-size: 36px;
+            }
+            .main-title .subtitle {
+                font-size: 20px;
+            }
+            .menu-columns {
+                grid-template-columns: 1fr;
+            }
+            .package-card.hig .menu-columns {
+                grid-template-columns: 1fr;
+            }
+            .logo-section {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-section">
+                <div class="logo-circle">
+                    <span class="catering-text">CATERING</span>
+                    <span class="yuga-text">யுகா</span>
+                    <span class="service-text">SERVICE</span>
+                </div>
+                <div class="main-title">
+                    <div class="brand-name">யுகா கேட்டரிங் சர்வீஸ்</div>
+                    <div class="subtitle">வேப்பர் & ரிசப்ஷன் கான்ட்ராக்டர்</div>
+                    <div class="tagline">அனைத்து சுப காரியங்களுக்கும் சிறந்த முறையில் சமையல் செய்து தரப்படும்</div>
+                    <div class="sub-tagline">ஸ்ரீ முருகன் துணையால்</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Packages Section -->
+        <div class="packages-section">
+            <!-- LIG Package -->
+            <div class="package-card">
+                <div class="package-header">
+                    <div class="package-icon">🍽️</div>
+                    <div class="package-title">LIG காலை-மதிய LIG இரவு சாப்பாடு</div>
+                </div>
+                <div class="package-content">
+                    <div class="menu-columns">
+                        <div class="menu-column">
+                            <h4>காலை</h4>
+                            <div class="menu-item">இட்லி</div>
+                            <div class="menu-item">பொங்கல்</div>
+                            <div class="menu-item">பூரி</div>
+                            <div class="menu-item">வடை</div>
+                            <div class="menu-item">தேங்காய் சட்னி</div>
+                            <div class="menu-item">காரச்சட்னி</div>
+                            <div class="menu-item">சாம்பார்</div>
+                            <div class="menu-item">காபி</div>
+                            <div class="menu-item">ஸ்வீட்</div>
+                            <div class="menu-item">மெதுவடை</div>
+                        </div>
+                        <div class="menu-column">
+                            <h4>மதியம் / இரவு</h4>
+                            <div class="menu-item">மாஸ் கூழ்</div>
+                            <div class="menu-item">பிரியாணி</div>
+                            <div class="menu-item">குருமா</div>
+                            <div class="menu-item">தயிர்பச்சடி</div>
+                            <div class="menu-item">சாம்பார்</div>
+                            <div class="menu-item">எப்பிட்டாங்காய்</div>
+                            <div class="menu-item">ரசம்</div>
+                            <div class="menu-item">போரியல்</div>
+                            <div class="menu-item">வத்தக்குழம்பு</div>
+                            <div class="menu-item">கூட்டு</div>
+                            <div class="menu-item">பொரியல்</div>
+                            <div class="menu-item">அப்பளம்</div>
+                            <div class="menu-item">உணவுக்கு</div>
+                            <div class="menu-item">பழம்</div>
+                            <div class="menu-item">வைக்கிப்பாக்கு</div>
+                            <div class="menu-item">(அ) துளைப்பணம்</div>
+                            <div class="menu-item">வாழைப்பழம்</div>
+                            <div class="menu-item">வெற்றிலைபாக்கு</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MIG Package -->
+            <div class="package-card">
+                <div class="package-header">
+                    <div class="package-icon">🍽️</div>
+                    <div class="package-title">MIG காலை-மதிய MIG இரவு சாப்பாடு</div>
+                </div>
+                <div class="package-content">
+                    <div class="menu-columns">
+                        <div class="menu-column">
+                            <h4>காலை</h4>
+                            <div class="menu-item">இட்லி</div>
+                            <div class="menu-item">பொங்கல்</div>
+                            <div class="menu-item">பூரி</div>
+                            <div class="menu-item">வடை (அ)</div>
+                            <div class="menu-item">உட்துணைக்கு (மசாலா)</div>
+                            <div class="menu-item">மாஸ் குருமா</div>
+                            <div class="menu-item">இட்லிப்பொடி</div>
+                            <div class="menu-item">தேங்காய் சட்னி</div>
+                            <div class="menu-item">காரச்சட்னி</div>
+                            <div class="menu-item">சாம்பார்</div>
+                            <div class="menu-item">வைக்கிப்பாக்கு</div>
+                            <div class="menu-item">புட்டாப் (அ)</div>
+                            <div class="menu-item">கோட் அல்வா</div>
+                            <div class="menu-item">மெதுவடை</div>
+                            <div class="menu-item">துக்காணி சட்னி</div>
+                        </div>
+                        <div class="menu-column">
+                            <h4>மதியம் / இரவு</h4>
+                            <div class="menu-item">பிரியாணி, குருமா</div>
+                            <div class="menu-item">நல்ல பருப்பு</div>
+                            <div class="menu-item">சாம்பார், சேனை மாஸ்</div>
+                            <div class="menu-item">ஆவியில் காய்கறியம்</div>
+                            <div class="menu-item">தேங்காய் சட்னி</div>
+                            <div class="menu-item">ஓமப் காரம்</div>
+                            <div class="menu-item">சாம்பார் சாதம்</div>
+                            <div class="menu-item">தட்சிணாமூர்த்தி</div>
+                            <div class="menu-item">பொரியல்</div>
+                            <div class="menu-item">அப்பளம்</div>
+                            <div class="menu-item">போர் மிளகாய்</div>
+                            <div class="menu-item">ஆவியில் பச்சடி</div>
+                            <div class="menu-item">(அ) காலிஃபிளவர் பக்கோடா</div>
+                            <div class="menu-item">தேங்காய்</div>
+                            <div class="menu-item">தட்சிணாமூர்த்தி</div>
+                            <div class="menu-item">உட்துணைக்கு கீரம்</div>
+                            <div class="menu-item">வாழைப்பழம்</div>
+                            <div class="menu-item">ஸ்வீட்</div>
+                            <div class="menu-item">ஐஸ்கிரீம்</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HIG Package -->
+            <div class="package-card hig">
+                <div class="package-header">
+                    <div class="package-icon">🍽️</div>
+                    <div class="package-title">HIG காலை-மதிய HIG இரவு சாப்பாடு</div>
+                </div>
+                <div class="package-content">
+                    <div class="menu-columns">
+                        <div class="menu-column">
+                            <h4>காலை</h4>
+                            <div class="menu-item">பொங்கல்</div>
+                            <div class="menu-item">மினி இட்லி சாம்பார்</div>
+                            <div class="menu-item">சேட் பொங்கல்</div>
+                            <div class="menu-item">மினி பூரி திருப்பு</div>
+                            <div class="menu-item">இட்லிப்பொடி</div>
+                            <div class="menu-item">தேங்காய் பால்</div>
+                            <div class="menu-item">மாஸ் குருமா</div>
+                            <div class="menu-item">மினி வடைப்பாய்</div>
+                            <div class="menu-item">வெஜிடபிள்</div>
+                            <div class="menu-item">காரச்சட்னி</div>
+                            <div class="menu-item">தேங்காய் சட்னி</div>
+                            <div class="menu-item">தக்காளி சட்னி</div>
+                            <div class="menu-item">வடை</div>
+                            <div class="menu-item">கோட் அல்வா</div>
+                            <div class="menu-item">(அ) ஜெல் தேங்காய்</div>
+                        </div>
+                        <div class="menu-column">
+                            <h4>மதியம்</h4>
+                            <div class="menu-item">வெஜிடபிள்:</div>
+                            <div class="menu-item">கம்பிளிமெண்ட்</div>
+                            <div class="menu-item">பன்னீர்</div>
+                            <div class="menu-item">கீராத்தங்கு</div>
+                            <div class="menu-item">சாப்</div>
+                            <div class="menu-item">அவியில் பச்சடி</div>
+                            <div class="menu-item">(அ) பருப்பு பாயசம்</div>
+                            <div class="menu-item">சாலட்</div>
+                            <div class="menu-item">உட்துணைக்கு கீரம்</div>
+                            <div class="menu-item">தின்பச்சை</div>
+                            <div class="menu-item">வெஜ் பிரியாணி</div>
+                            <div class="menu-item">வெஜ் குருமா</div>
+                            <div class="menu-item">ஸ்வீட்</div>
+                            <div class="menu-item">பன்னீர் பட்டர் மசாலா</div>
+                            <div class="menu-item">கார் தேங்காய்</div>
+                        </div>
+                        <div class="menu-column">
+                            <h4>இரவு</h4>
+                            <div class="menu-item">தேக்கடை சாப்</div>
+                            <div class="menu-item">சாம்பார் சாதம்</div>
+                            <div class="menu-item">புட்டு துளை சாப்</div>
+                            <div class="menu-item">புளியோதரை</div>
+                            <div class="menu-item">காய் வறுவல்</div>
+                            <div class="menu-item">(அ) துளைப்பணம்</div>
+                            <div class="menu-item">(அ) முறுக்குகள்</div>
+                            <div class="menu-item">சாண்ட் பீ</div>
+                            <div class="menu-item">பஜ்ஜி</div>
+                            <div class="menu-item">உட்துணைக்கு கீரம்</div>
+                            <div class="menu-item">வாழைப்பழம்</div>
+                            <div class="menu-item">ஐஸ்கிரீம்</div>
+                            <div class="menu-item">போர் மிளகாய்</div>
+                            <div class="menu-item">சாலட்</div>
+                            <div class="menu-item">ரசம்</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Food Images Section -->
+        <div class="food-images">
+            <div style="text-align:center;">
+                <div style="width:80px;height:80px;background:linear-gradient(145deg, #8d6e63, #5d4037);border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,0.2);margin:0 auto;">
+                    <span style="font-size:30px;">🥘</span>
+                </div>
+                <p style="font-size:12px;font-weight:700;color:#1b5e20;margin-top:5px;">சாம்பார் சாதம்</p>
+            </div>
+            <div style="text-align:center;">
+                <div style="width:80px;height:80px;background:linear-gradient(145deg, #fff8e1, #ffecb3);border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,0.2);margin:0 auto;">
+                    <span style="font-size:30px;">🍚</span>
+                </div>
+                <p style="font-size:12px;font-weight:700;color:#1b5e20;margin-top:5px;">இட்லி</p>
+            </div>
+            <div style="text-align:center;">
+                <div style="width:80px;height:80px;background:linear-gradient(145deg, #e8f5e9, #c8e6c9);border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,0.2);margin:0 auto;">
+                    <span style="font-size:30px;">🥗</span>
+                </div>
+                <p style="font-size:12px;font-weight:700;color:#1b5e20;margin-top:5px;">வெஜ் பிரியாணி</p>
+            </div>
+            <div style="text-align:center;">
+                <div style="width:80px;height:80px;background:linear-gradient(145deg, #fff3e0, #ffe0b2);border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,0.2);margin:0 auto;">
+                    <span style="font-size:30px;">🍛</span>
+                </div>
+                <p style="font-size:12px;font-weight:700;color:#1b5e20;margin-top:5px;">பூரி மசாலா</p>
+            </div>
+            <div style="text-align:center;">
+                <div style="width:80px;height:80px;background:linear-gradient(145deg, #fce4ec, #f8bbd0);border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,0.2);margin:0 auto;">
+                    <span style="font-size:30px;">🍰</span>
+                </div>
+                <p style="font-size:12px;font-weight:700;color:#1b5e20;margin-top:5px;">ஸ்வீட்</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="contact-name">K. கோபிநாதன்</div>
+            <div class="address">எண்.228, புத்தமடை நகர், மீஞ்சூர் - 601203.</div>
+            <div class="landmark">(புதிய பஸ் ஸ்டாப் அருகில்)</div>
+        </div>
+    </div>
+</body>
+</html>

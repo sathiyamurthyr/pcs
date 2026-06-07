@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrimony Service | Pooja Catering</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandGreen: '#2c5f2d',
+                        brandGreenLight: '#3d7a3e',
+                        brandGreenDark: '#1a331e',
+                        brandGold: '#bfa15f',
+                        brandSoft: '#fffaf0',
+                        brandGreen50: '#f0f7f0',
+                        brandGreen100: '#d4e8d4',
+                        brandGreen200: '#a8d5a8',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f5f7f5; padding: 16px; }
+        .standalone-content { max-width: 1000px; margin: 0 auto; }
+
+        .hero-section {
+            background: linear-gradient(135deg, #2c5f2d, #1a331e);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 32px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .hero-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-section p {
+            opacity: 0.85;
+            font-size: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.15);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(4px);
+        }
+
+        .form-section {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            border: 1px solid #eef2ee;
+            margin-bottom: 24px;
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #f0f7f0;
+        }
+        .section-header h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a331e;
+        }
+        .section-header-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #2c5f2d, #1a331e);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .form-group { margin-bottom: 4px; }
+        .form-group.full-width { grid-column: span 2; }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1a331e;
+            margin-bottom: 8px;
+        }
+        .form-group label .required { color: #dc2626; margin-left: 2px; }
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e8ede8;
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            color: #333;
+            transition: all 0.3s ease;
+            background: #fafbfa;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #2c5f2d;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(44,95,45,0.08);
+        }
+        .form-control::placeholder { color: #bbb; }
+        select.form-control {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%232c5f2d' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
+        }
+        textarea.form-control { resize: vertical; min-height: 100px; }
+
+        .radio-group { display: flex; gap: 24px; padding: 4px 0; }
+        .radio-item { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .radio-item input[type="radio"] { width: 20px; height: 20px; accent-color: #2c5f2d; cursor: pointer; }
+        .radio-item span { font-size: 14px; color: #444; font-weight: 500; }
+
+        .upload-box {
+            border: 2px dashed #d4e8d4;
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            background: #f8faf8;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        .upload-box:hover { border-color: #2c5f2d; background: #f0f7f0; }
+        .upload-box.has-file {
+            border-color: #2c5f2d;
+            background: #f0f7f0;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2c5f2d, #1a331e);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(44,95,45,0.2);
+        }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(44,95,45,0.3); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        .btn-secondary {
+            background: white;
+            color: #2c5f2d;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            border: 2px solid #2c5f2d;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover { background: #f0f7f0; }
+
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+        .btn-danger:hover { background: #b91c1c; }
+
+        .toast {
+            position: fixed; bottom: 24px; right: 24px;
+            background: white; border-left: 4px solid #2c5f2d;
+            padding: 16px 24px; border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            display: flex; align-items: center; gap: 12px;
+            transform: translateY(100px); opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2000; pointer-events: none;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; pointer-events: auto; }
+        .toast.error { border-left-color: #dc2626; }
+        .toast.info { border-left-color: #3b82f6; }
+
+        .attachment-preview {
+            margin-top: 12px;
+            padding: 12px;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid #d4e8d4;
+        }
+        .attachment-preview img {
+            max-width: 150px;
+            max-height: 150px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        .attachment-preview a {
+            color: #2c5f2d;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        .attachment-preview a:hover { text-decoration: underline; }
+
+        .existing-profile {
+            background: linear-gradient(135deg, #f0f7f0, #fffaf0);
+            border: 2px solid #d4e8d4;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .existing-profile h4 {
+            font-family: 'Playfair Display', serif;
+            color: #1a331e;
+            margin-bottom: 8px;
+        }
+        .req-id-badge {
+            display: inline-block;
+            background: #2c5f2d;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255,255,255,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .loading-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #d4e8d4;
+            border-top-color: #2c5f2d;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @media (max-width: 768px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .form-group.full-width { grid-column: span 1; }
+            .hero-section { padding: 30px 20px; }
+            body { padding: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+
+    <main class="standalone-content">
+        <!-- Existing Profile Alert -->
+        <div id="existingProfile" class="existing-profile" style="display: none;">
+            <h4><i class="fa-solid fa-circle-check text-brandGreen mr-2"></i> Profile Already Registered</h4>
+            <p class="text-sm text-gray-600 mb-3">You have an active matrimony profile on file.</p>
+            <div class="flex items-center gap-3 mb-3 flex-wrap">
+                <span class="req-id-badge" id="displayReqId">REQ-ID</span>
+                <span class="text-sm text-gray-500" id="displayStatus">Status: Active</span>
+                <span class="text-sm text-gray-500" id="displayName"></span>
+            </div>
+            <div class="flex gap-2 flex-wrap">
+                <button type="button" class="btn-secondary" onclick="loadExistingProfile()">
+                    <i class="fa-solid fa-pen-to-square mr-1"></i> Edit Profile
+                </button>
+                <button type="button" class="btn-danger" onclick="deleteProfile()">
+                    <i class="fa-solid fa-trash mr-1"></i> Delete
+                </button>
+            </div>
+        </div>
+
+        <header class="hero-section">
+            <div class="hero-badge">
+                <i class="fa-solid fa-ring"></i> Matrimonial Registration
+            </div>
+            <h2 id="formTitle">Create Matrimony Profile</h2>
+            <p>Register your details to match your profile requirements. Fields marked with an asterisk (*) are mandatory.</p>
+        </header>
+
+        <form id="matrimonyForm" onsubmit="handleFormSubmit(event)">
+            <input type="hidden" id="editReqId" name="reqId" value="">
+
+            <fieldset class="form-section">
+                <div class="section-header">
+                    <div class="section-header-icon"><i class="fa-solid fa-user-tag"></i></div>
+                    <h3>Profile Base Class</h3>
+                </div>
+                <div class="form-group full-width">
+                    <label>Registering Profile For <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <label class="radio-item">
+                            <input type="radio" name="profileFor" value="bride" checked onchange="updateDynamicLabels('bride')">
+                            <span>Bride (Female)</span>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="profileFor" value="groom" onchange="updateDynamicLabels('groom')">
+                            <span>Groom (Male)</span>
+                        </label>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="form-section">
+                <div class="section-header">
+                    <div class="section-header-icon"><i class="fa-solid fa-address-card"></i></div>
+                    <h3>Personal & Professional Background</h3>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label id="lbl_name">Bride's Full Name <span class="required">*</span></label>
+                        <input type="text" name="fullName" class="form-control" placeholder="Enter legal full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Date of Birth <span class="required">*</span></label>
+                        <input type="date" name="dob" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Marital Status <span class="required">*</span></label>
+                        <select name="maritalStatus" class="form-control" required>
+                            <option value="">-- Choose Option --</option>
+                            <option value="Never Married">Never Married</option>
+                            <option value="Divorced">Divorced</option>
+                            <option value="Widowed">Widowed</option>
+                            <option value="Awaiting Divorce">Awaiting Divorce</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label id="lbl_height">Bride's Height</label>
+                        <input type="text" name="height" class="form-control" placeholder="e.g., 5 ft 4 in or 163 cm">
+                    </div>
+                    <div class="form-group">
+                        <label>Educational Qualification <span class="required">*</span></label>
+                        <input type="text" name="education" class="form-control" placeholder="e.g., B.Tech, MBA, MBBS" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Current Profession / Job Profile <span class="required">*</span></label>
+                        <input type="text" name="profession" class="form-control" placeholder="e.g., Software Engineer, Bank Manager" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Annual Income Equivalent</label>
+                        <input type="text" name="income" class="form-control" placeholder="e.g., $85,000 / 8 Lakhs PA">
+                    </div>
+                    <div class="form-group">
+                        <label>Work Location / Current Residence <span class="required">*</span></label>
+                        <input type="text" name="workLocation" class="form-control" placeholder="City, State, Country" required>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="form-section">
+                <div class="section-header">
+                    <div class="section-header-icon"><i class="fa-solid fa-star-of-david"></i></div>
+                    <h3>Astrological & Family Coordinates</h3>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Religion / Community <span class="required">*</span></label>
+                        <input type="text" name="religion" class="form-control" placeholder="e.g., Hindu, Christian" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Caste / Sub-Caste (If Applicable)</label>
+                        <input type="text" name="caste" class="form-control" placeholder="Enter Caste / Clan group">
+                    </div>
+                    <div class="form-group">
+                        <label>Nakshatram / Star</label>
+                        <input type="text" name="star" class="form-control" placeholder="Astrological birth star name">
+                    </div>
+                    <div class="form-group">
+                        <label>Rasi / Moon Sign</label>
+                        <input type="text" name="rasi" class="form-control" placeholder="Zodiac signature field">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Family Details / Heritage Context</label>
+                        <textarea name="familyDetails" class="form-control" placeholder="Describe parents' occupations, siblings, background status, native roots..."></textarea>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="form-section">
+                <div class="section-header">
+                    <div class="section-header-icon"><i class="fa-solid fa-images"></i></div>
+                    <h3>Media Asset Uploads</h3>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label id="lbl_photo">Upload Profile Photo <span class="required">*</span></label>
+                        <div class="upload-box" id="photoUploadBox" onclick="document.getElementById('photoInput').click()">
+                            <i class="fa-solid fa-cloud-arrow-up text-3xl text-brandGreen mb-2"></i>
+                            <p class="text-sm font-medium text-gray-700">Drag & Drop Image or Click</p>
+                            <p class="text-xs text-gray-400 mt-1">PNG, JPG up to 5MB</p>
+                            <input type="file" id="photoInput" name="profileImage" accept="image/*" class="hidden" onchange="handleFileChange(this, 'photoPreview', 'photoUploadBox')">
+                            <div id="photoPreview" class="hidden"></div>
+                        </div>
+                        <div id="existingPhotoPreview" class="attachment-preview" style="display: none;">
+                            <p class="text-xs text-gray-500 mb-2">Current Photo:</p>
+                            <img id="existingPhotoImg" src="" alt="Profile Photo">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Upload Horoscope Document (Optional)</label>
+                        <div class="upload-box" id="horoUploadBox" onclick="document.getElementById('horoscopeInput').click()">
+                            <i class="fa-solid fa-file-pdf text-3xl text-brandGold mb-2"></i>
+                            <p class="text-sm font-medium text-gray-700">Upload PDF / Image File</p>
+                            <p class="text-xs text-gray-400 mt-1">PDF, JPG, PNG up to 8MB</p>
+                            <input type="file" id="horoscopeInput" name="horoscopeDoc" accept=".pdf,image/*" class="hidden" onchange="handleFileChange(this, 'horoscopePreview', 'horoUploadBox')">
+                            <div id="horoscopePreview" class="hidden"></div>
+                        </div>
+                        <div id="existingHoroPreview" class="attachment-preview" style="display: none;">
+                            <p class="text-xs text-gray-500 mb-2">Current Horoscope:</p>
+                            <a id="existingHoroLink" href="#" target="_blank">
+                                <i class="fa-solid fa-file-pdf mr-1"></i> View Document
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="form-section">
+                <div class="section-header">
+                    <div class="section-header-icon"><i class="fa-solid fa-envelope-open-text"></i></div>
+                    <h3>Account Verification Contacts</h3>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Primary Mobile Number <span class="required">*</span></label>
+                        <input type="tel" name="contactPhone" class="form-control" placeholder="Include country code if applicable" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Primary Email Address <span class="required">*</span></label>
+                        <input type="email" name="contactEmail" class="form-control" placeholder="name@domain.com" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Partner Preferences / Expectation Notes</label>
+                        <textarea name="partnerPreferences" class="form-control" placeholder="Specify requirements like Age limits, Education targets, Profession rules, or Location constraints..."></textarea>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="mb-8">
+                <button type="submit" id="submitBtn" class="btn-primary">
+                    <i class="fa-solid fa-heart-circle-check mr-2"></i> 
+                    <span id="submitBtnText">Submit Registration Record</span>
+                </button>
+            </div>
+        </form>
+    </main>
+
+    <div id="toast" class="toast">
+        <i id="toastIcon" class="fa-solid fa-check-circle text-brandGreen text-xl"></i>
+        <span id="toastMessage" class="text-sm font-medium text-gray-700">Processing...</span>
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIGURATION
+        // ============================================
+        const API_BASE = window.location.origin;
+        let existingProfileData = null;
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', () => {
+            checkExistingProfile();
+        });
+
+        // ============================================
+        // CHECK EXISTING PROFILE ON LOAD
+        // ============================================
+        async function checkExistingProfile() {
+            showLoading(true);
+            const token = getAuthToken();
+
+            try {
+                const res = await fetch(`${API_BASE}/api/matrimony/my-profile`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+
+                if (data.success && data.profile) {
+                    existingProfileData = data.profile;
+                    showExistingProfile(data.profile);
+                    showToast('Your profile loaded successfully', 'success');
+                }
+            } catch (err) {
+                console.log('No existing profile or not logged in:', err.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // ============================================
+        // SHOW EXISTING PROFILE CARD
+        // ============================================
+        function showExistingProfile(profile) {
+            document.getElementById('existingProfile').style.display = 'block';
+            document.getElementById('displayReqId').textContent = profile.req_id;
+            document.getElementById('displayStatus').textContent = `Status: ${profile.status || 'Active'}`;
+            document.getElementById('displayName').textContent = profile.full_name ? `| ${profile.full_name}` : '';
+            document.getElementById('formTitle').textContent = 'Update Matrimony Profile';
+            document.getElementById('submitBtnText').textContent = 'Update Profile Record';
+
+            // Pre-fill the form
+            populateForm(profile);
+        }
+
+        // ============================================
+        // POPULATE FORM WITH EXISTING DATA
+        // ============================================
+        function populateForm(profile) {
+            const form = document.getElementById('matrimonyForm');
+
+            // Set radio button
+            const radio = form.querySelector(`input[name="profileFor"][value="${profile.profile_for}"]`);
+            if (radio) radio.checked = true;
+            updateDynamicLabels(profile.profile_for);
+
+            // Map database fields to form fields
+            const fieldMap = {
+                'fullName': profile.full_name,
+                'dob': profile.dob,
+                'maritalStatus': profile.marital_status,
+                'height': profile.height,
+                'education': profile.education,
+                'profession': profile.profession,
+                'income': profile.income,
+                'workLocation': profile.work_location,
+                'religion': profile.religion,
+                'caste': profile.caste,
+                'star': profile.star,
+                'rasi': profile.rasi,
+                'familyDetails': profile.family_details,
+                'contactPhone': profile.contact_phone,
+                'contactEmail': profile.contact_email,
+                'partnerPreferences': profile.partner_preferences
+            };
+
+            for (const [name, value] of Object.entries(fieldMap)) {
+                const input = form.querySelector(`[name="${name}"]`);
+                if (input && value !== null && value !== undefined) {
+                    input.value = value;
+                }
+            }
+
+            // Set edit mode
+            document.getElementById('editReqId').value = profile.req_id;
+
+            // Show existing attachments
+            if (profile.photoUrl) {
+                document.getElementById('existingPhotoPreview').style.display = 'block';
+                document.getElementById('existingPhotoImg').src = profile.photoUrl;
+                document.getElementById('photoInput').removeAttribute('required');
+            }
+            if (profile.horoscopeUrl) {
+                document.getElementById('existingHoroPreview').style.display = 'block';
+                document.getElementById('existingHoroLink').href = profile.horoscopeUrl;
+            }
+        }
+
+        // ============================================
+        // LOAD EXISTING PROFILE INTO FORM
+        // ============================================
+        function loadExistingProfile() {
+            if (existingProfileData) {
+                populateForm(existingProfileData);
+                document.getElementById('matrimonyForm').scrollIntoView({ behavior: 'smooth' });
+                showToast('Profile loaded for editing', 'info');
+            }
+        }
+
+        // ============================================
+        // DELETE PROFILE
+        // ============================================
+        async function deleteProfile() {
+            if (!existingProfileData) return;
+
+            const confirmDelete = confirm(
+                `Are you sure you want to delete profile ${existingProfileData.req_id}?\n\nThis action cannot be undone.`
+            );
+
+            if (!confirmDelete) return;
+
+            showLoading(true);
+            const token = getAuthToken();
+
+            try {
+                const res = await fetch(`${API_BASE}/api/matrimony/profile/${existingProfileData.req_id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    showToast('Profile deleted successfully', 'success');
+                    setTimeout(() => window.location.reload(), 1500);
+                } else {
+                    showToast(data.message || 'Failed to delete', 'error');
+                }
+            } catch (error) {
+                console.error('Delete error:', error);
+                showToast('Network error during delete', 'error');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // ============================================
+        // DYNAMIC LABELS (Bride/Groom)
+        // ============================================
+        function updateDynamicLabels(profileType) {
+            const prefix = (profileType === 'bride') ? "Bride's" : "Groom's";
+            document.getElementById('lbl_name').innerHTML = `${prefix} Full Name <span class="required">*</span>`;
+            document.getElementById('lbl_height').innerText = `${prefix} Height`;
+            document.getElementById('lbl_photo').innerHTML = `Upload ${prefix} Photo <span class="required">*</span>`;
+        }
+
+        // ============================================
+        // FILE UPLOAD HANDLING
+        // ============================================
+        function handleFileChange(input, previewId, boxId) {
+            const previewEl = document.getElementById(previewId);
+            const boxEl = document.getElementById(boxId);
+
+            if (input.files && input.files.length > 0) {
+                const file = input.files[0];
+                const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+                previewEl.innerHTML = `
+                    <p class="text-brandGreen font-semibold text-sm">
+                        <i class="fa-solid fa-check mr-1"></i> Selected: ${file.name}
+                    </p>
+                    <p class="text-xs text-gray-500">Size: ${fileSizeMB} MB</p>
+                `;
+                previewEl.classList.remove('hidden');
+                boxEl.classList.add('has-file');
+            } else {
+                previewEl.classList.add('hidden');
+                boxEl.classList.remove('has-file');
+            }
+        }
+
+        // ============================================
+        // FORM SUBMISSION (Create or Update)
+        // ============================================
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+
+            const btn = document.getElementById('submitBtn');
+            const originalText = btn.innerHTML;
+            const token = getAuthToken();
+
+            // Validate required fields
+            const form = document.getElementById('matrimonyForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Processing...`;
+            btn.disabled = true;
+            showLoading(true);
+
+            const formData = new FormData(form);
+            const reqId = document.getElementById('editReqId').value;
+
+            try {
+                let url = `${API_BASE}/api/matrimony/register`;
+                let method = 'POST';
+
+                // If editing existing profile
+                if (reqId) {
+                    url = `${API_BASE}/api/matrimony/profile/${reqId}`;
+                    method = 'PUT';
+                }
+
+                const res = await fetch(url, {
+                    method: method,
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    body: formData
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    showToast(
+                        reqId 
+                            ? `Profile ${reqId} updated successfully!` 
+                            : `Profile registered! Request ID: ${data.reqId}`,
+                        'success'
+                    );
+
+                    // Reload page after short delay
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
+                } else {
+                    showToast(data.message || 'Operation failed', 'error');
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+
+            } catch (error) {
+                console.error('Submit error:', error);
+                showToast('Network error. Please check your connection and try again.', 'error');
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // ============================================
+        // AUTH TOKEN HELPER
+        // ============================================
+        function getAuthToken() {
+            // Try all possible storage keys your app might use
+            return localStorage.getItem('token') || 
+                   localStorage.getItem('authToken') || 
+                   localStorage.getItem('memberToken') ||
+                   sessionStorage.getItem('token') ||
+                   sessionStorage.getItem('authToken') ||
+                   sessionStorage.getItem('memberToken') ||
+                   ''; // Empty string works with dev mode fallback
+        }
+
+        // ============================================
+        // LOADING OVERLAY
+        // ============================================
+        function showLoading(show) {
+            const overlay = document.getElementById('loadingOverlay');
+            if (show) {
+                overlay.classList.add('show');
+            } else {
+                overlay.classList.remove('show');
+            }
+        }
+
+        // ============================================
+        // TOAST NOTIFICATION
+        // ============================================
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            const toastIcon = document.getElementById('toastIcon');
+
+            toastMessage.textContent = message;
+
+            if (type === 'error') {
+                toast.classList.add('error');
+                toastIcon.className = 'fa-solid fa-circle-xmark text-red-600 text-xl';
+            } else if (type === 'info') {
+                toast.classList.add('info');
+                toastIcon.className = 'fa-solid fa-circle-info text-blue-500 text-xl';
+            } else {
+                toast.classList.remove('error', 'info');
+                toastIcon.className = 'fa-solid fa-check-circle text-brandGreen text-xl';
+            }
+
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 4000);
+        }
+    </script>
+</body>
+</html>

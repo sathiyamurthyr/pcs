@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Requests | Admin Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com">
+// ========== DOWNLOAD PHOTO WITH TOKEN ==========
+async function downloadMatrimonyPhoto(reqId, filename) {
+    try {
+        const res = await fetch(`${API_URL}/matrimony/profile/${reqId}/photo-download`, {
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+    } catch (e) {
+        alert('Download failed: ' + e.message);
+    }
+}
+
+</script>
+    <style>
+        body { background: #f3f4f6; font-family: 'Inter', sans-serif; }
+        .tab-btn {
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            background: white;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .tab-btn:hover { background: #e5e7eb; }
+        .tab-btn.active {
+            background: linear-gradient(135deg, #2c5f2d, #1a331e);
+            color: white;
+            border-color: #bfa15f;
+            box-shadow: 0 4px 12px rgba(44, 95, 45, 0.3);
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .request-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            border-left: 4px solid #2c5f2d;
+        }
+        .request-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-confirmed { background: #d1fae5; color: #065f46; }
+        .status-completed { background: #dbeafe; color: #1e40af; }
+        .status-cancelled { background: #fee2e2; color: #991b1b; }
+        .status-active { background: #d1fae5; color: #065f46; }
+        .status-inactive { background: #e5e7eb; color: #374151; }
+        .status-in_review { background: #fef3c7; color: #92400e; }
+        .status-approved { background: #d1fae5; color: #065f46; }
+        .status-in_progress { background: #dbeafe; color: #1e40af; }
+        .status-scheduled { background: #e0e7ff; color: #3730a3; }
+        .action-btn {
+            padding: 6px 16px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+        .btn-approve { background: #2c5f2d; color: white; }
+        .btn-approve:hover { background: #1a331e; }
+        .btn-reject { background: #dc2626; color: white; }
+        .btn-reject:hover { background: #b91c1c; }
+        .btn-view { background: #e5e7eb; color: #374151; }
+        .btn-view:hover { background: #d1d5db; }
+        .empty-state { text-align: center; padding: 60px 20px; color: #9ca3af; }
+        .search-box {
+            padding: 10px 16px;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+            outline: none;
+            width: 300px;
+            font-size: 0.9rem;
+        }
+        .search-box:focus { border-color: #2c5f2d; box-shadow: 0 0 0 3px rgba(44, 95, 45, 0.1); }
+        .filter-select {
+            padding: 10px 16px;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+            outline: none;
+            font-size: 0.9rem;
+            background: white;
+        }
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 1000; display: none;
+            justify-content: center; align-items: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-content {
+            background: white; border-radius: 20px; padding: 30px;
+            max-width: 850px; width: 90%; max-height: 90vh; overflow-y: auto;
+            animation: modalSlide 0.3s ease;
+        }
+        @keyframes modalSlide { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .modal-close {
+            position: absolute; top: 15px; right: 20px;
+            background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #6b7280;
+        }
+        .detail-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f3f4f6; }
+        .detail-label { color: #6b7280; font-size: 0.9rem; width: 40%; }
+        .detail-value { font-weight: 600; color: #1f2937; width: 60%; text-align: right; }
+        .loading { text-align: center; padding: 40px; }
+        .seva-tag {
+            display: inline-block;
+            background: #e8f5e9;
+            color: #2c5f2d;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            margin: 2px;
+            font-weight: 500;
+        }
+        .service-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #ecfdf5;
+            color: #065f46;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .pagination { display: flex; justify-content: center; gap: 8px; margin-top: 20px; }
+        .page-btn {
+            padding: 8px 14px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            background: white;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .page-btn.active { background: #2c5f2d; color: white; border-color: #2c5f2d; }
+        .page-btn:hover:not(.active) { background: #f3f4f6; }
+        .page-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .budget-display { font-family: 'Courier New', monospace; font-weight: 700; color: #2c5f2d; }
+        .profile-photo {
+            width: 120px; height: 120px; border-radius: 50%;
+            object-fit: cover; border: 3px solid #2c5f2d;
+        }
+        .photo-placeholder {
+            width: 120px; height: 120px; border-radius: 50%;
+            background: #e5e7eb; display: flex; align-items: center; justify-content: center;
+            border: 3px dashed #9ca3af; color: #9ca3af; font-size: 2rem;
+        }
+        .horoscope-link {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: #dbeafe; color: #1e40af;
+            padding: 6px 14px; border-radius: 8px;
+            font-size: 0.85rem; font-weight: 600; text-decoration: none;
+            transition: all 0.2s;
+        }
+        .horoscope-link:hover { background: #bfdbfe; }
+        .matrimony-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            border-left: 4px solid #ec4899;
+        }
+        .matrimony-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .gender-badge-bride { background: #fce7f3; color: #be185d; }
+        .gender-badge-groom { background: #dbeafe; color: #1e40af; }
+        .astro-subtab {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid #e5e7eb;
+            background: white;
+            color: #374151;
+        }
+        .astro-subtab:hover { background: #f3f4f6; }
+        .astro-subtab.active {
+            background: #2c5f2d;
+            color: white;
+            border-color: #2c5f2d;
+        }
+        .attachment-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #fef3c7;
+            color: #92400e;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-decoration: none;
+            margin: 2px;
+            transition: all 0.2s;
+        }
+        .attachment-link:hover { background: #fde68a; }
+        .attachment-preview {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            margin-top: 8px;
+        }
+        .detail-section {
+            margin-bottom: 20px;
+            padding: 16px;
+            background: #f8faf8;
+            border-radius: 12px;
+            border: 1px solid #e8ede8;
+        }
+        .detail-section-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1a331e;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #d4e8d4;
+            padding-bottom: 8px;
+        }
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .detail-item.full-width {
+            grid-column: span 2;
+        }
+        .detail-item-label {
+            font-size: 12px;
+            color: #666;
+            font-weight: 500;
+        }
+        .detail-item-value {
+            font-size: 14px;
+            color: #1a331e;
+            font-weight: 600;
+        }
+        @media (max-width: 640px) {
+            .detail-grid { grid-template-columns: 1fr; }
+            .detail-item.full-width { grid-column: span 1; }
+        }
+    </style>
+<base target="_blank">
+<base target="_blank">
+<base target="_blank">
+</head>
+<body class="p-6">
+<!-- Admin Sidebar -->
+<div class="sidebar" style="position: fixed; left: 0; top: 0; height: 100%; width: 280px; background: linear-gradient(180deg, #1a331e 0%, #2c5f2d 100%); color: white; z-index: 100; box-shadow: 2px 0 10px rgba(0,0,0,0.1);">
+    <div style="padding: 25px 20px; border-bottom: 1px solid rgba(255,255,255,0.2); text-align: center;">
+        <i class="fa-solid fa-leaf text-3xl" style="color: #bfa15f;"></i>
+        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-top: 10px; color: white;">Pooja Admin</h2>
+        <p class="text-xs text-gray-300 mt-1">Admin</p>
+    </div>
+    <div style="padding: 20px 0;">
+        <div class="nav-item" data-page="dashboard" onclick="goToPage('dashboard')" style="padding: 12px 25px; margin: 5px 10px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; transition: all 0.3s;">
+            <i class="fa-solid fa-chart-line" style="width: 24px; font-size: 1.2rem;"></i> <span>Dashboard</span>
+        </div>
+        <div class="nav-item" data-page="gallery" onclick="goToPage('gallery')" style="padding: 12px 25px; margin: 5px 10px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; transition: all 0.3s;">
+            <i class="fa-solid fa-images" style="width: 24px; font-size: 1.2rem;"></i> <span>Gallery Manager</span>
+        </div>
+        <div class="nav-item active" data-page="customer_request" onclick="goToPage('customer_request')" style="padding: 12px 25px; margin: 5px 10px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; transition: all 0.3s; background: #bfa15f; color: #1a331e;">
+            <i class="fa-solid fa-clipboard-list" style="width: 24px; font-size: 1.2rem;"></i> <span>Member Requests</span>
+        </div>
+        <div class="nav-item" data-page="users" onclick="goToPage('users')" style="padding: 12px 25px; margin: 5px 10px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; transition: all 0.3s;">
+            <i class="fa-solid fa-users" style="width: 24px; font-size: 1.2rem;"></i> <span>User Approval</span>
+        </div>
+        <div class="nav-item" data-page="enquiries" onclick="goToPage('enquiries')" style="padding: 12px 25px; margin: 5px 10px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; transition: all 0.3s;">
+            <i class="fa-solid fa-headset" style="width: 24px; font-size: 1.2rem;"></i> <span>General Enquiries</span>
+        </div>
+        <div class="nav-item" data-page="appointments" onclick="goToPage('appointments')" style="padding: 12px 25px; margin: 5px 10px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; transition: all 0.3s;">
+            <i class="fa-solid fa-calendar-check" style="width: 24px; font-size: 1.2rem;"></i> <span>Appointments</span>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content Wrapper -->
+<div style="margin-left: 280px; min-height: 100vh; background: #f3f4f6;">
+    <!-- Top Bar -->
+    <div style="background: white; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 10;">
+        <div style="font-size: 1.5rem; font-weight: 700; color: #1a331e;">Customer Requests</div>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <span style="background: #e5e7eb; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem;"><i class="fa-regular fa-user"></i> <span id="topAdminUsername">admin</span></span>
+            <button onclick="goHome()" style="background: #6b7280; color: white; padding: 8px 20px; border-radius: 10px; border: none; cursor: pointer; font-weight: 500;"><i class="fa-solid fa-home"></i> Back to Home</button>
+            <button onclick="logout()" style="background: #dc2626; color: white; padding: 8px 20px; border-radius: 10px; border: none; cursor: pointer; font-weight: 500;"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
+        </div>
+    </div>
+
+    <!-- Page Content -->
+    <div style="padding: 20px;">
+
+    <div class="max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">Customer Requests</h1>
+                <p class="text-gray-500 text-sm mt-1">Manage all service requests from customers</p>
+            </div>
+            <div class="flex gap-3">
+                <input type="text" class="search-box" id="searchInput" placeholder="Search requests...">
+                <select class="filter-select" id="statusFilter">
+                    <option value="all">All Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="confirmed">Confirmed</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                    <option value="in_review">In Review</option>
+                    <option value="approved">Approved</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="scheduled">Scheduled</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="flex flex-wrap gap-3 mb-6">
+            <button class="tab-btn active" data-tab="astrology"><i class="fa-solid fa-star-and-crescent"></i> Astrology Services</button>
+            <button class="tab-btn" data-tab="wedding"><i class="fa-solid fa-ring"></i> Wedding Events</button>
+            <button class="tab-btn" data-tab="matrimony"><i class="fa-solid fa-heart"></i> Matrimony</button>
+            <button class="tab-btn" data-tab="temple"><i class="fa-solid fa-place-of-worship"></i> Temple Services</button>
+            <button class="tab-btn" data-tab="construction"><i class="fa-solid fa-building"></i> Constructions</button>
+        </div>
+
+        <!-- ASTROLOGY TAB -->
+        <div id="astrology" class="tab-content active">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold text-gray-800"><i class="fa-solid fa-star-and-crescent text-green-700 mr-2"></i>Astrology Service Requests</h2>
+                <span class="text-sm text-gray-500" id="astrology-count">Loading...</span>
+            </div>
+
+            <div class="flex gap-2 mb-4">
+                <button class="astro-subtab active" data-astro-subtab="horoscope"><i class="fa-solid fa-file-pdf mr-1"></i> Horoscope Matching</button>
+                <button class="astro-subtab" data-astro-subtab="consultation"><i class="fa-solid fa-user-astronomer mr-1"></i> Astro Consultations</button>
+            </div>
+
+            <div id="astro-horoscope-list"><div class="loading"><i class="fas fa-spinner fa-spin text-2xl text-green-600"></i><p class="mt-2">Loading horoscope requests...</p></div></div>
+            <div class="pagination" id="astro-horoscope-pagination"></div>
+
+            <div id="astro-consultation-list" style="display:none;"><div class="loading"><i class="fas fa-spinner fa-spin text-2xl text-green-600"></i><p class="mt-2">Loading consultation requests...</p></div></div>
+            <div class="pagination" id="astro-consultation-pagination"></div>
+        </div>
+
+        <div id="wedding" class="tab-content"><div class="flex justify-between items-center mb-4"><h2 class="text-lg font-bold text-gray-800"><i class="fa-solid fa-ring text-green-700 mr-2"></i>Wedding Event Requests</h2><span class="text-sm text-gray-500" id="wedding-count">Loading...</span></div><div id="wedding-list"><div class="loading"><i class="fas fa-spinner fa-spin text-2xl text-green-600"></i><p class="mt-2">Loading wedding events...</p></div></div><div class="pagination" id="wedding-pagination"></div></div>
+        <div id="matrimony" class="tab-content"><div class="flex justify-between items-center mb-4"><h2 class="text-lg font-bold text-gray-800"><i class="fa-solid fa-heart text-pink-600 mr-2"></i>Matrimony Profiles</h2><span class="text-sm text-gray-500" id="matrimony-count">Loading...</span></div><div id="matrimony-list"><div class="loading"><i class="fas fa-spinner fa-spin text-2xl text-green-600"></i><p class="mt-2">Loading matrimony profiles...</p></div></div><div class="pagination" id="matrimony-pagination"></div></div>
+        <div id="temple" class="tab-content"><div class="flex justify-between items-center mb-4"><h2 class="text-lg font-bold text-gray-800"><i class="fa-solid fa-place-of-worship text-green-700 mr-2"></i>Temple Seva Bookings</h2><span class="text-sm text-gray-500" id="temple-count">Loading...</span></div><div id="temple-list"><div class="loading"><i class="fas fa-spinner fa-spin text-2xl text-green-600"></i><p class="mt-2">Loading temple seva bookings...</p></div></div><div class="pagination" id="temple-pagination"></div></div>
+        <div id="construction" class="tab-content"><div class="flex justify-between items-center mb-4"><h2 class="text-lg font-bold text-gray-800"><i class="fa-solid fa-building text-green-700 mr-2"></i>Construction Projects</h2><span class="text-sm text-gray-500" id="construction-count">Loading...</span></div><div id="construction-list"><div class="loading"><i class="fas fa-spinner fa-spin text-2xl text-green-600"></i><p class="mt-2">Loading construction projects...</p></div></div><div class="pagination" id="construction-pagination"></div></div>
+    </div>
+
+    <div class="modal-overlay" id="detailsModal">
+        <div class="modal-content relative">
+            <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-times"></i></button>
+            <h2 class="text-xl font-bold mb-4 text-gray-800" id="modalTitle"><i class="fa-solid fa-eye text-green-700 mr-2"></i>Request Details</h2>
+            <div id="modalBody"></div>
+            <div class="flex gap-3 mt-6 justify-end" id="modalActions">
+                <button class="action-btn btn-view" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+        const token = localStorage.getItem('adminToken');
+        let currentTab = 'astrology';
+        let currentAstroSubtab = 'horoscope';
+        let currentItem = null;
+        let currentType = null;
+
+        let horoscopeRequests = [], horoscopePagination = { page: 1, limit: 10, total: 0, totalPages: 0 };
+        let consultationRequests = [], consultationPagination = { page: 1, limit: 10, total: 0, totalPages: 0 };
+        let weddingEvents = [], weddingPagination = { page: 1, limit: 10, total: 0, totalPages: 0 };
+        let matrimonyProfiles = [], matrimonyPagination = { page: 1, limit: 10, total: 0, totalPages: 0 };
+        let templeBookings = [], templePagination = { page: 1, limit: 10, total: 0, totalPages: 0 };
+        let constructionProjects = [], constructionPagination = { page: 1, limit: 10, total: 0, totalPages: 0 };
+
+        // Helper: safe fetch with token
+        async function apiFetch(url, options = {}) {
+            const headers = { 'Authorization': 'Bearer ' + token, ...options.headers };
+            const res = await fetch(url, { ...options, headers });
+            if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+            return res.json();
+        }
+
+        // ========== HOROSCOPE ==========
+        async function loadHoroscopeRequests(page) {
+            page = page || 1;
+            const container = document.getElementById('astro-horoscope-list');
+            const countEl = document.getElementById('astrology-count');
+            container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin text-2xl text-green-600"></i><p class="mt-2">Loading horoscope requests...</p></div>';
+            try {
+                const data = await apiFetch(`${API_URL}/astrology/all-horoscopes?page=${page}&limit=${horoscopePagination.limit}`);
+                if (data.success) {
+                    horoscopeRequests = data.horoscopes || [];
+                    horoscopePagination = data.pagination || { page, limit: 10, total: 0, totalPages: 0 };
+                    renderHoroscopeRequests();
+                } else throw new Error(data.message || 'Failed');
+            } catch (error) {
+                container.innerHTML = `<div class="bg-red-100 text-red-700 p-6 rounded-lg text-center"><i class="fas fa-exclamation-triangle text-3xl mb-3"></i><p class="font-semibold">Error loading horoscope requests</p><p class="text-sm mt-1">${error.message}</p><button onclick="loadHoroscopeRequests(1)" class="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg"><i class="fa-solid fa-refresh mr-1"></i> Retry</button></div>`;
+                countEl.textContent = '0 requests';
+            }
+        }
+
+        function renderHoroscopeRequests() {
+            const container = document.getElementById('astro-horoscope-list');
+            const countEl = document.getElementById('astrology-count');
+            countEl.textContent = `${horoscopePagination.total} horoscope requests`;
+            if (!horoscopeRequests.length) {
+                container.innerHTML = '<div class="empty-state"><i class="fa-solid fa-inbox text-5xl mb-4 text-gray-300"></i><p class="text-lg">No horoscope matching requests found</p></div>';
+                document.getElementById('astro-horoscope-pagination').innerHTML = '';
+                return;
+            }
+            let html = '';
+            for (const req of horoscopeRequests) {
+                const attachments = req.attachmentUrls || [];
+                const attachmentLinks = attachments.length ? attachments.map((url, idx) => `<a href="${url}" target="_blank" class="attachment-link"><i class="fa-solid fa-file-pdf"></i> Attachment ${idx+1}</a>`).join('') : '<span class="text-gray-400 text-sm">No attachments</span>';
+                const newBadge = req.admin_viewed === 0 ? '<span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full ml-2">NEW</span>' : '';
+                const remarks = req.upload_remarks ? `<p class="text-sm text-gray-600 mb-2"><i class="fa-solid fa-comment mr-1"></i> ${req.upload_remarks}</p>` : '';
+                const memberInfo = req.member_id ? `<i class="fa-solid fa-id-card mr-1"></i> Member: ${req.member_id}` : '<i class="fa-solid fa-user mr-1"></i> Guest';
+                html += `<div class="request-card" data-status="${req.status}" data-reqid="${req.req_id}"><div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4"><div class="flex-1"><div class="flex items-center gap-3 mb-2 flex-wrap"><h3 class="font-bold text-lg text-gray-800"><i class="fa-solid fa-file-pdf text-red-500 mr-2"></i>Horoscope Matching</h3><span class="status-badge status-${req.status}">${req.status.toUpperCase()}</span>${newBadge}</div><div class="flex flex-wrap gap-4 text-sm text-gray-600 mb-2"><span><i class="fa-solid fa-hashtag mr-1 text-green-600"></i> <strong>${req.req_id}</strong></span><span><i class="fa-solid fa-paperclip mr-1"></i> ${req.attachment_count || 0} attachment(s)</span></div>${remarks}<div class="mb-2"><span class="text-sm text-gray-700 font-medium">Attachments:</span><div class="mt-1 flex flex-wrap gap-2">${attachmentLinks}</div></div><div class="flex flex-wrap gap-3 mt-2 text-xs text-gray-500"><span>${memberInfo}</span><span><i class="fa-solid fa-clock mr-1"></i> ${new Date(req.created_at).toLocaleDateString('en-IN')}</span></div></div><div class="flex gap-2 flex-wrap"><button class="action-btn btn-view" onclick="viewHoroscopeDetails('${req.req_id}')"><i class="fa-solid fa-eye mr-1"></i> View</button></div></div></div>`;
+            }
+            container.innerHTML = html;
+            renderPagination('astro-horoscope-pagination', horoscopePagination, loadHoroscopeRequests);
+        }
+
+        // ========== CONSULTATION ==========
+        async function loadConsultationRequests(page) {
+            page = page || 1;
+            const container = document.getElementById('astro-consultation-list');
+            const countEl = document.getElementById('astrology-count');
+            container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin text-2xl text-green-600"></i><p class="mt-2">Loading consultation requests...</p></div>';
+            try {
+                const data = await apiFetch(`${API_URL}/astrology/all-consultations?page=${page}&limit=${consultationPagination.limit}`);
+                if (data.success) {
+                    consultationRequests = data.consultations || [];
+                    consultationPagination = data.pagination || { page, limit: 10, total: 0, totalPages: 0 };
+                    renderConsultationRequests();
+                } else throw new Error(data.message);
+            } catch (error) {
+                container.innerHTML = `<div class="bg-red-100 text-red-700 p-6 rounded-lg text-center"><i class="fas fa-exclamation-triangle"></i><p>${error.message}</p><button onclick="loadConsultationRequests(1)" class="mt-2 btn-view">Retry</button></div>`;
+            }
+        }
+
+        function renderConsultationRequests() {
+            const container = document.getElementById('astro-consultation-list');
+            const countEl = document.getElementById('astrology-count');
+            countEl.textContent = `${consultationPagination.total} consultation requests`;
+            if (!consultationRequests.length) {
+                container.innerHTML = '<div class="empty-state"><i class="fa-solid fa-inbox text-5xl mb-4 text-gray-300"></i><p class="text-lg">No consultation requests found</p></div>';
+                document.getElementById('astro-consultation-pagination').innerHTML = '';
+                return;
+            }
+            let html = '';
+            for (const req of consultationRequests) {
+                const genderIcon = req.gender === 'female' ? 'fa-venus' : 'fa-mars';
+                const genderColor = req.gender === 'female' ? 'text-pink-500' : 'text-blue-500';
+                const newBadge = req.admin_viewed === 0 ? '<span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full ml-2">NEW</span>' : '';
+                const notes = req.consultation_notes ? `<p class="text-sm text-gray-500"><i class="fa-solid fa-comment mr-1"></i> ${req.consultation_notes}</p>` : '';
+                const memberInfo = req.member_id ? `Member: ${req.member_id}` : 'Guest';
+                html += `<div class="request-card" data-status="${req.status}"><div class="flex flex-col md:flex-row justify-between items-start gap-4"><div class="flex-1"><div class="flex items-center gap-3 mb-2 flex-wrap"><h3 class="font-bold text-lg"><i class="fa-solid fa-user-astronomer text-purple-600 mr-2"></i>Astro Consultation</h3><span class="status-badge status-${req.status}">${req.status.toUpperCase()}</span>${newBadge}</div><div class="flex flex-wrap gap-4 text-sm text-gray-600 mb-2"><span><i class="fa-solid fa-hashtag mr-1 text-green-600"></i> <strong>${req.req_id}</strong></span><span><i class="fa-solid fa-user mr-1"></i> ${req.subject_name}</span><span class="${genderColor}"><i class="fa-solid ${genderIcon} mr-1"></i> ${req.gender}</span></div><div class="flex flex-wrap gap-4 text-sm text-gray-600">${new Date(req.birth_date).toLocaleDateString()} ${req.birth_time} ${req.time_period}, ${req.birth_place}</div>${notes}<div class="text-xs text-gray-500 mt-2"><i class="fa-solid fa-id-card"></i> ${memberInfo} | ${new Date(req.created_at).toLocaleDateString()}</div></div><div><button class="action-btn btn-view" onclick="viewConsultationDetails('${req.req_id}')">View</button></div></div></div>`;
+            }
+            container.innerHTML = html;
+            renderPagination('astro-consultation-pagination', consultationPagination, loadConsultationRequests);
+        }
+
+        // Generic pagination render
+        function renderPagination(containerId, pagi, loadFn) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            if (pagi.totalPages <= 1) { container.innerHTML = ''; return; }
+            let html = `<button class="page-btn" onclick="window.${loadFn.name}(${pagi.page-1})" ${pagi.page===1?'disabled':''}><i class="fa-solid fa-chevron-left"></i></button>`;
+            for (let i=1; i<=pagi.totalPages; i++) html += `<button class="page-btn ${i===pagi.page?'active':''}" onclick="window.${loadFn.name}(${i})">${i}</button>`;
+            html += `<button class="page-btn" onclick="window.${loadFn.name}(${pagi.page+1})" ${pagi.page===pagi.totalPages?'disabled':''}><i class="fa-solid fa-chevron-right"></i></button>`;
+            container.innerHTML = html;
+        }
+
+        // ===== WEDDING, MATRIMONY, TEMPLE, CONSTRUCTION (shortened but complete logic) =====
+        async function loadWeddingEvents(page) { await loadGeneric('/wedding/all', page, weddingPagination, setWedding, renderWeddingEvents, 'wedding-list', 'wedding-count', 'wedding-pagination', loadWeddingEvents); }
+        async function loadMatrimonyProfiles(page) { await loadGeneric('/matrimony/all', page, matrimonyPagination, setMatrimony, renderMatrimonyProfiles, 'matrimony-list', 'matrimony-count', 'matrimony-pagination', loadMatrimonyProfiles); }
+        async function loadTempleBookings(page) { await loadGeneric('/temple/all', page, templePagination, setTemple, renderTempleBookings, 'temple-list', 'temple-count', 'temple-pagination', loadTempleBookings); }
+        async function loadConstructionProjects(page) { await loadGeneric('/construction/all', page, constructionPagination, setConstruction, renderConstructionProjects, 'construction-list', 'construction-count', 'construction-pagination', loadConstructionProjects); }
+
+        let setWedding = (d) => { weddingEvents = d.events; weddingPagination = d.pagination; };
+        let setMatrimony = (d) => { matrimonyProfiles = d.profiles; matrimonyPagination = d.pagination; };
+        let setTemple = (d) => { templeBookings = d.bookings; templePagination = d.pagination; };
+        let setConstruction = (d) => { constructionProjects = d.projects; constructionPagination = d.pagination; };
+
+        async function loadGeneric(endpoint, page, pagiState, setter, renderFn, listId, countId, pagId, reloadFn) {
+            const container = document.getElementById(listId);
+            const countEl = document.getElementById(countId);
+            if(container) container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i><p>Loading...</p></div>';
+            try {
+                const data = await apiFetch(`${API_URL}${endpoint}?page=${page}&limit=${pagiState.limit}`);
+                if(data.success) { setter(data); renderFn(); if(countEl) countEl.textContent = `${pagiState.total} requests`; renderPagination(pagId, pagiState, reloadFn); }
+                else throw new Error(data.message);
+            } catch(e) { if(container) container.innerHTML = `<div class="empty-state"><i class="fa-solid fa-bug"></i><p>Error: ${e.message}</p></div>`; }
+        }
+
+        function renderWeddingEvents() { genericRenderList(weddingEvents, weddingPagination, 'wedding-list', 'wedding-count', 'wedding-pagination', renderWeddingCard, loadWeddingEvents); }
+        function renderMatrimonyProfiles() { genericRenderList(matrimonyProfiles, matrimonyPagination, 'matrimony-list', 'matrimony-count', 'matrimony-pagination', renderMatrimonyCard, loadMatrimonyProfiles); }
+        function renderTempleBookings() { genericRenderList(templeBookings, templePagination, 'temple-list', 'temple-count', 'temple-pagination', renderTempleCard, loadTempleBookings); }
+        function renderConstructionProjects() { genericRenderList(constructionProjects, constructionPagination, 'construction-list', 'construction-count', 'construction-pagination', renderConstructionCard, loadConstructionProjects); }
+
+        function genericRenderList(items, pagi, listId, countId, pagId, cardRenderer, reloadFn) {
+            const container = document.getElementById(listId);
+            const countEl = document.getElementById(countId);
+            if(countEl) countEl.textContent = `${pagi.total} requests`;
+            if(!items.length) { container.innerHTML = '<div class="empty-state"><i class="fa-solid fa-inbox text-5xl"></i><p>No items found</p></div>'; document.getElementById(pagId).innerHTML = ''; return; }
+            let html = '';
+            for(const item of items) html += cardRenderer(item);
+            container.innerHTML = html;
+            renderPagination(pagId, pagi, reloadFn);
+        }
+
+        function renderWeddingCard(e) { return `<div class="request-card"><div class="flex justify-between"><div><h3 class="font-bold">${e.event_type}</h3><span class="status-badge status-${e.status}">${e.status}</span><p class="text-sm mt-1">${new Date(e.event_date).toLocaleDateString()} | ${e.event_location}</p></div><button class="btn-view action-btn" onclick="viewWeddingDetails('${e.req_id}')">View</button></div></div>`; }
+        function renderMatrimonyCard(p) { return `<div class="matrimony-card"><div class="flex justify-between"><div><h3 class="font-bold">${p.full_name}</h3><span class="status-badge status-${p.status}">${p.status}</span><p class="text-sm">${p.profile_for} | ${p.education}</p></div><button class="btn-view action-btn" onclick="viewMatrimonyDetails('${p.req_id}')">View</button></div></div>`; }
+        function renderTempleCard(b) { return `<div class="request-card"><div class="flex justify-between"><div><h3 class="font-bold">${b.devotee_name}</h3><span class="status-badge status-${b.status}">${b.status}</span><p class="text-sm">${new Date(b.seva_date).toLocaleDateString()} | ${b.phone_number}</p></div><button class="btn-view action-btn" onclick="viewTempleDetails('${b.req_id}')">View</button></div></div>`; }
+        function renderConstructionCard(c) { return `<div class="request-card"><div class="flex justify-between"><div><h3 class="font-bold">${c.project_name}</h3><span class="status-badge status-${c.status}">${c.status}</span><p class="text-sm">${c.city} | Budget: ₹${Number(c.project_budget).toLocaleString()}</p></div><button class="btn-view action-btn" onclick="viewConstructionDetails('${c.req_id}')">View</button></div></div>`; }
+
+        // View details & status updates
+        async function viewHoroscopeDetails(reqId) { await viewGeneric('/astrology/horoscope/', reqId, 'horoscope', renderHoroscopeDetailModal, 'horoscope'); }
+        async function viewConsultationDetails(reqId) { await viewGeneric('/astrology/consultation/', reqId, 'consultation', renderConsultationDetailModal, 'consultation'); }
+        async function viewWeddingDetails(reqId) { await viewGeneric('/wedding/event/', reqId, 'wedding', renderWeddingDetailModal, 'wedding'); }
+        async function viewMatrimonyDetails(reqId) { await viewGeneric('/matrimony/profile/', reqId, 'matrimony', renderMatrimonyDetailModal, 'matrimony'); }
+        async function viewTempleDetails(reqId) { await viewGeneric('/temple/booking/', reqId, 'temple', renderTempleDetailModal, 'temple'); }
+        async function viewConstructionDetails(reqId) { await viewGeneric('/construction/project/', reqId, 'construction', renderConstructionDetailModal, 'construction'); }
+
+        async function viewGeneric(basePath, reqId, type, renderModalFn, entityType) {
+            try {
+                const data = await apiFetch(`${API_URL}${basePath}${reqId}`);
+                if(data.success) {
+                    currentItem = data[type] || data.event || data.profile || data.booking || data.project;
+                    currentType = entityType;
+                    renderModalFn(currentItem);
+                    document.getElementById('detailsModal').classList.add('active');
+                } else throw new Error(data.message);
+            } catch(e) { alert('Error: '+e.message); }
+        }
+
+        // ========== FULL DETAIL MODAL RENDERS ==========
+
+        // --- CONSTRUCTION FULL DETAILS ---
+        function renderConstructionDetailModal(c) {
+            const body = `
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-building mr-2"></i>Project Information</div>
+                    <div class="detail-grid">
+                        <div class="detail-item"><div class="detail-item-label">Request ID</div><div class="detail-item-value">${c.req_id}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Project Name</div><div class="detail-item-value">${c.project_name || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Status</div><div class="detail-item-value"><span class="status-badge status-${c.status}">${c.status?.toUpperCase()}</span></div></div>
+                        <div class="detail-item"><div class="detail-item-label">Budget</div><div class="detail-item-value budget-display">₹${Number(c.project_budget || 0).toLocaleString()}</div></div>
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-map-marker-alt mr-2"></i>Address Details</div>
+                    <div class="detail-grid">
+                        <div class="detail-item full-width"><div class="detail-item-label">Address Line 1</div><div class="detail-item-value">${c.address_line1 || '-'}</div></div>
+                        <div class="detail-item full-width"><div class="detail-item-label">Address Line 2</div><div class="detail-item-value">${c.address_line2 || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">City</div><div class="detail-item-value">${c.city || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">State/Province</div><div class="detail-item-value">${c.state_province || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Postal/ZIP Code</div><div class="detail-item-value">${c.postal_zip || '-'}</div></div>
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-calendar-alt mr-2"></i>Timeline</div>
+                    <div class="detail-grid">
+                        <div class="detail-item"><div class="detail-item-label">Start Date</div><div class="detail-item-value">${c.start_date ? new Date(c.start_date).toLocaleDateString() : '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Completion Date</div><div class="detail-item-value">${c.completion_date ? new Date(c.completion_date).toLocaleDateString() : '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Submitted On</div><div class="detail-item-value">${c.created_at ? new Date(c.created_at).toLocaleString() : '-'}</div></div>
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-user mr-2"></i>Contact Person</div>
+                    <div class="detail-grid">
+                        <div class="detail-item"><div class="detail-item-label">First Name</div><div class="detail-item-value">${c.first_name || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Last Name</div><div class="detail-item-value">${c.last_name || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Phone Number</div><div class="detail-item-value">${c.phone_number || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Member ID</div><div class="detail-item-value">${c.member_id || 'Guest'}</div></div>
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-file-alt mr-2"></i>Project Description</div>
+                    <div class="detail-item full-width"><div class="detail-item-value" style="white-space: pre-wrap; line-height: 1.6;">${c.project_description || 'No description provided.'}</div></div>
+                </div>
+            `;
+            showModalContent(`Construction #${c.req_id}`, body);
+            setModalActions(c.status, updateConstructionStatus, ['pending','in_review','approved','in_progress']);
+        }
+
+        // --- WEDDING FULL DETAILS ---
+        function renderWeddingDetailModal(e) {
+            const body = `
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-ring mr-2"></i>Event Information</div>
+                    <div class="detail-grid">
+                        <div class="detail-item"><div class="detail-item-label">Request ID</div><div class="detail-item-value">${e.req_id}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Event Type</div><div class="detail-item-value">${e.event_type || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Status</div><div class="detail-item-value"><span class="status-badge status-${e.status}">${e.status?.toUpperCase()}</span></div></div>
+                        <div class="detail-item"><div class="detail-item-label">Environment</div><div class="detail-item-value">${e.environment || '-'}</div></div>
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-calendar mr-2"></i>Date & Time</div>
+                    <div class="detail-grid">
+                        <div class="detail-item"><div class="detail-item-label">Event Date</div><div class="detail-item-value">${e.event_date ? new Date(e.event_date).toLocaleDateString() : '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Start Time</div><div class="detail-item-value">${e.start_time || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">End Time</div><div class="detail-item-value">${e.end_time || '-'}</div></div>
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-map-marker-alt mr-2"></i>Venue Details</div>
+                    <div class="detail-grid">
+                        <div class="detail-item full-width"><div class="detail-item-label">Event Location</div><div class="detail-item-value">${e.event_location || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Venue Name</div><div class="detail-item-value">${e.venue_name || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Number of Guests</div><div class="detail-item-value">${e.num_guests || '-'}</div></div>
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-palette mr-2"></i>Theme & Purpose</div>
+                    <div class="detail-grid">
+                        <div class="detail-item"><div class="detail-item-label">Has Theme</div><div class="detail-item-value">${e.has_theme || 'No'}</div></div>
+                        <div class="detail-item full-width"><div class="detail-item-label">Theme Description</div><div class="detail-item-value">${e.theme_description || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Has Purpose</div><div class="detail-item-value">${e.has_purpose || 'No'}</div></div>
+                        <div class="detail-item full-width"><div class="detail-item-label">Purpose Explanation</div><div class="detail-item-value">${e.purpose_explanation || '-'}</div></div>
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-concierge-bell mr-2"></i>Services</div>
+                    <div class="detail-grid">
+                        <div class="detail-item"><div class="detail-item-label">Service Type</div><div class="detail-item-value">${e.service_type || '-'}</div></div>
+                        <div class="detail-item full-width"><div class="detail-item-label">Specific Services</div><div class="detail-item-value">${e.specific_services || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Has Arranged</div><div class="detail-item-value">${e.has_arranged || 'No'}</div></div>
+                        <div class="detail-item full-width"><div class="detail-item-label">Arranged Explanation</div><div class="detail-item-value">${e.arranged_explanation || '-'}</div></div>
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-money-bill mr-2"></i>Budget & Notes</div>
+                    <div class="detail-grid">
+                        <div class="detail-item"><div class="detail-item-label">Estimated Budget</div><div class="detail-item-value budget-display">₹${Number(e.estimated_budget || 0).toLocaleString()}</div></div>
+                        <div class="detail-item full-width"><div class="detail-item-label">Other Details</div><div class="detail-item-value">${e.other_details || '-'}</div></div>
+                        <div class="detail-item full-width"><div class="detail-item-label">Discussion Points</div><div class="detail-item-value">${e.discussion_points || '-'}</div></div>
+                    </div>
+                </div>
+            `;
+            showModalContent(`Wedding Event #${e.req_id}`, body);
+            setModalActions(e.status, updateWeddingStatus, ['pending','confirmed']);
+        }
+
+        // --- MATRIMONY FULL DETAILS ---
+        function renderMatrimonyDetailModal(p) {
+            const photoHtml = p.photoUrl 
+                ? `<img src="${p.photoUrl}" class="profile-photo" alt="Profile Photo" onerror="this.style.display='none'">` 
+                : `<div class="photo-placeholder"><i class="fa-solid fa-user"></i></div>`;
+            const photoDownloadHtml = p.photoUrl 
+                ? `<button onclick="downloadMatrimonyPhoto('${p.req_id}', '${p.photo_filename || 'photo.jpg'}')" class="horoscope-link" style="background:#fce7f3;color:#be185d;border:none;cursor:pointer;"><i class="fa-solid fa-download"></i> Download Photo</button>` 
+                : '';
+            const horoHtml = p.horoscopeUrl 
+                ? `<a href="${p.horoscopeUrl}" target="_blank" class="horoscope-link"><i class="fa-solid fa-file-pdf"></i> View Horoscope</a>` 
+                : '<span class="text-gray-400 text-sm">No horoscope uploaded</span>';
+            
+            const body = `
+                <div class="text-center mb-4">
+                    ${photoHtml}
+                    <h3 class="text-xl font-bold mt-3 text-gray-800">${p.full_name || 'Unknown'}</h3>
+                    <span class="status-badge status-${p.status} mt-2">${p.status?.toUpperCase()}</span>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-id-card mr-2"></i>Basic Information</div>
+                    <div class="detail-grid">
+                        <div class="detail-item"><div class="detail-item-label">Request ID</div><div class="detail-item-value">${p.req_id}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Profile For</div><div class="detail-item-value">${p.profile_for || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Date of Birth</div><div class="detail-item-value">${p.dob ? new Date(p.dob).toLocaleDateString() : '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Marital Status</div><div class="detail-item-value">${p.marital_status || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Height</div><div class="detail-item-value">${p.height || '-'}</div></div>
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-graduation-cap mr-2"></i>Education & Career</div>
+                    <div class="detail-grid">
+                        <div class="detail-item"><div class="detail-item-label">Education</div><div class="detail-item-value">${p.education || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Profession</div><div class="detail-item-value">${p.profession || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Income</div><div class="detail-item-value">${p.income || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Work Location</div><div class="detail-item-value">${p.work_location || '-'}</div></div>
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-star mr-2"></i>Religious & Astrological</div>
+                    <div class="detail-grid">
+                        <div class="detail-item"><div class="detail-item-label">Religion</div><div class="detail-item-value">${p.religion || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Caste</div><div class="detail-item-value">${p.caste || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Star/Nakshatram</div><div class="detail-item-value">${p.star || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Rasi</div><div class="detail-item-value">${p.rasi || '-'}</div></div>
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-users mr-2"></i>Family Details</div>
+                    <div class="detail-item full-width"><div class="detail-item-value" style="white-space: pre-wrap; line-height: 1.6;">${p.family_details || 'No family details provided.'}</div></div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-address-book mr-2"></i>Contact Information</div>
+                    <div class="detail-grid">
+                        <div class="detail-item"><div class="detail-item-label">Phone</div><div class="detail-item-value">${p.contact_phone || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Email</div><div class="detail-item-value">${p.contact_email || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Member ID</div><div class="detail-item-value">${p.member_id || 'Guest'}</div></div>
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-heart mr-2"></i>Partner Preferences</div>
+                    <div class="detail-item full-width"><div class="detail-item-value" style="white-space: pre-wrap; line-height: 1.6;">${p.partner_preferences || 'No preferences specified.'}</div></div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-file mr-2"></i>Documents</div>
+                    <div class="flex gap-3 flex-wrap">${photoDownloadHtml} ${horoHtml}</div>
+                </div>
+            `;
+            showModalContent(`Matrimony Profile #${p.req_id}`, body);
+            setModalActions(p.status, updateMatrimonyStatus, ['pending','active','inactive']);
+        }
+
+        // --- TEMPLE FULL DETAILS ---
+        function renderTempleDetailModal(b) {
+            const sevas = b.sevasArray?.length ? b.sevasArray.map(s => `<span class="seva-tag">${s}</span>`).join('') : (b.sevas ? b.sevas.split(',').map(s => `<span class="seva-tag">${s.trim()}</span>`).join('') : '<span class="text-gray-400">No sevas selected</span>');
+            
+            const body = `
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-place-of-worship mr-2"></i>Booking Information</div>
+                    <div class="detail-grid">
+                        <div class="detail-item"><div class="detail-item-label">Request ID</div><div class="detail-item-value">${b.req_id}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Status</div><div class="detail-item-value"><span class="status-badge status-${b.status}">${b.status?.toUpperCase()}</span></div></div>
+                        <div class="detail-item"><div class="detail-item-label">Seva Date</div><div class="detail-item-value">${b.seva_date ? new Date(b.seva_date).toLocaleDateString() : '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Submitted On</div><div class="detail-item-value">${b.created_at ? new Date(b.created_at).toLocaleString() : '-'}</div></div>
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-user mr-2"></i>Devotee Details</div>
+                    <div class="detail-grid">
+                        <div class="detail-item"><div class="detail-item-label">Devotee Name</div><div class="detail-item-value">${b.devotee_name || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Phone Number</div><div class="detail-item-value">${b.phone_number || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Gothram</div><div class="detail-item-value">${b.gothram || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Nakshatram</div><div class="detail-item-value">${b.nakshatram || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Rasi</div><div class="detail-item-value">${b.rasi || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Member ID</div><div class="detail-item-value">${b.member_id || 'Guest'}</div></div>
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-hands-praying mr-2"></i>Selected Sevas</div>
+                    <div class="flex flex-wrap gap-2">${sevas}</div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-comment mr-2"></i>Special Notes</div>
+                    <div class="detail-item full-width"><div class="detail-item-value" style="white-space: pre-wrap; line-height: 1.6;">${b.special_notes || 'No special notes.'}</div></div>
+                </div>
+            `;
+            showModalContent(`Temple Seva #${b.req_id}`, body);
+            setModalActions(b.status, updateTempleStatus, ['pending','confirmed']);
+        }
+
+        // --- ASTROLOGY HOROSCOPE FULL DETAILS ---
+        function renderHoroscopeDetailModal(req) {
+            const attachments = req.attachmentUrls?.length ? req.attachmentUrls.map((url, idx) => `<a href="${url}" target="_blank" class="attachment-link"><i class="fa-solid fa-file-pdf"></i> Attachment ${idx+1}</a>`).join('') : '<span class="text-gray-400">No attachments</span>';
+            
+            const body = `
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-file-pdf mr-2"></i>Horoscope Matching Request</div>
+                    <div class="detail-grid">
+                        <div class="detail-item"><div class="detail-item-label">Request ID</div><div class="detail-item-value">${req.req_id}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Status</div><div class="detail-item-value"><span class="status-badge status-${req.status}">${req.status?.toUpperCase()}</span></div></div>
+                        <div class="detail-item"><div class="detail-item-label">Attachment Count</div><div class="detail-item-value">${req.attachment_count || 0} files</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Member ID</div><div class="detail-item-value">${req.member_id || 'Guest'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Submitted On</div><div class="detail-item-value">${req.created_at ? new Date(req.created_at).toLocaleString() : '-'}</div></div>
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-comment mr-2"></i>Remarks</div>
+                    <div class="detail-item full-width"><div class="detail-item-value" style="white-space: pre-wrap; line-height: 1.6;">${req.upload_remarks || 'No remarks provided.'}</div></div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-paperclip mr-2"></i>Attachments</div>
+                    <div class="flex flex-wrap gap-2">${attachments}</div>
+                </div>
+            `;
+            showModalContent(`Horoscope Matching #${req.req_id}`, body);
+            setModalActions(req.status, updateHoroscopeStatus, ['pending']);
+        }
+
+        // --- ASTROLOGY CONSULTATION FULL DETAILS ---
+        function renderConsultationDetailModal(req) {
+            const body = `
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-user-astronomer mr-2"></i>Consultation Request</div>
+                    <div class="detail-grid">
+                        <div class="detail-item"><div class="detail-item-label">Request ID</div><div class="detail-item-value">${req.req_id}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Status</div><div class="detail-item-value"><span class="status-badge status-${req.status}">${req.status?.toUpperCase()}</span></div></div>
+                        <div class="detail-item"><div class="detail-item-label">Subject Name</div><div class="detail-item-value">${req.subject_name || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Gender</div><div class="detail-item-value">${req.gender || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Report Language</div><div class="detail-item-value">${req.report_language || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Member ID</div><div class="detail-item-value">${req.member_id || 'Guest'}</div></div>
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-star mr-2"></i>Birth Details</div>
+                    <div class="detail-grid">
+                        <div class="detail-item"><div class="detail-item-label">Birth Date</div><div class="detail-item-value">${req.birth_date ? new Date(req.birth_date).toLocaleDateString() : '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Birth Time</div><div class="detail-item-value">${req.birth_time || '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Time Period</div><div class="detail-item-value">${req.time_period || '-'}</div></div>
+                        <div class="detail-item full-width"><div class="detail-item-label">Birth Place</div><div class="detail-item-value">${req.birth_place || '-'}</div></div>
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-comment-dots mr-2"></i>Consultation Notes</div>
+                    <div class="detail-item full-width"><div class="detail-item-value" style="white-space: pre-wrap; line-height: 1.6;">${req.consultation_notes || 'No notes provided.'}</div></div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title"><i class="fa-solid fa-clock mr-2"></i>Submission Info</div>
+                    <div class="detail-grid">
+                        <div class="detail-item"><div class="detail-item-label">Submitted On</div><div class="detail-item-value">${req.created_at ? new Date(req.created_at).toLocaleString() : '-'}</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Last Updated</div><div class="detail-item-value">${req.updated_at ? new Date(req.updated_at).toLocaleString() : '-'}</div></div>
+                    </div>
+                </div>
+            `;
+            showModalContent(`Astro Consultation #${req.req_id}`, body);
+            setModalActions(req.status, updateConsultationStatus, ['pending','scheduled']);
+        }
+
+        function showModalContent(title, bodyHtml) {
+            document.getElementById('modalTitle').innerHTML = `<i class="fa-solid fa-eye mr-2"></i>${title}`;
+            document.getElementById('modalBody').innerHTML = bodyHtml;
+        }
+
+        function setModalActions(status, updateFn, allowedStates) {
+            const actionsDiv = document.getElementById('modalActions');
+            if(!allowedStates.includes(status)) {
+                actionsDiv.innerHTML = '<button class="action-btn btn-view" onclick="closeModal()">Close</button>';
+                return;
+            }
+            let btns = '';
+            if(status==='pending') btns = `<button class="action-btn btn-reject" onclick="${updateFn.name}('cancelled')">Cancel</button><button class="action-btn btn-approve" onclick="${updateFn.name}('${updateFn.name.includes('Horoscope')?'in_review':(updateFn.name.includes('Wedding')?'confirmed':(updateFn.name.includes('Temple')?'confirmed':(updateFn.name.includes('Construction')?'in_review':'scheduled')))}')">Proceed</button>`;
+            else if(status==='in_review') btns = `<button class="action-btn btn-reject" onclick="${updateFn.name}('cancelled')">Cancel</button><button class="action-btn btn-approve" onclick="${updateFn.name}('completed')">Complete</button>`;
+            else if(status==='scheduled') btns = `<button class="action-btn btn-reject" onclick="${updateFn.name}('cancelled')">Cancel</button><button class="action-btn btn-approve" onclick="${updateFn.name}('completed')">Complete</button>`;
+            else if(status==='confirmed') btns = `<button class="action-btn btn-reject" onclick="${updateFn.name}('cancelled')">Cancel</button><button class="action-btn btn-approve" onclick="${updateFn.name}('completed')">Complete</button>`;
+            else if(status==='active') btns = `<button class="action-btn btn-reject" onclick="${updateFn.name}('inactive')">Deactivate</button>`;
+            else if(status==='inactive') btns = `<button class="action-btn btn-approve" onclick="${updateFn.name}('active')">Activate</button>`;
+            else if(status==='approved') btns = `<button class="action-btn btn-approve" onclick="${updateFn.name}('in_progress')">Start</button>`;
+            else if(status==='in_progress') btns = `<button class="action-btn btn-approve" onclick="${updateFn.name}('completed')">Complete</button>`;
+            else btns = `<button class="action-btn btn-view" onclick="closeModal()">Close</button>`;
+            actionsDiv.innerHTML = btns + '<button class="action-btn btn-view" onclick="closeModal()">Close</button>';
+        }
+
+        async function updateHoroscopeStatus(newStatus) { await updateStatus('/astrology/horoscope/', currentItem.req_id, newStatus, loadHoroscopeRequests); }
+        async function updateConsultationStatus(newStatus) { await updateStatus('/astrology/consultation/', currentItem.req_id, newStatus, loadConsultationRequests); }
+        async function updateWeddingStatus(newStatus) { await updateStatus('/wedding/event/', currentItem.req_id, newStatus, loadWeddingEvents); }
+        async function updateMatrimonyStatus(newStatus) { await updateStatus('/matrimony/profile/', currentItem.req_id, newStatus, loadMatrimonyProfiles); }
+        async function updateTempleStatus(newStatus) { await updateStatus('/temple/booking/', currentItem.req_id, newStatus, loadTempleBookings); }
+        async function updateConstructionStatus(newStatus) { await updateStatus('/construction/project/', currentItem.req_id, newStatus, loadConstructionProjects); }
+        
+        async function updateStatus(basePath, id, status, reloadFn) {
+    try {
+        // Use /status endpoint for all services (cleaner, no null errors)
+        const url = `${API_URL}${basePath}${id}/status`;
+        
+        const data = await apiFetch(url, {
+            method: 'PATCH',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({status})
+        });
+        
+        if(data.success) {
+            alert('Updated successfully');
+            closeModal();
+            reloadFn(1);
+        } else throw new Error(data.message);
+    } catch(e) { 
+        alert('Error: '+e.message); 
+    }
+}
+
+        function closeModal() { document.getElementById('detailsModal').classList.remove('active'); currentItem=null; }
+
+        function switchTab(tab) {
+            currentTab=tab;
+            document.querySelectorAll('.tab-btn').forEach(btn=>btn.classList.remove('active'));
+            document.querySelector(`.tab-btn[data-tab="${tab}"]`).classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+            document.getElementById(tab).classList.add('active');
+            if(tab==='astrology') currentAstroSubtab==='horoscope'?loadHoroscopeRequests(1):loadConsultationRequests(1);
+            else if(tab==='wedding') loadWeddingEvents(1);
+            else if(tab==='matrimony') loadMatrimonyProfiles(1);
+            else if(tab==='temple') loadTempleBookings(1);
+            else if(tab==='construction') loadConstructionProjects(1);
+        }
+        
+        function switchAstroSubtab(subtab) {
+            currentAstroSubtab=subtab;
+            document.querySelectorAll('.astro-subtab').forEach(btn=>btn.classList.remove('active'));
+            document.querySelector(`.astro-subtab[data-astro-subtab="${subtab}"]`).classList.add('active');
+            document.getElementById('astro-horoscope-list').style.display=subtab==='horoscope'?'block':'none';
+            document.getElementById('astro-horoscope-pagination').style.display=subtab==='horoscope'?'flex':'none';
+            document.getElementById('astro-consultation-list').style.display=subtab==='consultation'?'block':'none';
+            document.getElementById('astro-consultation-pagination').style.display=subtab==='consultation'?'flex':'none';
+            if(subtab==='horoscope') loadHoroscopeRequests(1);
+            else loadConsultationRequests(1);
+        }
+        
+        function filterRequests(){
+            const term=document.getElementById('searchInput').value.toLowerCase();
+            const status=document.getElementById('statusFilter').value;
+            document.querySelectorAll('.request-card, .matrimony-card').forEach(card=>{
+                const match=card.textContent.toLowerCase().includes(term) && (status==='all'||card.dataset.status===status);
+                card.style.display=match?'block':'none';
+            });
+        }
+
+        document.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>switchTab(btn.dataset.tab)));
+        document.querySelectorAll('.astro-subtab').forEach(btn=>btn.addEventListener('click',()=>switchAstroSubtab(btn.dataset.astroSubtab)));
+        document.getElementById('searchInput').addEventListener('keyup',filterRequests);
+        document.getElementById('statusFilter').addEventListener('change',filterRequests);
+        document.getElementById('detailsModal').addEventListener('click',e=>{if(e.target===document.getElementById('detailsModal')) closeModal();});
+        document.addEventListener('DOMContentLoaded',()=>loadHoroscopeRequests(1));
+        setInterval(()=>{
+            if(currentTab==='astrology') currentAstroSubtab==='horoscope'?loadHoroscopeRequests(horoscopePagination.page):loadConsultationRequests(consultationPagination.page);
+            else if(currentTab==='wedding') loadWeddingEvents(weddingPagination.page);
+            else if(currentTab==='matrimony') loadMatrimonyProfiles(matrimonyPagination.page);
+            else if(currentTab==='temple') loadTempleBookings(templePagination.page);
+            else if(currentTab==='construction') loadConstructionProjects(constructionPagination.page);
+        }, 60000);
+    
+// ========== DOWNLOAD PHOTO WITH TOKEN ==========
+async function downloadMatrimonyPhoto(reqId, filename) {
+    try {
+        const res = await fetch(`${API_URL}/matrimony/profile/${reqId}/photo-download`, {
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+    } catch (e) {
+        alert('Download failed: ' + e.message);
+    }
+}
+
+</script>
+    </div>
+</div>
+    <script>
+        function goToPage(page) {
+            localStorage.setItem('adminCurrentPage', page);
+            window.location.href = page + '.html';
+        }
+        function goHome() {
+            window.location.replace('../index.html');
+        }
+        function logout() {
+            localStorage.removeItem('adminLoggedIn');
+            localStorage.removeItem('adminUsername');
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('adminUser');
+            localStorage.removeItem('adminCurrentPage');
+            window.location.replace('../index.html');
+        }
+        // Check auth
+        (function() {
+            const isLoggedIn = localStorage.getItem('adminLoggedIn');
+            if (!isLoggedIn || isLoggedIn !== 'true') {
+                window.location.replace('../index.html');
+            }
+            const username = localStorage.getItem('adminUsername') || 'Admin';
+            const topAdminUsernameEl = document.getElementById('topAdminUsername');
+            if (topAdminUsernameEl) topAdminUsernameEl.innerText = username;
+        })();
+    </script>
+
+</body>
+</html>

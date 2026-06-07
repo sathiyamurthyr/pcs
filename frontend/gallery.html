@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Gallery | Pooja Catering Service & Wedding Associates</title>
+    <meta name="description" content="Visual journey of catering, astrology, weddings, matrimony, temple services, and constructions – ISO Certified Excellence.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: { 
+                extend: { 
+                    colors: { 
+                        brandGreen: '#2c5f2d', 
+                        brandGold: '#bfa15f', 
+                        brandDark: '#1a331e', 
+                        brandSoft: '#fffaf0' 
+                    }, 
+                    fontFamily: { 
+                        sans: ['Inter', 'sans-serif'], 
+                        serif: ['Playfair Display', 'serif'] 
+                    }
+                } 
+            }
+        }
+    </script>
+    <style>
+        .legacy-hero {
+            background: linear-gradient(135deg, #1a331e 0%, #2c5f2d 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .legacy-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23bfa15f" opacity="0.08"><path d="M12,2C9,7,4,9,4,14c0,4,4,6,8,6s8-2,8-6C20,9,15,7,12,2z"/></svg>');
+            background-repeat: repeat;
+            background-size: 28px;
+            pointer-events: none;
+        }
+        .gallery-card {
+            transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        .gallery-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 35px -12px rgba(0, 0, 0, 0.2);
+        }
+        .image-overlay {
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+        }
+        .stat-badge {
+            backdrop-filter: blur(8px);
+            background: rgba(0,0,0,0.5);
+            border-radius: 40px;
+        }
+        footer {
+            background: #1a331e;
+            border-top: 3px solid #bfa15f;
+        }
+        .footer-tag {
+            transition: all 0.2s;
+        }
+        .footer-tag:hover {
+            background: #bfa15f;
+            color: #1a331e;
+            transform: translateY(-2px);
+        }
+
+        /* Image Rotator Styles */
+        .image-rotator {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border-radius: inherit;
+        }
+
+        .rotator-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1s ease-in-out, transform 6s ease;
+            transform: scale(1);
+        }
+
+        .rotator-img.active {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        .rotator-dots {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 6px;
+            z-index: 20;
+        }
+
+        .rotator-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.4);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .rotator-dot.active {
+            background: #bfa15f;
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        .rotator-counter {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 20;
+            backdrop-filter: blur(4px);
+        }
+
+        .no-images {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            background: linear-gradient(135deg, #f0f7f0, #fffaf0);
+            color: #2c5f2d;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .no-images i {
+            font-size: 40px;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+
+        .no-images p {
+            font-size: 13px;
+            opacity: 0.7;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="bg-gray-50 font-sans antialiased">
+
+
+
+<main>
+    <!-- Hero Section -->
+    <div class="legacy-hero text-white py-16 md:py-20 relative">
+        <div class="container mx-auto px-4 text-center relative z-10 max-w-4xl">
+            <div class="inline-block bg-white/10 backdrop-blur-md rounded-full px-5 py-2 mb-5 border border-brandGold/40">
+                <p class="text-sm font-serif italic tracking-wide text-brandGold">"Food from Heart. Wisdom from Stars. Homes from Earth."</p>
+            </div>
+            <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold mb-4 drop-shadow-lg">Our Gallery</h2>
+            <div class="w-24 h-0.5 bg-brandGold mx-auto my-4 rounded-full"></div>
+            <p class="text-amber-100/95 text-base md:text-lg max-w-2xl mx-auto font-light">30 Years of Trust | ISO Certified Excellence Across Tamil Nadu & Puducherry</p>
+            <div class="mt-8 flex flex-wrap justify-center gap-3">
+                <span class="bg-white/10 px-4 py-1.5 rounded-full text-xs font-semibold"><i class="fa-regular fa-certificate mr-1"></i> ISO 9001-2015</span>
+                <span class="bg-white/10 px-4 py-1.5 rounded-full text-xs font-semibold"><i class="fa-regular fa-calendar-alt mr-1"></i> Since 1995</span>
+                <span class="bg-white/10 px-4 py-1.5 rounded-full text-xs font-semibold"><i class="fa-regular fa-map-location-dot mr-1"></i> Tamil Nadu & Puducherry</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gallery Grid -->
+    <div class="container mx-auto px-4 py-14 max-w-6xl">
+        <!-- Row 1: Catering + Astrology -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+            <!-- Catering Card -->
+            <div class="gallery-card bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100">
+                <div class="relative h-72 overflow-hidden group" id="cateringRotator">
+                    <div class="image-rotator" id="cateringImageContainer">
+                        <div class="no-images">
+                            <i class="fa-solid fa-image"></i>
+                            <p>Loading catering images...</p>
+                        </div>
+                    </div>
+                    <div class="absolute inset-0 image-overlay pointer-events-none"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-5 z-10 pointer-events-none">
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <span class="text-brandGold text-xs font-bold uppercase tracking-wider bg-black/40 px-2 py-0.5 rounded">PREMIUM CATERING SERVICES</span>
+                                <h3 class="text-white font-serif text-xl md:text-2xl font-bold mt-2">Catering Gallery</h3>
+                                <p class="text-amber-100 text-sm italic">"Tradition served fresh daily"</p>
+                            </div>
+                            <div class="stat-badge px-3 py-1.5 text-white text-sm flex items-center gap-1">
+                                <i class="fa-regular fa-thumbs-up"></i> <span>42</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <p class="text-gray-700 font-medium mb-3">Traditional South Indian Feast Setup on Classic Banana Leaf</p>
+                    <div class="flex flex-wrap gap-2 text-xs">
+                        <span class="bg-brandGreen/10 text-brandGreen px-3 py-1 rounded-full"><i class="fa-regular fa-leaf mr-1"></i> Wedding Catering</span>
+                        <span class="bg-brandGold/10 text-brandGold px-3 py-1 rounded-full"><i class="fa-regular fa-cake-candles"></i> Birthday Specials</span>
+                        <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full"><i class="fa-regular fa-building"></i> Corporate Events</span>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-gray-100 flex justify-between text-sm text-gray-500">
+                        <span><i class="fa-regular fa-image"></i> <span id="cateringCount">0</span> Photos</span>
+                        <span><i class="fa-regular fa-clock"></i> Auto-rotates every 10s</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Astrology Card -->
+            <div class="gallery-card bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100">
+                <div class="relative h-72 overflow-hidden group" id="astrologyRotator">
+                    <div class="image-rotator" id="astrologyImageContainer">
+                        <div class="no-images">
+                            <i class="fa-solid fa-image"></i>
+                            <p>Loading astrology images...</p>
+                        </div>
+                    </div>
+                    <div class="absolute inset-0 image-overlay pointer-events-none"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-5 z-10 pointer-events-none">
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <span class="text-brandGold text-xs font-bold uppercase tracking-wider bg-black/40 px-2 py-0.5 rounded">ASTRO WISDOM CHARTING</span>
+                                <h3 class="text-white font-serif text-xl md:text-2xl font-bold mt-2">Astrology Gallery</h3>
+                                <p class="text-amber-100 text-sm italic">"Plan with Stars. Trust in Destiny."</p>
+                            </div>
+                            <div class="stat-badge px-3 py-1.5 text-white text-sm flex items-center gap-1">
+                                <i class="fa-regular fa-thumbs-up"></i> <span>29</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <p class="text-gray-700 font-medium mb-3">Personalized Horoscope (Jadhagam) Casting & Marriage Compatibility</p>
+                    <div class="flex flex-wrap gap-2 text-xs">
+                        <span class="bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full"><i class="fa-regular fa-moon"></i> Jadhagam</span>
+                        <span class="bg-amber-50 text-amber-700 px-3 py-1 rounded-full"><i class="fa-regular fa-heart"></i> Porutham</span>
+                        <span class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full"><i class="fa-regular fa-calendar"></i> Nalla Neram</span>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-gray-100 flex justify-between text-sm text-gray-500">
+                        <span><i class="fa-regular fa-image"></i> <span id="astrologyCount">0</span> Photos</span>
+                        <span><i class="fa-regular fa-clock"></i> Auto-rotates every 10s</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 2: Wedding + Matrimony -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 mt-10">
+            <!-- Wedding Card -->
+            <div class="gallery-card bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+                <div class="relative h-64 overflow-hidden group" id="weddingRotator">
+                    <div class="image-rotator" id="weddingImageContainer">
+                        <div class="no-images">
+                            <i class="fa-solid fa-image"></i>
+                            <p>Loading wedding images...</p>
+                        </div>
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none"></div>
+                    <div class="absolute bottom-4 left-5 right-5 pointer-events-none">
+                        <h4 class="text-white font-bold text-xl">💒 Wedding Events (A to Z)</h4>
+                        <p class="text-amber-100 text-xs">"United in every sweet moment"</p>
+                    </div>
+                </div>
+                <div class="p-4 flex justify-between items-center">
+                    <span class="text-sm text-gray-600"><i class="fa-regular fa-check-circle text-brandGold"></i> Decor · Music · Photography</span>
+                    <span class="text-brandGreen text-sm font-semibold"><i class="fa-regular fa-image"></i> <span id="weddingCount">0</span></span>
+                </div>
+            </div>
+
+            <!-- Matrimony Card -->
+            <div class="gallery-card bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+                <div class="relative h-64 overflow-hidden group" id="matrimonyRotator">
+                    <div class="image-rotator" id="matrimonyImageContainer">
+                        <div class="no-images">
+                            <i class="fa-solid fa-image"></i>
+                            <p>Loading matrimony images...</p>
+                        </div>
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none"></div>
+                    <div class="absolute bottom-4 left-5 right-5 pointer-events-none">
+                        <h4 class="text-white font-bold text-xl">💑 Pooja Matrimony</h4>
+                        <p class="text-amber-100 text-xs">"Where hearts meet and families unite"</p>
+                    </div>
+                </div>
+                <div class="p-4 flex justify-between items-center">
+                    <span class="text-sm text-gray-600"><i class="fa-regular fa-id-card"></i> Horoscope Matching</span>
+                    <span class="text-brandGreen text-sm font-semibold"><i class="fa-regular fa-image"></i> <span id="matrimonyCount">0</span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 3: Temple + Construction -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 mt-10">
+            <!-- Temple Card -->
+            <div class="gallery-card bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+                <div class="relative h-64 overflow-hidden group" id="templeRotator">
+                    <div class="image-rotator" id="templeImageContainer">
+                        <div class="no-images">
+                            <i class="fa-solid fa-image"></i>
+                            <p>Loading temple images...</p>
+                        </div>
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none"></div>
+                    <div class="absolute bottom-4 left-5 right-5 pointer-events-none">
+                        <h4 class="text-white font-bold text-xl">🛕 Temple Sevaigal</h4>
+                        <p class="text-amber-100 text-xs">Homa · Havan · Special Poojas</p>
+                    </div>
+                </div>
+                <div class="p-4 flex justify-between items-center">
+                    <span class="text-sm text-gray-600"><i class="fa-regular fa-om"></i> Ganapathy Homam</span>
+                    <span class="text-brandGreen text-sm font-semibold"><i class="fa-regular fa-image"></i> <span id="templeCount">0</span></span>
+                </div>
+            </div>
+
+            <!-- Construction Card -->
+            <div class="gallery-card bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+                <div class="relative h-64 overflow-hidden group" id="constructionRotator">
+                    <div class="image-rotator" id="constructionImageContainer">
+                        <div class="no-images">
+                            <i class="fa-solid fa-image"></i>
+                            <p>Loading construction images...</p>
+                        </div>
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none"></div>
+                    <div class="absolute bottom-4 left-5 right-5 pointer-events-none">
+                        <h4 class="text-white font-bold text-xl">🏗️ Pooja Constructions</h4>
+                        <p class="text-amber-100 text-xs">Govt Approved · Individual Houses · Flats</p>
+                    </div>
+                </div>
+                <div class="p-4 flex justify-between items-center">
+                    <span class="text-sm text-gray-600"><i class="fa-regular fa-hard-hat"></i> Modular Kitchen · Rooftop</span>
+                    <span class="text-brandGreen text-sm font-semibold"><i class="fa-regular fa-building"></i> <span id="constructionCount">0</span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="text-center mt-16 pt-6 border-t border-amber-200">
+            <div class="inline-flex items-center gap-3 bg-white shadow-sm px-6 py-3 rounded-full">
+                <i class="fa-regular fa-crown text-brandGold text-xl"></i>
+                <span class="text-sm text-gray-700 font-serif">ISO 9001-2015 Certified | Pure Vegetarian | 30+ Years of Excellence</span>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="bg-brandDark text-gray-300 text-sm py-10">
+    <div class="container mx-auto px-4 text-center max-w-5xl">
+        <div class="flex flex-wrap justify-center gap-2 mb-5">
+            <span class="footer-tag bg-white/10 px-3 py-1 rounded-full text-xs transition-all cursor-default">🍛 Catering</span>
+            <span class="footer-tag bg-white/10 px-3 py-1 rounded-full text-xs transition-all cursor-default">🔮 Astrology</span>
+            <span class="footer-tag bg-white/10 px-3 py-1 rounded-full text-xs transition-all cursor-default">💒 Wedding Events</span>
+            <span class="footer-tag bg-white/10 px-3 py-1 rounded-full text-xs transition-all cursor-default">💑 Matrimony</span>
+            <span class="footer-tag bg-white/10 px-3 py-1 rounded-full text-xs transition-all cursor-default">🛕 Temple Service</span>
+            <span class="footer-tag bg-white/10 px-3 py-1 rounded-full text-xs transition-all cursor-default">🏗️ Constructions</span>
+        </div>
+        <div class="text-brandGold font-serif italic text-base mb-3">Your Life, Our Service. | Pure Veg & High Hygienic Taste</div>
+        <p class="text-xs flex items-center justify-center gap-2"><i class="fa-solid fa-location-dot text-brandGold"></i> 📍 228/Appadhurai Chetty St, Padhmavadhi Nagar, Minjur - 601203</p>
+        <p class="text-xs mt-1"><i class="fa-regular fa-envelope text-brandGold"></i> ✉️ poojagopi1973@gmail.com</p>
+        <p class="text-[11px] text-gray-400 mt-3 uppercase tracking-wider">🌿 Serving All Over Tamil Nadu & Puducherry | ISO 9001-2015 Certified | Since 1995</p>
+        <p class="text-[10px] text-gray-500 mt-4">© 2026 Pooja Catering Service & Wedding Associates — All Rights Reserved.</p>
+    </div>
+</footer>
+
+<script>
+    const API_URL = 'http://localhost:3000/api';
+    let rotatorIntervals = {};
+
+    // Category configuration
+    const categories = ['catering', 'astrology', 'wedding', 'matrimony', 'temple', 'construction'];
+
+    // Fetch images from server and display
+    async function fetchAndDisplayImages() {
+        try {
+            const response = await fetch(`${API_URL}/gallery/all`);
+            const data = await response.json();
+            
+            if (data.success && data.images.length > 0) {
+                // Group images by category
+                const imagesByCategory = {};
+                data.images.forEach(img => {
+                    if (!imagesByCategory[img.category]) {
+                        imagesByCategory[img.category] = [];
+                    }
+                    imagesByCategory[img.category].push(img.image_url);
+                });
+                
+                // Initialize each category with its images
+                for (const category of categories) {
+                    const categoryImages = imagesByCategory[category] || [];
+                    initRotator(category, categoryImages);
+                }
+            } else {
+                // No images found - show empty state
+                for (const category of categories) {
+                    initRotator(category, []);
+                }
+            }
+        } catch (error) {
+            console.error('Error fetching images:', error);
+            // Show error state
+            for (const category of categories) {
+                initRotator(category, []);
+            }
+        }
+    }
+
+    function initRotator(category, images) {
+        const container = document.getElementById(`${category}ImageContainer`);
+        const countSpan = document.getElementById(`${category}Count`);
+        
+        if (!container) return;
+        
+        // Update count
+        if (countSpan) countSpan.textContent = images.length;
+        
+        // Clear container
+        container.innerHTML = '';
+        
+        if (images.length === 0) {
+            container.innerHTML = `
+                <div class="no-images">
+                    <i class="fa-solid fa-image"></i>
+                    <p>No ${category} images available</p>
+                </div>
+            `;
+            return;
+        }
+        
+        // Create image elements
+        images.forEach((imgUrl, index) => {
+            const img = document.createElement('img');
+            img.className = `rotator-img ${index === 0 ? 'active' : ''}`;
+            img.src = imgUrl;
+            img.alt = `${category} gallery image`;
+            img.onerror = function() {
+                this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23f0f7f0" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%232c5f2d" font-family="sans-serif" font-size="16"%3EImage not found%3C/text%3E%3C/svg%3E';
+            };
+            container.appendChild(img);
+        });
+        
+        // Add dots for navigation if more than 1 image
+        if (images.length > 1) {
+            const dotsContainer = document.createElement('div');
+            dotsContainer.className = 'rotator-dots';
+            images.forEach((_, index) => {
+                const dot = document.createElement('div');
+                dot.className = `rotator-dot ${index === 0 ? 'active' : ''}`;
+                dot.onclick = () => goToSlide(category, index);
+                dotsContainer.appendChild(dot);
+            });
+            container.appendChild(dotsContainer);
+            
+            // Add counter
+            const counter = document.createElement('div');
+            counter.className = 'rotator-counter';
+            counter.textContent = `1 / ${images.length}`;
+            container.appendChild(counter);
+            
+            // Store current index on container
+            container.dataset.currentIndex = '0';
+            container.dataset.totalImages = images.length;
+            
+            // Start auto rotation (10 seconds)
+            if (rotatorIntervals[category]) {
+                clearInterval(rotatorIntervals[category]);
+            }
+            rotatorIntervals[category] = setInterval(() => {
+                nextSlide(category);
+            }, 10000);
+        }
+    }
+    
+    function nextSlide(category) {
+        const container = document.getElementById(`${category}ImageContainer`);
+        if (!container) return;
+        
+        const images = container.querySelectorAll('.rotator-img');
+        const dots = container.querySelectorAll('.rotator-dot');
+        const counter = container.querySelector('.rotator-counter');
+        
+        if (images.length <= 1) return;
+        
+        let currentIndex = 0;
+        images.forEach((img, i) => {
+            if (img.classList.contains('active')) currentIndex = i;
+        });
+        
+        const nextIndex = (currentIndex + 1) % images.length;
+        
+        images[currentIndex].classList.remove('active');
+        images[nextIndex].classList.add('active');
+        
+        if (dots.length > 0) {
+            dots[currentIndex].classList.remove('active');
+            dots[nextIndex].classList.add('active');
+        }
+        
+        if (counter) {
+            counter.textContent = `${nextIndex + 1} / ${images.length}`;
+        }
+        
+        container.dataset.currentIndex = nextIndex;
+    }
+    
+    function goToSlide(category, index) {
+        const container = document.getElementById(`${category}ImageContainer`);
+        if (!container) return;
+        
+        const images = container.querySelectorAll('.rotator-img');
+        const dots = container.querySelectorAll('.rotator-dot');
+        const counter = container.querySelector('.rotator-counter');
+        
+        if (index >= images.length) return;
+        
+        // Reset interval
+        if (rotatorIntervals[category]) {
+            clearInterval(rotatorIntervals[category]);
+            rotatorIntervals[category] = setInterval(() => {
+                nextSlide(category);
+            }, 10000);
+        }
+        
+        images.forEach((img, i) => {
+            img.classList.toggle('active', i === index);
+        });
+        
+        if (dots.length > 0) {
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        }
+        
+        if (counter) {
+            counter.textContent = `${index + 1} / ${images.length}`;
+        }
+        
+        container.dataset.currentIndex = index;
+    }
+    
+    // Pause rotation on hover
+    document.querySelectorAll('.gallery-card').forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            for (const category of categories) {
+                if (rotatorIntervals[category]) {
+                    clearInterval(rotatorIntervals[category]);
+                    delete rotatorIntervals[category];
+                }
+            }
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            for (const category of categories) {
+                const container = document.getElementById(`${category}ImageContainer`);
+                if (container && container.querySelectorAll('.rotator-img').length > 1 && !rotatorIntervals[category]) {
+                    rotatorIntervals[category] = setInterval(() => {
+                        nextSlide(category);
+                    }, 10000);
+                }
+            }
+        });
+    });
+    
+    // Initialize gallery on page load
+    fetchAndDisplayImages();
+</script>
+</body>
+</html>

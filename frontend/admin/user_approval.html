@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Approval - Admin Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: #f3f4f6; font-family: 'Inter', sans-serif; }
+        .user-card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 15px; border-left: 4px solid #bfa15f; transition: all 0.3s; }
+        .user-card:hover { transform: translateX(5px); box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+        .approve-btn { background: #10b981; color: white; padding: 6px 15px; border-radius: 8px; border: none; cursor: pointer; transition: all 0.2s; }
+        .approve-btn:hover { background: #059669; transform: scale(1.02); }
+        .reject-btn { background: #ef4444; color: white; padding: 6px 15px; border-radius: 8px; border: none; cursor: pointer; margin-left: 10px; transition: all 0.2s; }
+        .reject-btn:hover { background: #dc2626; transform: scale(1.02); }
+        .refresh-btn { background: #3b82f6; color: white; padding: 8px 20px; border-radius: 8px; border: none; cursor: pointer; transition: all 0.2s; }
+        .refresh-btn:hover { background: #2563eb; }
+        .loading { text-align: center; padding: 40px; color: #6b7280; }
+        .error-toast { position: fixed; bottom: 20px; right: 20px; background: #ef4444; color: white; padding: 12px 20px; border-radius: 8px; z-index: 1000; animation: slideIn 0.3s ease; }
+        .success-toast { position: fixed; bottom: 20px; right: 20px; background: #10b981; color: white; padding: 12px 20px; border-radius: 8px; z-index: 1000; animation: slideIn 0.3s ease; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    </style>
+</head>
+<body class="p-6">
+    <div class="max-w-6xl mx-auto">
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800"><i class="fa-solid fa-user-check text-green-600 mr-2"></i>User Approval Dashboard</h1>
+                <p class="text-gray-500 text-sm mt-1">Approve or reject new member registrations</p>
+            </div>
+            <button onclick="loadUsers()" class="refresh-btn"><i class="fa-solid fa-rotate-right mr-2"></i>Refresh</button>
+        </div>
+        <div id="userContent">
+            <div class="loading"><i class="fas fa-spinner fa-spin text-3xl text-green-600"></i><p class="mt-2">Loading users...</p></div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+        
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = type === 'success' ? 'success-toast' : 'error-toast';
+            toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation'} mr-2"></i>${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+        
+        async function loadUsers() {
+            const container = document.getElementById('userContent');
+            container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin text-3xl text-green-600"></i><p class="mt-2">Loading users...</p></div>';
+            
+            try {
+                // Fetch pending members from backend
+                const pendingRes = await fetch(`${API_URL}/members/pending`);
+                const pendingData = await pendingRes.json();
+                
+                // Fetch approved members from backend
+                const approvedRes = await fetch(`${API_URL}/members/approved`);
+                const approvedData = await approvedRes.json();
+                
+                const pendingMembers = pendingData.success ? pendingData.members : [];
+                const approvedMembers = approvedData.success ? approvedData.members : [];
+                
+                const html = `
+                    <div class="bg-white rounded-2xl p-6 shadow-md mb-6">
+                        <h3 class="font-bold text-xl mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-hourglass-half text-amber-500"></i> 
+                            Pending Registrations (${pendingMembers.length})
+                        </h3>
+                        ${pendingMembers.length === 0 ? 
+                            '<div class="text-center py-8 text-gray-400"><i class="fa-solid fa-inbox text-4xl mb-2"></i><p>No pending registrations</p></div>' : 
+                            pendingMembers.map(member => `
+                                <div class="user-card" data-id="${member.id}">
+                                    <div class="flex justify-between items-start flex-wrap gap-3">
+                                        <div class="flex-1">
+                                            <p class="font-bold text-lg text-gray-800">${escapeHtml(member.name)}</p>
+                                            <p class="text-sm text-gray-600 mt-1"><i class="fa-solid fa-phone"></i> ${member.mobile}</p>
+                                            ${member.email ? `<p class="text-sm text-gray-600"><i class="fa-regular fa-envelope"></i> ${escapeHtml(member.email)}</p>` : ''}
+                                            ${member.address ? `<p class="text-sm text-gray-600"><i class="fa-solid fa-location-dot"></i> ${escapeHtml(member.address)}</p>` : ''}
+                                            <p class="text-xs text-gray-400 mt-2"><i class="fa-regular fa-clock"></i> Registered: ${new Date(member.created_at).toLocaleString()}</p>
+                                        </div>
+                                        <div class="flex gap-2">
+                                            <button onclick="approveUser(${member.id})" class="approve-btn"><i class="fa-regular fa-check mr-1"></i> Approve</button>
+                                            <button onclick="rejectUser(${member.id})" class="reject-btn"><i class="fa-regular fa-times mr-1"></i> Reject</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')
+                        }
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-6 shadow-md">
+                        <h3 class="font-bold text-xl mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-user-check text-green-600"></i> 
+                            Approved Members (${approvedMembers.length})
+                        </h3>
+                        ${approvedMembers.length === 0 ? 
+                            '<div class="text-center py-8 text-gray-400"><i class="fa-solid fa-users-slash text-4xl mb-2"></i><p>No approved members yet</p></div>' : 
+                            `<div class="overflow-x-auto">
+                                <table class="w-full">
+                                    <thead class="bg-gray-50 border-b">
+                                        <tr>
+                                            <th class="p-3 text-left text-sm font-semibold text-gray-600">Name</th>
+                                            <th class="p-3 text-left text-sm font-semibold text-gray-600">Mobile</th>
+                                            <th class="p-3 text-left text-sm font-semibold text-gray-600">Member ID</th>
+                                            <th class="p-3 text-left text-sm font-semibold text-gray-600">Registered On</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${approvedMembers.map(member => `
+                                            <tr class="border-b hover:bg-gray-50">
+                                                <td class="p-3 text-gray-800">${escapeHtml(member.name)}</td>
+                                                <td class="p-3 text-gray-600">${member.mobile}</td>
+                                                <td class="p-3"><span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-semibold">${member.member_id || 'N/A'}</span></td>
+                                                <td class="p-3 text-sm text-gray-500">${new Date(member.created_at).toLocaleDateString()}</td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>`
+                        }
+                    </div>
+                `;
+                container.innerHTML = html;
+            } catch (error) {
+                console.error('Error loading users:', error);
+                container.innerHTML = `
+                    <div class="bg-red-50 text-red-700 p-6 rounded-lg text-center">
+                        <i class="fa-solid fa-circle-exclamation text-3xl mb-3"></i>
+                        <p class="font-semibold">Failed to load users</p>
+                        <p class="text-sm mt-1">${error.message}</p>
+                        <button onclick="loadUsers()" class="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                            <i class="fa-solid fa-refresh mr-1"></i> Retry
+                        </button>
+                    </div>
+                `;
+            }
+        }
+        
+        async function approveUser(memberId) {
+            if (!confirm('Are you sure you want to approve this member?')) return;
+            
+            try {
+                const response = await fetch(`${API_URL}/members/approve/${memberId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showToast(`✅ Member approved successfully!\n📋 Member ID: ${data.memberId}`, 'success');
+                    loadUsers(); // Reload the list
+                } else {
+                    throw new Error(data.message || 'Approval failed');
+                }
+            } catch (error) {
+                console.error('Error approving user:', error);
+                showToast(`❌ Approval failed: ${error.message}`, 'error');
+            }
+        }
+        
+        async function rejectUser(memberId) {
+            if (!confirm('Are you sure you want to reject this member? This action cannot be undone.')) return;
+            
+            try {
+                const response = await fetch(`${API_URL}/members/reject/${memberId}`, {
+                    method: 'DELETE'
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showToast(`❌ Member rejected and removed`, 'success');
+                    loadUsers(); // Reload the list
+                } else {
+                    throw new Error(data.message || 'Rejection failed');
+                }
+            } catch (error) {
+                console.error('Error rejecting user:', error);
+                showToast(`❌ Rejection failed: ${error.message}`, 'error');
+            }
+        }
+        
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+        
+        // Auto-refresh every 30 seconds
+        let refreshInterval = setInterval(loadUsers, 30000);
+        
+        // Clean up interval on page unload
+        window.addEventListener('beforeunload', () => {
+            if (refreshInterval) clearInterval(refreshInterval);
+        });
+        
+        // Initial load
+        loadUsers();
+    </script>
+</body>
+</html>

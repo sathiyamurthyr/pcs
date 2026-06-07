@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Pooja Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; font-family: 'Inter', sans-serif; background: #f3f4f6; }
+
+        /* Layout */
+        .admin-layout { display: flex; height: 100vh; overflow: hidden; }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            min-width: 260px;
+            background: linear-gradient(180deg, #1a331e 0%, #2c5f2d 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        .sidebar-header {
+            padding: 25px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+        .sidebar-header i { color: #bfa15f; font-size: 2rem; }
+        .sidebar-header h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-top: 10px; }
+        .sidebar-header p { font-size: 0.75rem; color: rgba(255,255,255,0.6); margin-top: 4px; }
+
+        .nav-menu { padding: 15px 10px; flex: 1; }
+        .nav-item {
+            padding: 12px 18px;
+            margin: 4px 8px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.9rem;
+            transition: all 0.25s ease;
+            color: rgba(255,255,255,0.85);
+        }
+        .nav-item:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        .nav-item.active {
+            background: #bfa15f;
+            color: #1a331e;
+            font-weight: 600;
+        }
+        .nav-item i { width: 22px; font-size: 1.1rem; text-align: center; }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .top-bar {
+            background: white;
+            padding: 14px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            flex-shrink: 0;
+            z-index: 10;
+        }
+        .top-bar-title { font-size: 1.4rem; font-weight: 700; color: #1a331e; font-family: 'Playfair Display', serif; }
+        .top-bar-actions { display: flex; align-items: center; gap: 12px; }
+        .admin-badge {
+            background: #e5e7eb;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #374151;
+        }
+        .btn-top {
+            padding: 8px 18px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-home { background: #6b7280; color: white; }
+        .btn-home:hover { background: #4b5563; }
+        .btn-logout { background: #dc2626; color: white; }
+        .btn-logout:hover { background: #b91c1c; }
+
+        .content-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 25px;
+        }
+
+        /* Stat Cards */
+        .stat-card {
+            background: linear-gradient(135deg, #2c5f2d, #1a331e);
+            color: white;
+            border-radius: 16px;
+            padding: 24px 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 12px 24px rgba(0,0,0,0.15); }
+        .stat-card i { font-size: 2rem; margin-bottom: 10px; opacity: 0.9; }
+        .stat-card h3 { font-size: 2rem; font-weight: 700; margin-bottom: 4px; }
+        .stat-card p { font-size: 0.85rem; opacity: 0.85; }
+
+        /* Quick Actions */
+        .quick-btn {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border-radius: 14px;
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+        .quick-btn:hover { transform: translateY(-4px); box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+        .quick-btn i { font-size: 1.8rem; margin-bottom: 8px; display: block; }
+        .quick-btn p { font-size: 0.9rem; font-weight: 600; }
+
+        /* Loading */
+        .loading { text-align: center; padding: 60px; }
+        .loading i { color: #2c5f2d; font-size: 2.5rem; }
+        .loading p { margin-top: 12px; color: #6b7280; }
+
+        /* Error */
+        .error-box { background: #fef2f2; color: #b91c1c; padding: 20px; border-radius: 12px; text-align: center; }
+
+        /* Cards */
+        .card { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .card-title { font-size: 1.1rem; font-weight: 700; color: #1f2937; margin-bottom: 16px; }
+    </style>
+<base target="_blank">
+</head>
+<body>
+
+<div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <i class="fa-solid fa-leaf"></i>
+            <h2>Pooja Admin</h2>
+            <p>Admin Dashboard</p>
+        </div>
+        <nav class="nav-menu">
+            <div class="nav-item active" onclick="goToPage('dashboard')">
+                <i class="fa-solid fa-chart-line"></i> <span>Dashboard</span>
+            </div>
+            <div class="nav-item" onclick="goToPage('gallery')">
+                <i class="fa-solid fa-images"></i> <span>Gallery Manager</span>
+            </div>
+            <div class="nav-item" onclick="goToPage('customer_request')">
+                <i class="fa-solid fa-clipboard-list"></i> <span>Member Requests</span>
+            </div>
+            <div class="nav-item" onclick="goToPage('users')">
+                <i class="fa-solid fa-users"></i> <span>User Approval</span>
+            </div>
+            <div class="nav-item" onclick="goToPage('enquiries')">
+                <i class="fa-solid fa-headset"></i> <span>General Enquiries</span>
+            </div>
+            <div class="nav-item" onclick="goToPage('appointments')">
+                <i class="fa-solid fa-calendar-check"></i> <span>Appointments</span>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Bar -->
+        <header class="top-bar">
+            <div class="top-bar-title">Admin Dashboard</div>
+            <div class="top-bar-actions">
+                <span class="admin-badge"><i class="fa-regular fa-user"></i> <span id="topAdminUsername">admin</span></span>
+                <button class="btn-top btn-home" onclick="goHome()"><i class="fa-solid fa-home"></i> Back to Home</button>
+                <button class="btn-top btn-logout" onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </header>
+
+        <!-- Scrollable Content -->
+        <div class="content-scroll">
+            <div id="dashboardContent">
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Loading dashboard data...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const API_URL = 'http://localhost:3000/api';
+    const token = localStorage.getItem('adminToken');
+
+    async function loadDashboard() {
+        try {
+            const [appointmentsRes, membersRes, enquiriesRes, galleryRes] = await Promise.all([
+                fetch(`${API_URL}/appointments/all`, { headers: { 'Authorization': `Bearer ${token}` } }),
+                fetch(`${API_URL}/members/approved`, { headers: { 'Authorization': `Bearer ${token}` } }),
+                fetch(`${API_URL}/enquiries/stats/summary`, { headers: { 'Authorization': `Bearer ${token}` } }),
+                fetch(`${API_URL}/admin/gallery`, { headers: { 'Authorization': `Bearer ${token}` } })
+            ]);
+
+            const appointmentsData = await appointmentsRes.json();
+            const membersData = await membersRes.json();
+            const enquiriesData = await enquiriesRes.json();
+            const galleryData = await galleryRes.json();
+
+            const totalAppointments = appointmentsData.appointments?.length || 0;
+            const pendingAppointments = appointmentsData.appointments?.filter(a => a.status === 'pending').length || 0;
+            const totalMembers = membersData.members?.length || 0;
+            const totalEnquiries = enquiriesData.stats?.total || 0;
+            const newEnquiries = enquiriesData.stats?.new || 0;
+            const totalGallery = galleryData.images?.length || 0;
+
+            const pendingMembersRes = await fetch(`${API_URL}/members/pending`, { headers: { 'Authorization': `Bearer ${token}` } });
+            const pendingMembersData = await pendingMembersRes.json();
+            const recentPending = pendingMembersData.members?.slice(0, 5) || [];
+
+            const html = `
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
+                    <div class="stat-card" onclick="goToPage('users')">
+                        <i class="fa-solid fa-users"></i>
+                        <h3>${totalMembers}</h3>
+                        <p>Approved Members</p>
+                    </div>
+                    <div class="stat-card" onclick="goToPage('appointments')">
+                        <i class="fa-solid fa-calendar"></i>
+                        <h3>${pendingAppointments}</h3>
+                        <p>Pending Appointments</p>
+                    </div>
+                    <div class="stat-card" onclick="goToPage('enquiries')">
+                        <i class="fa-solid fa-headset"></i>
+                        <h3>${newEnquiries}</h3>
+                        <p>New Enquiries</p>
+                    </div>
+                    <div class="stat-card" onclick="goToPage('gallery')">
+                        <i class="fa-solid fa-images"></i>
+                        <h3>${totalGallery}</h3>
+                        <p>Gallery Images</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-6">
+                    <div class="card">
+                        <div class="card-title">Quick Actions</div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="quick-btn bg-green-700" onclick="goToPage('users')">
+                                <i class="fa-solid fa-user-check"></i>
+                                <p>Approve Users</p>
+                            </div>
+                            <div class="quick-btn bg-blue-600" onclick="goToPage('appointments')">
+                                <i class="fa-solid fa-calendar-check"></i>
+                                <p>View Appointments</p>
+                            </div>
+                            <div class="quick-btn bg-purple-600" onclick="goToPage('enquiries')">
+                                <i class="fa-solid fa-headset"></i>
+                                <p>View Enquiries</p>
+                            </div>
+                            <div class="quick-btn bg-amber-600" onclick="goToPage('gallery')">
+                                <i class="fa-solid fa-images"></i>
+                                <p>Manage Gallery</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Summary</div>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between items-center pb-2 border-b border-gray-100">
+                                <span class="text-gray-600">Total Appointments</span>
+                                <span class="font-bold text-gray-900">${totalAppointments}</span>
+                            </div>
+                            <div class="flex justify-between items-center pb-2 border-b border-gray-100">
+                                <span class="text-gray-600">Total Enquiries</span>
+                                <span class="font-bold text-gray-900">${totalEnquiries}</span>
+                            </div>
+                            <div class="flex justify-between items-center pb-2 border-b border-gray-100">
+                                <span class="text-gray-600">Approved Members</span>
+                                <span class="font-bold text-gray-900">${totalMembers}</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Gallery Images</span>
+                                <span class="font-bold text-gray-900">${totalGallery}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Recent Pending Approvals</div>
+                    ${recentPending.length > 0 ? recentPending.map(user => `
+                        <div class="border-b border-gray-100 py-3 flex justify-between items-center last:border-0">
+                            <div>
+                                <p class="font-medium text-gray-900">${user.name}</p>
+                                <p class="text-xs text-gray-500">${user.mobile} | ${new Date(user.created_at).toLocaleDateString()}</p>
+                            </div>
+                            <button onclick="goToPage('users')" class="px-3 py-1.5 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition">
+                                Approve
+                            </button>
+                        </div>
+                    `).join('') : '<p class="text-gray-500 text-center py-6">No pending approvals</p>'}
+                </div>
+            `;
+
+            document.getElementById('dashboardContent').innerHTML = html;
+        } catch (error) {
+            console.error('Error loading dashboard:', error);
+            document.getElementById('dashboardContent').innerHTML = `
+                <div class="error-box">
+                    <i class="fas fa-exclamation-triangle text-2xl mb-2"></i>
+                    <p>Error loading dashboard data. Please check your connection.</p>
+                </div>
+            `;
+        }
+    }
+
+    loadDashboard();
+    setInterval(loadDashboard, 30000);
+
+    function goToPage(page) {
+        localStorage.setItem('adminCurrentPage', page);
+        window.location.href = page + '.html';
+    }
+    function goHome() {
+        window.location.replace('../index.html');
+    }
+    function logout() {
+        localStorage.removeItem('adminLoggedIn');
+        localStorage.removeItem('adminUsername');
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUser');
+        localStorage.removeItem('adminCurrentPage');
+        window.location.replace('../index.html');
+    }
+    (function() {
+        const isLoggedIn = localStorage.getItem('adminLoggedIn');
+        if (!isLoggedIn || isLoggedIn !== 'true') {
+            window.location.replace('../index.html');
+        }
+        const username = localStorage.getItem('adminUsername') || 'Admin';
+        const el = document.getElementById('topAdminUsername');
+        if (el) el.innerText = username;
+    })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment | Pooja Catering Service</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .toast-message {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="bg-gray-50">
+
+
+
+<main class="container mx-auto px-4 py-12 max-w-3xl">
+    <div class="bg-white rounded-2xl shadow-xl p-8">
+        <div class="text-center mb-8">
+            <i class="fa-solid fa-calendar-check text-5xl text-green-700"></i>
+            <h2 class="text-3xl font-bold text-gray-800 mt-2">Book an Appointment</h2>
+            <p class="text-gray-500">Schedule your consultation with our experts</p>
+        </div>
+
+        <form id="appointmentForm" onsubmit="handleAppointment(event)" class="space-y-5">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Full Name *</label>
+                    <input type="text" id="fullName" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Mobile Number *</label>
+                    <input type="tel" id="mobile" required pattern="[0-9]{10}" maxlength="10" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Email ID</label>
+                    <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Preferred Date *</label>
+                    <input type="date" id="preferredDate" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Preferred Time</label>
+                    <select id="preferredTime" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600">
+                        <option value="">Select Time</option>
+                        <option value="9:00 AM - 10:00 AM">9:00 AM - 10:00 AM</option>
+                        <option value="10:00 AM - 11:00 AM">10:00 AM - 11:00 AM</option>
+                        <option value="11:00 AM - 12:00 PM">11:00 AM - 12:00 PM</option>
+                        <option value="12:00 PM - 1:00 PM">12:00 PM - 1:00 PM</option>
+                        <option value="2:00 PM - 3:00 PM">2:00 PM - 3:00 PM</option>
+                        <option value="3:00 PM - 4:00 PM">3:00 PM - 4:00 PM</option>
+                        <option value="4:00 PM - 5:00 PM">4:00 PM - 5:00 PM</option>
+                        <option value="5:00 PM - 6:00 PM">5:00 PM - 6:00 PM</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Service Category *</label>
+                    <select id="serviceCategory" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600">
+                        <option value="">Select Service</option>
+                        <option value="Catering Service">🍛 Catering Service</option>
+                        <option value="Astrology Service">🔮 Astrology Service</option>
+                        <option value="Wedding Events">💒 Wedding Events</option>
+                        <option value="Matrimony Service">💑 Matrimony Service</option>
+                        <option value="Temple Service">🛕 Temple Services</option>
+                        <option value="Constructions">🏗️ Constructions</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Address</label>
+                <textarea id="address" rows="2" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600"></textarea>
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Remarks / Special Requests</label>
+                <textarea id="remarks" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600"></textarea>
+            </div>
+
+            <button type="submit" class="w-full bg-green-700 hover:bg-green-800 text-white font-semibold py-3 rounded-lg transition">
+                <i class="fas fa-paper-plane"></i> Submit Appointment Request
+            </button>
+        </form>
+
+        <p class="text-center text-sm text-gray-500 mt-4">
+            Not a member? <a href="register.html" class="text-green-700 font-semibold">Register here</a> (Rs. 500 one-time fee)
+        </p>
+    </div>
+</main>
+
+<script>
+    function showToast(message, type = 'success') {
+        // Remove existing toast
+        const existingToast = document.querySelector('.toast-message');
+        if (existingToast) existingToast.remove();
+        
+        const toast = document.createElement('div');
+        toast.className = `toast-message ${type === 'success' ? 'bg-green-600' : 'bg-red-600'} text-white px-5 py-3 rounded-lg shadow-lg flex items-center gap-2`;
+        toast.innerHTML = `<i class="fa-regular fa-${type === 'success' ? 'circle-check' : 'circle-exclamation'}"></i> ${message}`;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 5000);
+    }
+
+    async function handleAppointment(event) {
+        event.preventDefault();
+        
+        console.log('📝 Form submission started');
+        
+        const fullName = document.getElementById('fullName').value.trim();
+        const mobile = document.getElementById('mobile').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const preferredDate = document.getElementById('preferredDate').value;
+        const preferredTime = document.getElementById('preferredTime').value;
+        const serviceCategory = document.getElementById('serviceCategory').value;
+        const address = document.getElementById('address').value.trim();
+        const remarks = document.getElementById('remarks').value.trim();
+        
+        // Validation
+        if (!fullName || !mobile || !preferredDate || !serviceCategory) {
+            showToast('Please fill all required fields', 'error');
+            return;
+        }
+        
+        if (mobile.length !== 10) {
+            showToast('Please enter a valid 10-digit mobile number', 'error');
+            return;
+        }
+        
+        const btn = event.target.querySelector('button[type="submit"]');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+        btn.disabled = true;
+        
+        try {
+            const response = await fetch('http://localhost:3000/api/appointments/book', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    fullName, mobile, email, preferredDate, preferredTime, 
+                    serviceCategory, address, remarks 
+                })
+            });
+            
+            const data = await response.json();
+            console.log('Response:', data);
+            
+            if (data.success) {
+                showToast('✅ Appointment booked successfully! We will contact you soon.', 'success');
+                event.target.reset();
+            } else {
+                showToast('❌ ' + data.message, 'error');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showToast('❌ Server error. Please try again.', 'error');
+        } finally {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
+    }
+</script>
+</body>
+</html>

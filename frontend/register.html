@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | Pooja Catering Service</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .toast-message {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="bg-gray-50">
+
+
+
+<main class="container mx-auto px-4 py-12 max-w-2xl">
+    <div class="bg-white rounded-2xl shadow-xl p-8">
+        <div class="text-center mb-8">
+            <i class="fa-solid fa-leaf text-5xl text-green-700"></i>
+            <h2 class="text-3xl font-bold text-gray-800 mt-2">Member Registration</h2>
+            <p class="text-gray-500">Register to get access to all our services</p>
+        </div>
+
+        <form id="registrationForm" onsubmit="handleRegister(event)" class="space-y-5">
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Full Name *</label>
+                <input type="text" id="fullName" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600">
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Mobile Number *</label>
+                <input type="tel" id="mobile" required pattern="[0-9]{10}" maxlength="10" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600">
+                <p class="text-xs text-gray-400 mt-1">This will be your login ID</p>
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Create Password *</label>
+                <input type="password" id="password" required minlength="6" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600">
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Confirm Password *</label>
+                <input type="password" id="confirmPassword" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600">
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Email ID</label>
+                <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600">
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Address *</label>
+                <textarea id="address" rows="2" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600"></textarea>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h4 class="font-bold mb-2">Payment Method</h4>
+                <div class="flex gap-4">
+                    <label class="flex items-center gap-2">
+                        <input type="radio" name="paymentMethod" value="UPI" checked> UPI / QR
+                    </label>
+                    <label class="flex items-center gap-2">
+                        <input type="radio" name="paymentMethod" value="Card"> Card / NetBanking
+                    </label>
+                </div>
+                <p class="text-sm text-gray-600 mt-2">Registration Fee: <strong>Rs. 500/-</strong> (One time)</p>
+            </div>
+
+            <button type="submit" class="w-full bg-green-700 hover:bg-green-800 text-white font-semibold py-3 rounded-lg transition">
+                <i class="fas fa-user-plus"></i> Register Now
+            </button>
+        </form>
+
+        <p class="text-center text-sm text-gray-500 mt-4">
+            Already have an account? <a href="login.html" class="text-green-700 font-semibold">Login here</a>
+        </p>
+    </div>
+</main>
+
+<script>
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `toast-message ${type === 'success' ? 'bg-green-600' : 'bg-red-600'} text-white px-5 py-3 rounded-lg shadow-lg flex items-center gap-2`;
+        toast.innerHTML = `<i class="fa-regular fa-${type === 'success' ? 'circle-check' : 'circle-exclamation'}"></i> ${message}`;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 5000);
+    }
+
+    async function handleRegister(event) {
+        event.preventDefault();
+        
+        const fullName = document.getElementById('fullName').value.trim();
+        const mobile = document.getElementById('mobile').value.trim();
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const email = document.getElementById('email').value.trim();
+        const address = document.getElementById('address').value.trim();
+        const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+        
+        // Validations
+        if (!fullName || !mobile || !password || !address) {
+            showToast('Please fill all required fields', 'error');
+            return;
+        }
+        
+        if (mobile.length !== 10) {
+            showToast('Please enter a valid 10-digit mobile number', 'error');
+            return;
+        }
+        
+        if (password.length < 6) {
+            showToast('Password must be at least 6 characters', 'error');
+            return;
+        }
+        
+        if (password !== confirmPassword) {
+            showToast('Passwords do not match', 'error');
+            return;
+        }
+        
+        const btn = event.target.querySelector('button[type="submit"]');
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
+        btn.disabled = true;
+        
+        try {
+            const response = await fetch('http://localhost:3000/api/members/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    fullName, 
+                    mobile, 
+                    password, 
+                    email, 
+                    address,
+                    paymentMethod 
+                })
+            });
+            
+            const data = await response.json();
+            console.log('Registration response:', data);
+            
+            if (data.success) {
+                showToast('✅ Registration successful! Wait for admin approval.', 'success');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 3000);
+            } else {
+                showToast('❌ ' + data.message, 'error');
+                btn.innerHTML = '<i class="fas fa-user-plus"></i> Register Now';
+                btn.disabled = false;
+            }
+        } catch (error) {
+            console.error('Registration error:', error);
+            showToast('❌ Server error. Please try again.', 'error');
+            btn.innerHTML = '<i class="fas fa-user-plus"></i> Register Now';
+            btn.disabled = false;
+        }
+    }
+    
+    window.handleRegister = handleRegister;
+</script>
+</body>
+</html>

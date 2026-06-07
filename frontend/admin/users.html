@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Approval - Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+<base target="_blank">
+<base target="_blank">
+</head>
+<body class="bg-gray-100">
+<!-- Admin Sidebar -->
+<div class="sidebar" style="position: fixed; left: 0; top: 0; height: 100%; width: 280px; background: linear-gradient(180deg, #1a331e 0%, #2c5f2d 100%); color: white; z-index: 100; box-shadow: 2px 0 10px rgba(0,0,0,0.1);">
+    <div style="padding: 25px 20px; border-bottom: 1px solid rgba(255,255,255,0.2); text-align: center;">
+        <i class="fa-solid fa-leaf text-3xl" style="color: #bfa15f;"></i>
+        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-top: 10px; color: white;">Pooja Admin</h2>
+        <p class="text-xs text-gray-300 mt-1">Admin</p>
+    </div>
+    <div style="padding: 20px 0;">
+        <div class="nav-item" data-page="dashboard" onclick="goToPage('dashboard')" style="padding: 12px 25px; margin: 5px 10px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; transition: all 0.3s;">
+            <i class="fa-solid fa-chart-line" style="width: 24px; font-size: 1.2rem;"></i> <span>Dashboard</span>
+        </div>
+        <div class="nav-item" data-page="gallery" onclick="goToPage('gallery')" style="padding: 12px 25px; margin: 5px 10px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; transition: all 0.3s;">
+            <i class="fa-solid fa-images" style="width: 24px; font-size: 1.2rem;"></i> <span>Gallery Manager</span>
+        </div>
+        <div class="nav-item" data-page="customer_request" onclick="goToPage('customer_request')" style="padding: 12px 25px; margin: 5px 10px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; transition: all 0.3s;">
+            <i class="fa-solid fa-clipboard-list" style="width: 24px; font-size: 1.2rem;"></i> <span>Member Requests</span>
+        </div>
+        <div class="nav-item active" data-page="users" onclick="goToPage('users')" style="padding: 12px 25px; margin: 5px 10px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; transition: all 0.3s; background: #bfa15f; color: #1a331e;">
+            <i class="fa-solid fa-users" style="width: 24px; font-size: 1.2rem;"></i> <span>User Approval</span>
+        </div>
+        <div class="nav-item" data-page="enquiries" onclick="goToPage('enquiries')" style="padding: 12px 25px; margin: 5px 10px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; transition: all 0.3s;">
+            <i class="fa-solid fa-headset" style="width: 24px; font-size: 1.2rem;"></i> <span>General Enquiries</span>
+        </div>
+        <div class="nav-item" data-page="appointments" onclick="goToPage('appointments')" style="padding: 12px 25px; margin: 5px 10px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; transition: all 0.3s;">
+            <i class="fa-solid fa-calendar-check" style="width: 24px; font-size: 1.2rem;"></i> <span>Appointments</span>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content Wrapper -->
+<div style="margin-left: 280px; min-height: 100vh; background: #f3f4f6;">
+    <!-- Top Bar -->
+    <div style="background: white; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 10;">
+        <div style="font-size: 1.5rem; font-weight: 700; color: #1a331e;">User Approval</div>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <span style="background: #e5e7eb; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem;"><i class="fa-regular fa-user"></i> <span id="topAdminUsername">admin</span></span>
+            <button onclick="goHome()" style="background: #6b7280; color: white; padding: 8px 20px; border-radius: 10px; border: none; cursor: pointer; font-weight: 500;"><i class="fa-solid fa-home"></i> Back to Home</button>
+            <button onclick="logout()" style="background: #dc2626; color: white; padding: 8px 20px; border-radius: 10px; border: none; cursor: pointer; font-weight: 500;"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
+        </div>
+    </div>
+
+    <!-- Page Content -->
+    <div style="padding: 20px;">
+
+    <div class="p-6">
+        <div class="mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">User Approval Management</h2>
+            <p class="text-gray-600">Approve or reject new member registrations</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="flex gap-2 mb-6 border-b">
+            <button onclick="showTab('pending')" id="pendingTab" class="px-4 py-2 font-semibold text-brandGreen border-b-2 border-brandGreen">
+                <i class="fas fa-clock"></i> Pending Approvals
+            </button>
+            <button onclick="showTab('approved')" id="approvedTab" class="px-4 py-2 font-semibold text-gray-600 hover:text-brandGreen">
+                <i class="fas fa-check-circle"></i> Approved Members
+            </button>
+        </div>
+
+        <!-- Pending Members Container -->
+        <div id="pendingContainer" class="space-y-4"></div>
+
+        <!-- Approved Members Container -->
+        <div id="approvedContainer" style="display:none;" class="space-y-4"></div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-4 right-4 hidden bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg z-50"></div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+        const token = localStorage.getItem('adminToken');
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.className = `fixed bottom-4 right-4 px-4 py-2 rounded-lg shadow-lg z-50 ${type === 'success' ? 'bg-green-600' : 'bg-red-600'} text-white`;
+            toast.innerHTML = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 3000);
+        }
+
+        async function showTab(tab) {
+            if (tab === 'pending') {
+                document.getElementById('pendingContainer').style.display = 'block';
+                document.getElementById('approvedContainer').style.display = 'none';
+                document.getElementById('pendingTab').classList.add('border-brandGreen', 'text-brandGreen');
+                document.getElementById('approvedTab').classList.remove('border-brandGreen', 'text-brandGreen');
+                await loadPendingMembers();
+            } else {
+                document.getElementById('pendingContainer').style.display = 'none';
+                document.getElementById('approvedContainer').style.display = 'block';
+                document.getElementById('approvedTab').classList.add('border-brandGreen', 'text-brandGreen');
+                document.getElementById('pendingTab').classList.remove('border-brandGreen', 'text-brandGreen');
+                await loadApprovedMembers();
+            }
+        }
+
+        async function loadPendingMembers() {
+            try {
+                const response = await fetch(`${API_URL}/members/pending`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await response.json();
+                
+                const container = document.getElementById('pendingContainer');
+                
+                if (data.success && data.members.length > 0) {
+                    container.innerHTML = data.members.map(member => `
+                        <div class="bg-white rounded-lg shadow-md p-5 border-l-4 border-yellow-500">
+                            <div class="flex justify-between items-start">
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-bold text-gray-800">${member.name}</h3>
+                                    <div class="grid grid-cols-2 gap-2 mt-2 text-sm">
+                                        <p><i class="fas fa-phone text-green-600"></i> <strong>Mobile:</strong> ${member.mobile}</p>
+                                        <p><i class="fas fa-envelope text-blue-600"></i> <strong>Email:</strong> ${member.email || 'Not provided'}</p>
+                                        <p class="col-span-2"><i class="fas fa-map-marker-alt text-red-600"></i> <strong>Address:</strong> ${member.address || 'Not provided'}</p>
+                                        <p><i class="fas fa-calendar text-gray-600"></i> <strong>Registered:</strong> ${new Date(member.created_at).toLocaleString()}</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-2 ml-4">
+                                    <button onclick="approveMember(${member.id}, '${member.name}', '${member.mobile}')" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                                        <i class="fas fa-check"></i> Approve
+                                    </button>
+                                    <button onclick="rejectMember(${member.id})" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">
+                                        <i class="fas fa-times"></i> Reject
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = `
+                        <div class="bg-white rounded-lg shadow-md p-8 text-center text-gray-500">
+                            <i class="fas fa-users text-4xl mb-2"></i>
+                            <p>No pending registrations</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('pendingContainer').innerHTML = '<div class="bg-red-100 text-red-700 p-4 rounded">Error loading pending members</div>';
+            }
+        }
+
+        async function loadApprovedMembers() {
+            try {
+                const response = await fetch(`${API_URL}/members/approved`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await response.json();
+                
+                const container = document.getElementById('approvedContainer');
+                
+                if (data.success && data.members.length > 0) {
+                    container.innerHTML = data.members.map(member => `
+                        <div class="bg-white rounded-lg shadow-md p-5 border-l-4 border-green-500">
+                            <div class="flex justify-between items-start">
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <h3 class="text-lg font-bold text-gray-800">${member.name}</h3>
+                                        <span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">
+                                            <i class="fas fa-id-card"></i> ${member.member_id}
+                                        </span>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-2 text-sm">
+                                        <p><i class="fas fa-phone text-green-600"></i> <strong>Mobile:</strong> ${member.mobile}</p>
+                                        <p><i class="fas fa-envelope text-blue-600"></i> <strong>Email:</strong> ${member.email || 'Not provided'}</p>
+                                        <p class="col-span-2"><i class="fas fa-map-marker-alt text-red-600"></i> <strong>Address:</strong> ${member.address || 'Not provided'}</p>
+                                        <p><i class="fas fa-calendar text-gray-600"></i> <strong>Member Since:</strong> ${new Date(member.created_at).toLocaleDateString()}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = `
+                        <div class="bg-white rounded-lg shadow-md p-8 text-center text-gray-500">
+                            <i class="fas fa-users text-4xl mb-2"></i>
+                            <p>No approved members yet</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('approvedContainer').innerHTML = '<div class="bg-red-100 text-red-700 p-4 rounded">Error loading approved members</div>';
+            }
+        }
+
+        async function approveMember(id, name, mobile) {
+    if (confirm(`Approve ${name} as a member?`)) {
+        try {
+            const response = await fetch(`${API_URL}/members/approve/${id}`, {
+                method: 'PUT',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+                showToast(`✅ ${name} approved! Member ID: ${data.memberId}`, 'success');
+                await loadPendingMembers();
+                await loadApprovedMembers();
+            } else {
+                showToast('Approval failed', 'error');
+            }
+        } catch (error) {
+            showToast('Error approving member', 'error');
+        }
+    }
+}
+
+        async function rejectMember(id) {
+            if (confirm('Reject this registration? The user will be removed.')) {
+                try {
+                    const response = await fetch(`${API_URL}/members/reject/${id}`, {
+                        method: 'DELETE',
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        showToast('Registration rejected and removed', 'success');
+                        await loadPendingMembers();
+                    } else {
+                        showToast('Rejection failed', 'error');
+                    }
+                } catch (error) {
+                    showToast('Error rejecting member', 'error');
+                }
+            }
+        }
+
+        // Load pending members on page load
+        loadPendingMembers();
+    </script>
+    </div>
+</div>
+    <script>
+        function goToPage(page) {
+            localStorage.setItem('adminCurrentPage', page);
+            window.location.href = page + '.html';
+        }
+        function goHome() {
+            window.location.replace('../index.html');
+        }
+        function logout() {
+            localStorage.removeItem('adminLoggedIn');
+            localStorage.removeItem('adminUsername');
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('adminUser');
+            localStorage.removeItem('adminCurrentPage');
+            window.location.replace('../index.html');
+        }
+        // Check auth
+        (function() {
+            const isLoggedIn = localStorage.getItem('adminLoggedIn');
+            if (!isLoggedIn || isLoggedIn !== 'true') {
+                window.location.replace('../index.html');
+            }
+            const username = localStorage.getItem('adminUsername') || 'Admin';
+            const topAdminUsernameEl = document.getElementById('topAdminUsername');
+            if (topAdminUsernameEl) topAdminUsernameEl.innerText = username;
+        })();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temple Seva Booking | Pooja Catering</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandGreen: '#2c5f2d',
+                        brandGreenLight: '#3d7a3e',
+                        brandGreenDark: '#1a331e',
+                        brandGold: '#bfa15f',
+                        brandSoft: '#fffaf0',
+                        brandGreen50: '#f0f7f0',
+                        brandGreen100: '#d4e8d4',
+                        brandGreen200: '#a8d5a8',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f5f7f5; padding: 16px; }
+        .standalone-content { max-width: 1000px; margin: 0 auto; }
+
+        .hero-section {
+            background: linear-gradient(135deg, #2c5f2d, #1a331e);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 32px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .hero-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-section p {
+            opacity: 0.85;
+            font-size: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.15);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(4px);
+        }
+
+        .form-section {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            border: 1px solid #eef2ee;
+            margin-bottom: 24px;
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #f0f7f0;
+        }
+        .section-header h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a331e;
+        }
+        .section-header-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #2c5f2d, #1a331e);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .form-group { margin-bottom: 4px; }
+        .form-group.full-width { grid-column: span 2; }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1a331e;
+            margin-bottom: 8px;
+        }
+        .form-group label .required { color: #dc2626; margin-left: 2px; }
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e8ede8;
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            color: #333;
+            transition: all 0.3s ease;
+            background: #fafbfa;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #2c5f2d;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(44,95,45,0.08);
+        }
+        select.form-control {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%232c5f2d' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
+        }
+        textarea.form-control { resize: vertical; min-height: 100px; }
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            padding: 4px 0;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #fafbfa;
+            padding: 12px 16px;
+            border: 2px solid #e8ede8;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .checkbox-item:hover {
+            border-color: #a8d5a8;
+            background: #fbfdfb;
+        }
+        .checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #2c5f2d;
+            cursor: pointer;
+        }
+        .checkbox-item span {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+        .checkbox-item.checked {
+            border-color: #2c5f2d;
+            background: #f0f7f0;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2c5f2d, #1a331e);
+            color: white;
+            padding: 16px 48px;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(44,95,45,0.15);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(44,95,45,0.25); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        .toast {
+            position: fixed; bottom: 24px; right: 24px; padding: 16px 24px;
+            background: #2c5f2d; color: white; border-radius: 12px; font-size: 14px;
+            font-weight: 600; box-shadow: 0 8px 24px rgba(0,0,0,0.2); z-index: 3000;
+            transform: translateY(100px); opacity: 0; transition: all 0.4s ease;
+            display: flex; align-items: center; gap: 10px; pointer-events: none;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; pointer-events: auto; }
+        .toast.error { background: #dc2626; }
+
+        .bookings-list {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            border: 1px solid #eef2ee;
+        }
+        .booking-card {
+            border: 1px solid #e8ede8;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+        .booking-card:hover {
+            border-color: #2c5f2d;
+            box-shadow: 0 4px 12px rgba(44,95,45,0.08);
+        }
+        .booking-card h4 {
+            font-family: 'Playfair Display', serif;
+            color: #1a331e;
+            margin-bottom: 4px;
+        }
+        .req-id-badge {
+            display: inline-block;
+            background: #2c5f2d;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-confirmed { background: #d1fae5; color: #065f46; }
+        .status-completed { background: #d1fae5; color: #065f46; }
+        .status-cancelled { background: #fee2e2; color: #991b1b; }
+        .seva-tag {
+            display: inline-block;
+            background: #f0f7f0;
+            color: #2c5f2d;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-right: 4px;
+            margin-bottom: 4px;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255,255,255,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .loading-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #d4e8d4;
+            border-top-color: #2c5f2d;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @media (max-width: 768px) {
+            .form-grid, .checkbox-grid { grid-template-columns: 1fr; }
+            .form-group.full-width { grid-column: span 1; }
+            body { padding: 12px; }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+
+    <main class="standalone-content">
+        <!-- My Bookings List -->
+        <div id="myBookingsSection" class="bookings-list" style="display: none;">
+            <div class="section-header" style="border-bottom: none; padding-bottom: 0; margin-bottom: 16px;">
+                <div class="section-header-icon"><i class="fa-solid fa-gopuram"></i></div>
+                <h3>My Seva Bookings</h3>
+            </div>
+            <div id="bookingsList"></div>
+        </div>
+
+        <header class="hero-section">
+            <div class="hero-badge">
+                <i class="fa-solid fa-gopuram"></i> Devotional Pooja Registrations
+            </div>
+            <h2 id="formTitle">Seva Booking Form</h2>
+            <p>Provide your personal details, star coordinates, and choose your required Seva types to schedule your devotional offerings.</p>
+        </header>
+
+        <form id="sevaForm" onsubmit="handleFormSubmit(event)">
+            <input type="hidden" id="editReqId" value="">
+
+            <fieldset class="form-section">
+                <div class="section-header">
+                    <div class="section-header-icon"><i class="fa-solid fa-user"></i></div>
+                    <h3>Devotee Information</h3>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Devotee Name <span class="required">*</span></label>
+                        <input type="text" name="devotee_name" class="form-control" placeholder="Enter name of primary devotee" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Contact Phone Number <span class="required">*</span></label>
+                        <input type="tel" name="phone_number" class="form-control" placeholder="Enter phone number" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Preferred Seva Date <span class="required">*</span></label>
+                        <input type="date" name="seva_date" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Gothram</label>
+                        <input type="text" name="gothram" class="form-control" placeholder="e.g., Kashyapa, Shiva">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nakshatram / Birth Star</label>
+                        <input type="text" name="nakshatram" class="form-control" placeholder="e.g., Aswini, Rohini">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Rasi / Moon Sign</label>
+                        <input type="text" name="rasi" class="form-control" placeholder="e.g., Mesham, Simham">
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="form-section">
+                <div class="section-header">
+                    <div class="section-header-icon"><i class="fa-solid fa-hands-praying"></i></div>
+                    <h3>Seva Types Selection</h3>
+                </div>
+
+                <div class="form-group full-width">
+                    <label class="mb-4">Select the services/sevas you want to perform: <span class="required">*</span></label>
+
+                    <div class="checkbox-grid" id="sevaCheckboxes">
+                        <label class="checkbox-item" onclick="toggleCheckbox(this)">
+                            <input type="checkbox" name="sevas" value="Archana">
+                            <span>Archana</span>
+                        </label>
+                        <label class="checkbox-item" onclick="toggleCheckbox(this)">
+                            <input type="checkbox" name="sevas" value="Abhishekam">
+                            <span>Abhishekam</span>
+                        </label>
+                        <label class="checkbox-item" onclick="toggleCheckbox(this)">
+                            <input type="checkbox" name="sevas" value="Sahasranamam">
+                            <span>Sahasranama Archana</span>
+                        </label>
+                        <label class="checkbox-item" onclick="toggleCheckbox(this)">
+                            <input type="checkbox" name="sevas" value="Homam">
+                            <span>Ganapathi / Ayush Homam</span>
+                        </label>
+                        <label class="checkbox-item" onclick="toggleCheckbox(this)">
+                            <input type="checkbox" name="sevas" value="Kalyanam">
+                            <span>Pradhana Seva / Utsavam</span>
+                        </label>
+                        <label class="checkbox-item" onclick="toggleCheckbox(this)">
+                            <input type="checkbox" name="sevas" value="VehiclePooja">
+                            <span>Vehicle Pooja</span>
+                        </label>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="form-section">
+                <div class="section-header">
+                    <div class="section-header-icon"><i class="fa-solid fa-comment-medical"></i></div>
+                    <h3>Special Instructions</h3>
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Family Member Names or Specific Prayer Requirements</label>
+                    <textarea name="special_notes" class="form-control" placeholder="List any additional family member names and their stars for sankalpam, or specific ritual requests..."></textarea>
+                </div>
+            </fieldset>
+
+            <footer class="mt-4 mb-8">
+                <button type="submit" id="submitActionBtn" class="btn-primary">
+                    <i class="fa-solid fa-calendar-check mr-2"></i> 
+                    <span id="submitBtnText">Book Seva Ritual Schedule</span>
+                </button>
+            </footer>
+        </form>
+    </main>
+
+    <div id="statusToast" class="toast">
+        <i class="fa-solid fa-circle-check text-xl"></i>
+        <span id="toastText">Processing...</span>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadMyBookings();
+        });
+
+        // Toggle checkbox visual state
+        function toggleCheckbox(label) {
+            const checkbox = label.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            if (checkbox.checked) {
+                label.classList.add('checked');
+            } else {
+                label.classList.remove('checked');
+            }
+        }
+
+        // Load my bookings
+        async function loadMyBookings() {
+            const token = getAuthToken();
+            try {
+                const res = await fetch(`${API_BASE}/api/temple/my-bookings`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+
+                if (data.success && data.bookings.length > 0) {
+                    document.getElementById('myBookingsSection').style.display = 'block';
+                    const list = document.getElementById('bookingsList');
+                    list.innerHTML = data.bookings.map(b => `
+                        <div class="booking-card">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <h4>${b.devotee_name}</h4>
+                                    <span class="req-id-badge">${b.req_id}</span>
+                                    <span class="status-badge status-${b.status}">${b.status}</span>
+                                </div>
+                                <div class="text-sm text-gray-500">
+                                    ${new Date(b.seva_date).toLocaleDateString()}
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                ${b.sevasArray.map(s => `<span class="seva-tag">${s}</span>`).join('')}
+                            </div>
+                            <p class="text-sm text-gray-600">
+                                <i class="fa-solid fa-phone mr-1"></i> ${b.phone_number}
+                                ${b.gothram ? `| <i class="fa-solid fa-om mr-1"></i> ${b.gothram}` : ''}
+                            </p>
+                        </div>
+                    `).join('');
+                }
+            } catch (err) {
+                console.log('No bookings or not logged in');
+            }
+        }
+
+        // Form submit
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+            const btn = document.getElementById('submitActionBtn');
+            const originalText = btn.innerHTML;
+            const token = getAuthToken();
+
+            // Validate at least one seva is selected
+            const checkedSevas = document.querySelectorAll('input[name="sevas"]:checked');
+            if (checkedSevas.length === 0) {
+                showToast('Please select at least one Seva type', 'error');
+                return;
+            }
+
+            if (!document.getElementById('sevaForm').checkValidity()) {
+                document.getElementById('sevaForm').reportValidity();
+                return;
+            }
+
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Registering...`;
+            btn.disabled = true;
+            showLoading(true);
+
+            const formData = new FormData(document.getElementById('sevaForm'));
+            const data = Object.fromEntries(formData.entries());
+
+            // Handle multiple sevas (checkboxes with same name)
+            const sevas = Array.from(checkedSevas).map(cb => cb.value);
+            data.sevas = sevas;
+
+            const reqId = document.getElementById('editReqId').value;
+
+            try {
+                let url = `${API_BASE}/api/temple/booking`;
+                let method = 'POST';
+
+                if (reqId) {
+                    url = `${API_BASE}/api/temple/booking/${reqId}`;
+                    method = 'PUT';
+                }
+
+                const res = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await res.json();
+
+                if (result.success) {
+                    showToast(`Booking ${reqId ? 'updated' : 'registered'}! Request ID: ${result.reqId}`, 'success');
+                    setTimeout(() => window.location.reload(), 2000);
+                } else {
+                    showToast(result.message || 'Failed', 'error');
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+            } catch (error) {
+                showToast('Network error', 'error');
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function getAuthToken() {
+            return localStorage.getItem('token') || 
+                   localStorage.getItem('authToken') || 
+                   sessionStorage.getItem('token') ||
+                   sessionStorage.getItem('authToken') ||
+                   '';
+        }
+
+        function showLoading(show) {
+            const overlay = document.getElementById('loadingOverlay');
+            if (show) overlay.classList.add('show');
+            else overlay.classList.remove('show');
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('statusToast');
+            const toastText = document.getElementById('toastText');
+            const toastIcon = toast.querySelector('i');
+
+            toastText.textContent = message;
+
+            if (type === 'error') {
+                toast.classList.add('error');
+                toastIcon.className = 'fa-solid fa-circle-xmark text-xl';
+            } else {
+                toast.classList.remove('error');
+                toastIcon.className = 'fa-solid fa-circle-check text-xl';
+            }
+
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 4000);
+        }
+    </script>
+</body>
+</html>

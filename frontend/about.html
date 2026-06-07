@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>About Us | Pooja Catering Service & Wedding Associates</title>
+    <meta name="description" content="ISO 9001-2015 Certified with 30 years of experience – leading catering & wedding associates across Tamil Nadu & Puducherry. Pure vegetarian excellence since 1995.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: { 
+                extend: { 
+                    colors: { 
+                        brandGreen: '#2c5f2d', 
+                        brandGold: '#bfa15f', 
+                        brandDark: '#1a331e', 
+                        brandSoft: '#fffaf0' 
+                    }, 
+                    fontFamily: { 
+                        sans: ['Inter', 'sans-serif'], 
+                        serif: ['Playfair Display', 'serif'] 
+                    },
+                    animation: {
+                        fadeInUp: 'fadeInUp 0.7s ease-out',
+                        gentleFloat: 'gentleFloat 3s ease-in-out infinite',
+                        shimmerBorder: 'shimmerBorder 3s infinite'
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        gentleFloat: {
+                            '0%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-6px)' },
+                            '100%': { transform: 'translateY(0px)' }
+                        },
+                        shimmerBorder: {
+                            '0%': { borderColor: '#bfa15f40' },
+                            '50%': { borderColor: '#bfa15f' },
+                            '100%': { borderColor: '#bfa15f40' }
+                        }
+                    }
+                } 
+            }
+        }
+    </script>
+    <style>
+        .gold-text-gradient {
+            background: linear-gradient(135deg, #bfa15f 0%, #e3c68b 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .service-badge {
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        .service-badge:hover {
+            transform: translateY(-3px);
+            background: #2c5f2d;
+            color: white;
+            border-color: #bfa15f;
+        }
+        .stats-card {
+            transition: transform 0.25s ease, box-shadow 0.3s;
+        }
+        .stats-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 25px -8px rgba(44, 95, 45, 0.2);
+        }
+        .quote-icon {
+            animation: gentleFloat 3s ease-in-out infinite;
+            display: inline-block;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .hero-shimmer {
+            background: linear-gradient(110deg, transparent 25%, rgba(191,161,95,0.12) 45%, rgba(255,245,200,0.15) 55%, transparent 70%);
+            background-size: 200% 100%;
+            animation: shimmer 5s infinite;
+        }
+        .decorative-leaf {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23bfa15f' opacity='0.15'%3E%3Cpath d='M12,2C9,7,4,9,4,14c0,4,4,6,8,6s8-2,8-6C20,9,15,7,12,2z'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 32px;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="font-sans bg-gray-50 text-gray-800 antialiased">
+
+<main class="min-h-screen">
+    
+    <!-- ============ HERO SECTION (NO IMAGES, PURE TEXT & ELEGANT DECOR) ============ -->
+    <div class="relative w-full bg-gradient-to-br from-brandDark to-brandGreen overflow-hidden">
+        <!-- subtle abstract pattern (no images) -->
+        <div class="absolute inset-0 opacity-5 decorative-leaf"></div>
+        <div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white/5 to-transparent"></div>
+        
+        <div class="container mx-auto px-4 py-16 md:py-20 relative z-10">
+            <!-- elegant quote & title block -->
+            <div class="text-center max-w-4xl mx-auto">
+                <div class="inline-block bg-black/30 backdrop-blur-md px-6 py-3 rounded-full border border-brandGold/40 hero-shimmer mb-8">
+                    <p class="text-white font-serif text-sm md:text-base italic tracking-wide flex items-center gap-2">
+                        <i class="fa-solid fa-quote-left text-brandGold text-xs"></i> 
+                        Food from Heart. Wisdom from Stars. Homes from Earth.
+                        <i class="fa-solid fa-quote-right text-brandGold text-xs"></i>
+                    </p>
+                </div>
+                <div class="w-20 h-0.5 bg-brandGold mx-auto mb-6 rounded-full"></div>
+                <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-white drop-shadow-lg">About Our Legacy</h2>
+                <p class="text-amber-100/90 text-base md:text-lg mt-4 max-w-2xl mx-auto font-light">30 Years of Trust | ISO Certified Excellence Across Tamil Nadu & Puducherry</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ ABOUT CONTENT (FULL TEXT FROM PROVIDED FILE) ============ -->
+    <div class="container mx-auto px-4 py-16 max-w-5xl">
+        
+        <!-- Welcome Card with complete ISO intro -->
+        <div class="bg-white rounded-3xl shadow-xl border-l-8 border-brandGold overflow-hidden mb-14 animate-fadeInUp">
+            <div class="bg-gradient-to-r from-brandSoft to-white p-8 md:p-10">
+                <div class="flex flex-wrap items-center gap-3 mb-4">
+                    <span class="bg-brandGreen/10 text-brandGreen text-xs font-bold px-4 py-1.5 rounded-full"><i class="fa-regular fa-circle-check mr-1"></i> ISO 9001-2015 Certified</span>
+                    <span class="bg-amber-50 text-brandGold text-xs font-bold px-4 py-1.5 rounded-full border border-amber-200"><i class="fa-regular fa-calendar-alt mr-1"></i> 30+ Years Excellence</span>
+                    <span class="bg-emerald-50 text-brandDark text-xs font-bold px-4 py-1.5 rounded-full"><i class="fa-regular fa-flag mr-1"></i> Since 1995</span>
+                </div>
+                <h2 class="font-serif text-3xl md:text-4xl font-bold text-brandDark mb-5">👥 Welcome to <span class="gold-text-gradient">Pooja Catering Service & Wedding Associates</span></h2>
+                <p class="text-gray-700 text-base md:text-lg leading-relaxed border-l-4 border-brandGold pl-5 italic bg-white/40 py-3 rounded-r-lg">
+                    ISO 9001-2015 Certified | Leading service expert in Entire Tamil Nadu & Puducherry. With 30 years of experience, we provide best arrangements with quality assurance for both Traditional and Non-Traditional families at Lower, Middle & Upper Range cost.
+                </p>
+            </div>
+        </div>
+
+        <!-- Two Column Layout: Detailed Experience & Certifications (No images) -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-16">
+            <!-- Main content column (2/3 width on large) -->
+            <div class="lg:col-span-2 space-y-8">
+                <div class="bg-white p-7 rounded-2xl shadow-md hover:shadow-lg transition-all">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i class="fa-regular fa-building text-3xl text-brandGold"></i>
+                        <h3 class="text-2xl font-bold text-brandGreen">🏆 ISO 9001-2015 Certified Pooja Catering Service</h3>
+                    </div>
+                    <p class="text-gray-700 leading-relaxed mb-5">
+                        <strong class="text-brandDark">Pooja Catering Service</strong> is a leading and best catering expert in <strong class="text-brandGreen">Entire Tamil Nadu & Puducherry all Districts</strong>. As a service provider, we have <strong class="text-brandGold">30 years of experience</strong>; And we make best arrangement to ease our customers and their guests.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed mb-5">
+                        Pooja Catering Service provides all kind of catering services for events at a <strong>Lower, Middle & Upper Range cost</strong> with the assurance of best quality.
+                    </p>
+                    <div class="bg-brandSoft p-5 rounded-xl border border-amber-100 mt-3">
+                        <p class="font-semibold text-brandDark flex items-start gap-2"><i class="fa-regular fa-star-of-life text-brandGold mt-1"></i> <span>We specialize in: <strong>Engagement, Marriage Combo & Wedding Catering Services, all kind of Party and Corporate Events</strong> in Entire Tamil Nadu & Puducherry.</span></p>
+                    </div>
+                </div>
+                
+                <!-- Additional selling points from file content -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div class="bg-gradient-to-br from-white to-gray-50 p-6 rounded-xl shadow border border-gray-100 stats-card">
+                        <div class="text-4xl mb-2">📍</div>
+                        <h4 class="font-bold text-brandGreen text-lg">Service Coverage</h4>
+                        <p class="text-sm text-gray-600 mt-1">All Districts of Tamil Nadu & Puducherry. Exceptional locations based on well-known recommendations.</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-white to-gray-50 p-6 rounded-xl shadow border border-gray-100 stats-card">
+                        <div class="text-4xl mb-2">🍽️</div>
+                        <h4 class="font-bold text-brandGreen text-lg">Range Flexibility</h4>
+                        <p class="text-sm text-gray-600 mt-1">Lower, Middle & Upper Range cost plans — premium quality without compromise.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right sidebar - key certifications & stats (pure text / icons) -->
+            <div class="space-y-6">
+                <div class="bg-white p-6 rounded-2xl shadow-md text-center border-t-4 border-brandGold">
+                    <div class="text-5xl mb-3 flex justify-center"><i class="fa-regular fa-certificate text-brandGold"></i></div>
+                    <h3 class="font-bold text-xl text-brandDark">ISO 9001-2015</h3>
+                    <p class="text-xs text-gray-500 mt-1 uppercase tracking-wide">Certified Quality Management</p>
+                    <div class="w-12 h-0.5 bg-brandGold mx-auto my-3"></div>
+                    <p class="text-sm text-gray-600">Hygiene, processes, and service quality benchmarked to international standards.</p>
+                </div>
+                <div class="bg-brandDark text-white p-6 rounded-2xl shadow-md text-center">
+                    <div class="text-4xl mb-2">⭐ 30+</div>
+                    <p class="font-semibold">Years of Culinary & Event Excellence</p>
+                    <div class="text-brandGold text-xs mt-2">Trusted by thousands of families</div>
+                </div>
+                <div class="bg-brandSoft p-5 rounded-2xl flex items-center gap-3 border border-amber-200">
+                    <i class="fa-regular fa-handshake text-3xl text-brandGreen"></i>
+                    <div>
+                        <p class="font-bold text-brandGreen">🌐 360° Wedding & Events</p>
+                        <p class="text-xs text-gray-600">Catering + Astrology + Matrimony + Temple Sevaigal + Construction</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Core specialties badges (full text range) -->
+        <div class="bg-white/80 rounded-3xl p-8 shadow-sm my-8 border border-gray-100">
+            <h3 class="font-serif text-2xl font-bold text-center text-brandDark mb-6">✨ Our Multidimensional Service Expertise ✨</h3>
+            <div class="flex flex-wrap justify-center gap-3">
+                <span class="service-badge bg-brandGreen/10 text-brandGreen px-5 py-2 rounded-full text-sm font-medium border border-brandGreen/20">🍛 Engagement & Wedding Catering</span>
+                <span class="service-badge bg-brandGold/10 text-brandGold px-5 py-2 rounded-full text-sm font-medium border border-brandGold/20">🔮 Astrology & Porutham</span>
+                <span class="service-badge bg-green-50 text-brandDark px-5 py-2 rounded-full text-sm font-medium border">💒 Marriage Combo Events</span>
+                <span class="service-badge bg-amber-50 text-brandDark px-5 py-2 rounded-full text-sm font-medium border">💑 Matrimony Alliance</span>
+                <span class="service-badge bg-emerald-50 text-brandGreen px-5 py-2 rounded-full text-sm font-medium border">🛕 Temple Sevaigal & Poojas</span>
+                <span class="service-badge bg-stone-100 text-brandDark px-5 py-2 rounded-full text-sm font-medium border">🏗️ Constructions & Vastu</span>
+                <span class="service-badge bg-yellow-50 text-amber-800 px-5 py-2 rounded-full text-sm font-medium border">🎉 Corporate Events & Parties</span>
+            </div>
+        </div>
+        
+        <!-- Location & Address block (complete from text file) -->
+        <div class="bg-gradient-to-r from-brandDark to-brandGreen/90 text-white rounded-2xl p-7 mt-8 flex flex-col md:flex-row justify-between items-center gap-4 shadow-xl">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-location-dot text-3xl text-brandGold"></i>
+                <div>
+                    <p class="font-bold text-lg">📍 Principal Base / Corporate Office</p>
+                    <p class="text-sm opacity-95">228/Appadhurai Chetty St, Padhmavadhi Nagar, Minjur - 601203</p>
+                </div>
+            </div>
+            <div class="h-10 w-px bg-white/30 hidden md:block"></div>
+            <div class="flex items-center gap-3">
+                <i class="fa-regular fa-envelope-open-text text-3xl text-brandGold"></i>
+                <div>
+                    <p class="font-semibold">✉️ poojagopi1973@gmail.com</p>
+                    <p class="text-xs">Serving all 38 districts + Puducherry</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Inspirational closing quote from the original spirit -->
+        <div class="mt-12 text-center py-6 border-t border-amber-200">
+            <blockquote class="font-serif text-xl md:text-2xl italic text-gray-700 max-w-3xl mx-auto relative">
+                <i class="fa-solid fa-quote-left text-brandGold/40 absolute -top-4 -left-6 text-6xl quote-icon"></i>
+                <span class="relative z-10">"ISO certified assurance, home-cooked heart, and celestial guidance — all under one roof."</span>
+            </blockquote>
+            <p class="text-xs text-gray-400 mt-4 tracking-wide">Pooja Catering Service & Wedding Associates — Your Life, Our Service</p>
+            <div class="flex justify-center gap-2 mt-4">
+                <span class="inline-block w-2 h-2 rounded-full bg-brandGold"></span>
+                <span class="inline-block w-2 h-2 rounded-full bg-brandGreen"></span>
+                <span class="inline-block w-2 h-2 rounded-full bg-brandGold"></span>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- ================= FOOTER (consistent and clean) ================= -->
+<footer class="bg-brandDark text-gray-400 text-xs sm:text-sm py-12 border-t-4 border-brandGold relative overflow-hidden mt-8">
+    <div class="absolute -top-6 -right-6 w-32 h-32 bg-brandGold/10 rounded-full blur-3xl"></div>
+    <div class="container mx-auto px-4 text-center max-w-4xl space-y-4 relative z-10">
+        <div class="flex flex-wrap justify-center gap-2 sm:gap-4 text-white font-medium mb-6">
+            <span class="bg-white/10 px-3 py-1 rounded-full transition-all hover:bg-brandGold/30 hover:scale-105 cursor-default">🍛 Catering</span>
+            <span class="bg-white/10 px-3 py-1 rounded-full transition-all hover:bg-brandGold/30 hover:scale-105 cursor-default">🔮 Astrology</span>
+            <span class="bg-white/10 px-3 py-1 rounded-full transition-all hover:bg-brandGold/30 hover:scale-105 cursor-default">💒 Wedding Events</span>
+            <span class="bg-white/10 px-3 py-1 rounded-full transition-all hover:bg-brandGold/30 hover:scale-105 cursor-default">💑 Matrimony</span>
+            <span class="bg-white/10 px-3 py-1 rounded-full transition-all hover:bg-brandGold/30 hover:scale-105 cursor-default">🛕 Temple Service</span>
+            <span class="bg-white/10 px-3 py-1 rounded-full transition-all hover:bg-brandGold/30 hover:scale-105 cursor-default">🏗️ Constructions</span>
+        </div>
+        <div class="text-brandGold font-serif italic text-base space-x-4">
+            <span>Your Life, Our Service.</span>
+            <span>|</span>
+            <span>Pure Veg & High Hygienic Taste</span>
+        </div>
+        <p class="pt-2 flex flex-wrap justify-center gap-2"><i class="fa-solid fa-location-dot text-brandGold"></i> 📍 Base: 228/Appadhurai Chetty St, Padhmavadhi Nagar, Minjur - 601203</p>
+        <p><i class="fa-regular fa-envelope text-brandGold"></i> ✉️ poojagopi1973@gmail.com</p>
+        <p class="text-xs text-gray-500 uppercase tracking-wider">🌿 Serving All Over Tamil Nadu & Puducherry | ISO 9001-2015 Certified | Since 1995</p>
+        <p class="text-gray-500 text-[11px] pt-4">© 2026 Pooja Catering Service & Wedding Associates — All Rights Reserved.</p>
+    </div>
+</footer>
+
+<!-- minimal script for smooth hover and no images console assurance -->
+<script>
+    (function() {
+        // Ensure no external images are loaded; all illustrations are icons or pure CSS.
+        console.log("Pooja Catering About Page — Images completely removed, only pure text & icons.");
+        // Optional: add subtle interactive class to badges.
+        const badges = document.querySelectorAll('.service-badge');
+        badges.forEach(badge => {
+            badge.addEventListener('click', () => {
+                // soft ripple effect for engagement (optional)
+                badge.style.transform = 'scale(0.98)';
+                setTimeout(() => { badge.style.transform = ''; }, 150);
+            });
+        });
+    })();
+</script>
+</body>
+</html>

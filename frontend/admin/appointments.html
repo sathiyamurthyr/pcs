@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointments | Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+<base target="_blank">
+</head>
+<body class="bg-gray-100">
+
+<!-- Admin Sidebar -->
+<div class="sidebar" style="position: fixed; left: 0; top: 0; height: 100%; width: 280px; background: linear-gradient(180deg, #1a331e 0%, #2c5f2d 100%); color: white; z-index: 100; box-shadow: 2px 0 10px rgba(0,0,0,0.1);">
+    <div style="padding: 25px 20px; border-bottom: 1px solid rgba(255,255,255,0.2); text-align: center;">
+        <i class="fa-solid fa-leaf text-3xl" style="color: #bfa15f;"></i>
+        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-top: 10px; color: white;">Pooja Admin</h2>
+        <p class="text-xs text-gray-300 mt-1">Admin</p>
+    </div>
+    <div style="padding: 20px 0;">
+        <div class="nav-item" data-page="admin_dashboard" onclick="goToPage('admin_dashboard')" style="padding: 12px 25px; margin: 5px 10px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; transition: all 0.3s;">
+            <i class="fa-solid fa-chart-line" style="width: 24px; font-size: 1.2rem;"></i> <span>Dashboard</span>
+        </div>
+        <div class="nav-item" data-page="gallery" onclick="goToPage('gallery')" style="padding: 12px 25px; margin: 5px 10px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; transition: all 0.3s;">
+            <i class="fa-solid fa-images" style="width: 24px; font-size: 1.2rem;"></i> <span>Gallery Manager</span>
+        </div>
+        <div class="nav-item" data-page="customer_request" onclick="goToPage('customer_request')" style="padding: 12px 25px; margin: 5px 10px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; transition: all 0.3s;">
+            <i class="fa-solid fa-clipboard-list" style="width: 24px; font-size: 1.2rem;"></i> <span>Member Requests</span>
+        </div>
+        <div class="nav-item" data-page="users" onclick="goToPage('users')" style="padding: 12px 25px; margin: 5px 10px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; transition: all 0.3s;">
+            <i class="fa-solid fa-users" style="width: 24px; font-size: 1.2rem;"></i> <span>User Approval</span>
+        </div>
+        <div class="nav-item" data-page="enquiries" onclick="goToPage('enquiries')" style="padding: 12px 25px; margin: 5px 10px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; transition: all 0.3s;">
+            <i class="fa-solid fa-headset" style="width: 24px; font-size: 1.2rem;"></i> <span>General Enquiries</span>
+        </div>
+        <div class="nav-item active" data-page="appointments" onclick="goToPage('appointments')" style="padding: 12px 25px; margin: 5px 10px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; transition: all 0.3s; background: #bfa15f; color: #1a331e;">
+            <i class="fa-solid fa-calendar-check" style="width: 24px; font-size: 1.2rem;"></i> <span>Appointments</span>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content Wrapper -->
+<div style="margin-left: 280px; min-height: 100vh; background: #f3f4f6;">
+    <!-- Top Bar -->
+    <div style="background: white; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 10;">
+        <div style="font-size: 1.5rem; font-weight: 700; color: #1a331e;">Appointments Management</div>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <span style="background: #e5e7eb; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem;"><i class="fa-regular fa-user"></i> <span id="topAdminUsername">admin</span></span>
+            <button onclick="goHome()" style="background: #6b7280; color: white; padding: 8px 20px; border-radius: 10px; border: none; cursor: pointer; font-weight: 500;"><i class="fa-solid fa-home"></i> Back to Home</button>
+            <button onclick="logout()" style="background: #dc2626; color: white; padding: 8px 20px; border-radius: 10px; border: none; cursor: pointer; font-weight: 500;"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
+        </div>
+    </div>
+
+    <!-- Page Content -->
+    <div style="padding: 20px;">
+
+    <div class="p-6">
+        <div class="mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">Appointments Management</h2>
+            <p class="text-gray-600">View and manage all customer appointments</p>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-sm font-semibold mb-1">From Date</label>
+                    <input type="date" id="fromDate" class="w-full px-3 py-2 border rounded-lg">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-1">To Date</label>
+                    <input type="date" id="toDate" class="w-full px-3 py-2 border rounded-lg">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-1">Status</label>
+                    <select id="statusFilter" class="w-full px-3 py-2 border rounded-lg">
+                        <option value="all">All</option>
+                        <option value="pending">Pending</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+                <div class="flex items-end gap-2">
+                    <button onclick="filterAppointments()" class="bg-green-600 text-white px-4 py-2 rounded-lg flex-1">
+                        <i class="fas fa-search"></i> Filter
+                    </button>
+                    <button onclick="loadAppointments()" class="bg-blue-600 text-white px-4 py-2 rounded-lg">
+                        <i class="fas fa-refresh"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6" id="statsContainer">
+            <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                <div class="text-2xl font-bold text-blue-600" id="totalCount">0</div>
+                <div class="text-gray-600">Total Appointments</div>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                <div class="text-2xl font-bold text-yellow-600" id="pendingCount">0</div>
+                <div class="text-gray-600">Pending</div>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                <div class="text-2xl font-bold text-green-600" id="confirmedCount">0</div>
+                <div class="text-gray-600">Confirmed</div>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                <div class="text-2xl font-bold text-purple-600" id="completedCount">0</div>
+                <div class="text-gray-600">Completed</div>
+            </div>
+        </div>
+
+        <!-- Appointments List -->
+        <div id="appointmentsContainer" class="space-y-4"></div>
+    </div>
+
+    <div id="toast" class="fixed bottom-4 right-4 hidden bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg z-50"></div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+        const token = localStorage.getItem('adminToken');
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.className = `fixed bottom-4 right-4 px-4 py-2 rounded-lg shadow-lg z-50 ${type === 'success' ? 'bg-green-600' : 'bg-red-600'} text-white`;
+            toast.innerHTML = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 3000);
+        }
+
+        async function loadAppointments() {
+            console.log('Loading appointments...');
+
+            try {
+                const response = await fetch(`${API_URL}/appointments/all`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await response.json();
+
+                console.log('Appointments data:', data);
+
+                if (data.success) {
+                    displayAppointments(data.appointments);
+                    updateStats(data.appointments);
+                } else {
+                    showToast('Failed to load appointments', 'error');
+                }
+            } catch (error) {
+                console.error('Error loading appointments:', error);
+                showToast('Error loading appointments', 'error');
+            }
+        }
+
+        async function filterAppointments() {
+            const fromDate = document.getElementById('fromDate').value;
+            const toDate = document.getElementById('toDate').value;
+            const status = document.getElementById('statusFilter').value;
+
+            let url = `${API_URL}/appointments/all`;
+            let params = [];
+
+            if (fromDate && toDate) {
+                params.push(`from_date=${fromDate}&to_date=${toDate}`);
+            }
+            if (status !== 'all') {
+                params.push(`status=${status}`);
+            }
+
+            if (params.length > 0) {
+                url += `?${params.join('&')}`;
+            }
+
+            try {
+                const response = await fetch(url, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    displayAppointments(data.appointments);
+                    updateStats(data.appointments);
+                }
+            } catch (error) {
+                console.error('Error filtering appointments:', error);
+                showToast('Error filtering appointments', 'error');
+            }
+        }
+
+        function updateStats(appointments) {
+            const total = appointments.length;
+            const pending = appointments.filter(a => a.status === 'pending').length;
+            const confirmed = appointments.filter(a => a.status === 'confirmed').length;
+            const completed = appointments.filter(a => a.status === 'completed').length;
+
+            document.getElementById('totalCount').innerText = total;
+            document.getElementById('pendingCount').innerText = pending;
+            document.getElementById('confirmedCount').innerText = confirmed;
+            document.getElementById('completedCount').innerText = completed;
+        }
+
+        function displayAppointments(appointments) {
+            const container = document.getElementById('appointmentsContainer');
+
+            if (!appointments || appointments.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-white rounded-lg shadow-md p-8 text-center text-gray-500">
+                        <i class="fas fa-calendar-times text-4xl mb-2"></i>
+                        <p>No appointments found</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = appointments.map(app => {
+                const statusColors = {
+                    'pending': 'bg-yellow-100 text-yellow-700',
+                    'confirmed': 'bg-green-100 text-green-700',
+                    'completed': 'bg-blue-100 text-blue-700',
+                    'cancelled': 'bg-red-100 text-red-700'
+                };
+
+                return `
+                    <div class="bg-white rounded-lg shadow-md p-5 border-l-4 ${app.status === 'pending' ? 'border-yellow-500' : app.status === 'confirmed' ? 'border-green-500' : 'border-blue-500'}">
+                        <div class="flex justify-between items-start">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <h3 class="text-lg font-bold text-gray-800">${app.name}</h3>
+                                    <span class="text-xs px-2 py-1 rounded-full ${statusColors[app.status] || 'bg-gray-100 text-gray-700'}">
+                                        ${app.status.toUpperCase()}
+                                    </span>
+                                </div>
+                                <div class="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm mb-3">
+                                    <p><i class="fas fa-phone text-green-600"></i> <strong>Phone:</strong> ${app.phone}</p>
+                                    <p><i class="fas fa-envelope text-blue-600"></i> <strong>Email:</strong> ${app.email || 'Not provided'}</p>
+                                    <p><i class="fas fa-tag text-purple-600"></i> <strong>Service:</strong> ${app.service_type || 'Not specified'}</p>
+                                    <p><i class="fas fa-calendar text-gray-600"></i> <strong>Date:</strong> ${app.appointment_date ? new Date(app.appointment_date).toLocaleDateString() : 'Not set'}</p>
+                                    <p><i class="fas fa-clock text-gray-600"></i> <strong>Time:</strong> ${app.preferred_time || 'Not specified'}</p>
+                                    <p><i class="fas fa-calendar-alt text-gray-600"></i> <strong>Booked On:</strong> ${new Date(app.created_at).toLocaleDateString()}</p>
+                                </div>
+                                ${app.address ? `<p class="text-sm mb-2"><i class="fas fa-map-marker-alt text-red-600"></i> <strong>Address:</strong> ${app.address}</p>` : ''}
+                                ${app.remarks ? `<div class="bg-gray-50 p-2 rounded-lg mt-2"><strong class="text-sm">Remarks:</strong><p class="text-sm text-gray-700 mt-1">${app.remarks}</p></div>` : ''}
+                            </div>
+                            <div class="flex flex-col gap-2 ml-4">
+                                <select onchange="updateStatus(${app.id}, this.value)" class="border rounded px-2 py-1 text-sm">
+                                    <option value="pending" ${app.status === 'pending' ? 'selected' : ''}>Pending</option>
+                                    <option value="confirmed" ${app.status === 'confirmed' ? 'selected' : ''}>Confirmed</option>
+                                    <option value="completed" ${app.status === 'completed' ? 'selected' : ''}>Completed</option>
+                                    <option value="cancelled" ${app.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                                </select>
+                                <button onclick="deleteAppointment(${app.id})" class="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function updateStatus(id, status) {
+            try {
+                const response = await fetch(`${API_URL}/appointments/${id}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    showToast('Status updated successfully', 'success');
+                    loadAppointments();
+                } else {
+                    showToast('Failed to update status', 'error');
+                }
+            } catch (error) {
+                console.error('Error updating status:', error);
+                showToast('Error updating status', 'error');
+            }
+        }
+
+        async function deleteAppointment(id) {
+            if (confirm('Are you sure you want to delete this appointment?')) {
+                try {
+                    const response = await fetch(`${API_URL}/appointments/${id}`, {
+                        method: 'DELETE',
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                        showToast('Appointment deleted successfully', 'success');
+                        loadAppointments();
+                    } else {
+                        showToast('Failed to delete appointment', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error deleting appointment:', error);
+                    showToast('Error deleting appointment', 'error');
+                }
+            }
+        }
+
+        // Load appointments on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAppointments();
+        });
+    </script>
+    </div>
+</div>
+
+<script>
+    function goToPage(page) {
+        localStorage.setItem('adminCurrentPage', page);
+        window.location.href = page + '.html';
+    }
+    function goHome() {
+        window.location.replace('../index.html');
+    }
+    function logout() {
+        localStorage.removeItem('adminLoggedIn');
+        localStorage.removeItem('adminUsername');
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUser');
+        localStorage.removeItem('adminCurrentPage');
+        window.location.replace('../index.html');
+    }
+    // Check auth
+    (function() {
+        const isLoggedIn = localStorage.getItem('adminLoggedIn');
+        if (!isLoggedIn || isLoggedIn !== 'true') {
+            window.location.replace('../index.html');
+        }
+        const username = localStorage.getItem('adminUsername') || 'Admin';
+        const topAdminUsernameEl = document.getElementById('topAdminUsername');
+        if (topAdminUsernameEl) topAdminUsernameEl.innerText = username;
+    })();
+</script>
+
+</body>
+</html>
