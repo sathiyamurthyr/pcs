@@ -69,7 +69,6 @@
             transform: translateY(-2px);
         }
 
-        /* Image Rotator Styles */
         .image-rotator {
             position: relative;
             width: 100%;
@@ -180,7 +179,6 @@
             100% { transform: rotate(360deg); }
         }
     </style>
-<base target="_blank">
 </head>
 <body class="bg-gray-50 font-sans antialiased">
 
@@ -208,8 +206,8 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
             <!-- Catering Card -->
             <div class="gallery-card bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100">
-                <div class="relative h-72 overflow-hidden group" id="cateringRotator">
-                    <div class="image-rotator" id="cateringImageContainer">
+                <div class="relative h-72 overflow-hidden group">
+                    <div class="image-rotator" id="cateringContainer">
                         <div class="loading-gallery">
                             <i class="fa-solid fa-spinner fa-spin"></i>
                             <p>Loading catering images...</p>
@@ -245,8 +243,8 @@
 
             <!-- Astrology Card -->
             <div class="gallery-card bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100">
-                <div class="relative h-72 overflow-hidden group" id="astrologyRotator">
-                    <div class="image-rotator" id="astrologyImageContainer">
+                <div class="relative h-72 overflow-hidden group">
+                    <div class="image-rotator" id="astrologyContainer">
                         <div class="loading-gallery">
                             <i class="fa-solid fa-spinner fa-spin"></i>
                             <p>Loading astrology images...</p>
@@ -285,8 +283,8 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 mt-10">
             <!-- Wedding Card -->
             <div class="gallery-card bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100">
-                <div class="relative h-64 overflow-hidden group" id="weddingRotator">
-                    <div class="image-rotator" id="weddingImageContainer">
+                <div class="relative h-64 overflow-hidden group">
+                    <div class="image-rotator" id="weddingContainer">
                         <div class="loading-gallery">
                             <i class="fa-solid fa-spinner fa-spin"></i>
                             <p>Loading wedding images...</p>
@@ -306,8 +304,8 @@
 
             <!-- Matrimony Card -->
             <div class="gallery-card bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100">
-                <div class="relative h-64 overflow-hidden group" id="matrimonyRotator">
-                    <div class="image-rotator" id="matrimonyImageContainer">
+                <div class="relative h-64 overflow-hidden group">
+                    <div class="image-rotator" id="matrimonyContainer">
                         <div class="loading-gallery">
                             <i class="fa-solid fa-spinner fa-spin"></i>
                             <p>Loading matrimony images...</p>
@@ -330,8 +328,8 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 mt-10">
             <!-- Temple Card -->
             <div class="gallery-card bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100">
-                <div class="relative h-64 overflow-hidden group" id="templeRotator">
-                    <div class="image-rotator" id="templeImageContainer">
+                <div class="relative h-64 overflow-hidden group">
+                    <div class="image-rotator" id="templeContainer">
                         <div class="loading-gallery">
                             <i class="fa-solid fa-spinner fa-spin"></i>
                             <p>Loading temple images...</p>
@@ -351,8 +349,8 @@
 
             <!-- Construction Card -->
             <div class="gallery-card bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100">
-                <div class="relative h-64 overflow-hidden group" id="constructionRotator">
-                    <div class="image-rotator" id="constructionImageContainer">
+                <div class="relative h-64 overflow-hidden group">
+                    <div class="image-rotator" id="constructionContainer">
                         <div class="loading-gallery">
                             <i class="fa-solid fa-spinner fa-spin"></i>
                             <p>Loading construction images...</p>
@@ -371,7 +369,6 @@
             </div>
         </div>
 
-        <!-- Gallery Info -->
         <div class="text-center mt-16 pt-6 border-t border-amber-200">
             <div class="inline-flex flex-col items-center gap-3 bg-white shadow-sm px-6 py-4 rounded-2xl">
                 <i class="fa-regular fa-camera text-brandGold text-3xl"></i>
@@ -385,54 +382,57 @@
 <footer class="bg-brandDark text-gray-300 text-sm py-10">
     <div class="container mx-auto px-4 text-center max-w-5xl">
         <div class="flex flex-wrap justify-center gap-2 mb-5">
-            <span class="footer-tag bg-white/10 px-3 py-1 rounded-full text-xs transition-all cursor-default">🍛 Catering</span>
-            <span class="footer-tag bg-white/10 px-3 py-1 rounded-full text-xs transition-all cursor-default">🔮 Astrology</span>
-            <span class="footer-tag bg-white/10 px-3 py-1 rounded-full text-xs transition-all cursor-default">💒 Wedding Events</span>
-            <span class="footer-tag bg-white/10 px-3 py-1 rounded-full text-xs transition-all cursor-default">💑 Matrimony</span>
-            <span class="footer-tag bg-white/10 px-3 py-1 rounded-full text-xs transition-all cursor-default">🛕 Temple Service</span>
-            <span class="footer-tag bg-white/10 px-3 py-1 rounded-full text-xs transition-all cursor-default">🏗️ Constructions</span>
+            <span class="footer-tag bg-white/10 px-3 py-1 rounded-full text-xs">🍛 Catering</span>
+            <span class="footer-tag bg-white/10 px-3 py-1 rounded-full text-xs">🔮 Astrology</span>
+            <span class="footer-tag bg-white/10 px-3 py-1 rounded-full text-xs">💒 Wedding Events</span>
+            <span class="footer-tag bg-white/10 px-3 py-1 rounded-full text-xs">💑 Matrimony</span>
+            <span class="footer-tag bg-white/10 px-3 py-1 rounded-full text-xs">🛕 Temple Service</span>
+            <span class="footer-tag bg-white/10 px-3 py-1 rounded-full text-xs">🏗️ Constructions</span>
         </div>
         <div class="text-brandGold font-serif italic text-base mb-3">Your Life, Our Service. | Pure Veg & High Hygienic Taste</div>
-        <p class="text-xs flex items-center justify-center gap-2"><i class="fa-solid fa-location-dot text-brandGold"></i> 📍 228/Appadhurai Chetty St, Padhmavadhi Nagar, Minjur - 601203</p>
+        <p class="text-xs"><i class="fa-solid fa-location-dot text-brandGold"></i> 📍 228/Appadhurai Chetty St, Padhmavadhi Nagar, Minjur - 601203</p>
         <p class="text-xs mt-1"><i class="fa-regular fa-envelope text-brandGold"></i> ✉️ poojagopi1973@gmail.com</p>
         <p class="text-xs mt-1"><i class="fa-regular fa-phone text-brandGold"></i> 📞 +91 98786 11197</p>
-        <p class="text-[11px] text-gray-400 mt-3 uppercase tracking-wider">🌿 Serving All Over Tamil Nadu & Puducherry | ISO 9001-2015 Certified | Since 1995</p>
+        <p class="text-[11px] text-gray-400 mt-3">🌿 Serving All Over Tamil Nadu & Puducherry | ISO 9001-2015 Certified | Since 1995</p>
         <p class="text-[10px] text-gray-500 mt-4">© 2026 Pooja Catering Service & Wedding Associates — All Rights Reserved.</p>
     </div>
 </footer>
 
 <script>
-    const API_URL = window.location.origin;
-    let rotatorIntervals = {};
-
-    // Category mapping
+    // Category mapping based on your database
     const categories = [
-        { name: 'catering', displayName: 'Catering' },
-        { name: 'astrology', displayName: 'Astrology' },
-        { name: 'wedding', displayName: 'Wedding' },
-        { name: 'matrimony', displayName: 'Matrimony' },
-        { name: 'temple', displayName: 'Temple' },
-        { name: 'construction', displayName: 'Construction' }
+        { id: 'cateringContainer', name: 'catering', countId: 'cateringCount' },
+        { id: 'astrologyContainer', name: 'astrology', countId: 'astrologyCount' },
+        { id: 'weddingContainer', name: 'wedding', countId: 'weddingCount' },
+        { id: 'matrimonyContainer', name: 'matrimony', countId: 'matrimonyCount' },
+        { id: 'templeContainer', name: 'temple', countId: 'templeCount' },
+        { id: 'constructionContainer', name: 'construction', countId: 'constructionCount' }
     ];
 
-    // Fetch images from your existing API endpoint
-    async function fetchGalleryImages() {
+    let rotatorIntervals = {};
+
+    // Fetch images from your API
+    async function loadGalleryImages() {
         try {
-            console.log('Fetching images from:', `${API_URL}/api/gallery/all`);
-            const response = await fetch(`${API_URL}/api/gallery/all`);
+            console.log('Fetching gallery images...');
+            const response = await fetch('/api/gallery/all');
             
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                throw new Error(`HTTP ${response.status}`);
             }
             
             const data = await response.json();
             
             if (data.success && data.images && data.images.length > 0) {
                 // Group images by category
-                const imagesByCategory = {};
-                categories.forEach(cat => {
-                    imagesByCategory[cat.name] = [];
-                });
+                const imagesByCategory = {
+                    catering: [],
+                    astrology: [],
+                    wedding: [],
+                    matrimony: [],
+                    temple: [],
+                    construction: []
+                };
                 
                 data.images.forEach(image => {
                     const category = image.category;
@@ -442,118 +442,95 @@
                 });
                 
                 // Initialize each rotator with its images
-                for (const category of categories) {
-                    const categoryImages = imagesByCategory[category.name] || [];
-                    initRotator(category, categoryImages);
+                for (const cat of categories) {
+                    const images = imagesByCategory[cat.name] || [];
+                    const countSpan = document.getElementById(cat.countId);
+                    if (countSpan) countSpan.textContent = images.length;
+                    
+                    if (images.length > 0) {
+                        initRotator(cat.id, images, cat.name);
+                    } else {
+                        showNoImages(cat.id, cat.name);
+                    }
                 }
             } else {
-                // No images found in database
-                console.log('No images found in gallery');
-                for (const category of categories) {
-                    initRotator(category, []);
+                // No images in database
+                for (const cat of categories) {
+                    showNoImages(cat.id, cat.name);
                 }
             }
         } catch (error) {
-            console.error('Error fetching gallery images:', error);
-            // Show fallback message
-            for (const category of categories) {
-                initRotator(category, []);
+            console.error('Error loading gallery:', error);
+            for (const cat of categories) {
+                showNoImages(cat.id, cat.name);
             }
         }
     }
 
-    function initRotator(category, images) {
-        const container = document.getElementById(`${category.name}ImageContainer`);
-        const countSpan = document.getElementById(`${category.name}Count`);
-        
+    function initRotator(containerId, images, categoryName) {
+        const container = document.getElementById(containerId);
         if (!container) return;
         
-        // Update count
-        if (countSpan) countSpan.textContent = images.length;
-        
-        // Clear container
         container.innerHTML = '';
         
-        if (images.length === 0) {
-            container.innerHTML = `
-                <div class="no-images">
-                    <i class="fa-solid fa-image"></i>
-                    <p>No ${category.displayName} images available yet</p>
-                    <p class="text-xs mt-2">Check back soon for updates</p>
-                </div>
-            `;
-            return;
-        }
-        
-        // Filter out invalid images
-        const validImages = images.filter(imgUrl => imgUrl && imgUrl.trim() !== '');
-        
-        if (validImages.length === 0) {
-            container.innerHTML = `
-                <div class="no-images">
-                    <i class="fa-solid fa-image"></i>
-                    <p>No images found</p>
-                </div>
-            `;
-            return;
-        }
-        
         // Create image elements
-        validImages.forEach((imgUrl, index) => {
+        images.forEach((imgUrl, index) => {
             const img = document.createElement('img');
             img.className = `rotator-img ${index === 0 ? 'active' : ''}`;
-            // Use the URL as is (it already includes the path)
-            img.src = imgUrl.startsWith('http') ? imgUrl : imgUrl;
-            img.alt = `${category.displayName} gallery image`;
+            img.src = imgUrl;
+            img.alt = `${categoryName} gallery image`;
             img.onerror = function() {
-                console.log(`Failed to load image: ${this.src}`);
+                console.log(`Failed to load: ${imgUrl}`);
                 this.style.display = 'none';
-                // If this was the active image and there are other images, show next
-                if (this.classList.contains('active') && validImages.length > 1) {
-                    const nextIndex = (index + 1) % validImages.length;
-                    setTimeout(() => goToSlide(category.name, nextIndex), 100);
-                }
             };
             container.appendChild(img);
         });
         
-        // Add navigation dots if more than 1 image
-        if (validImages.length > 1) {
+        // Add navigation if multiple images
+        if (images.length > 1) {
+            // Dots
             const dotsContainer = document.createElement('div');
             dotsContainer.className = 'rotator-dots';
-            validImages.forEach((_, index) => {
+            images.forEach((_, index) => {
                 const dot = document.createElement('div');
                 dot.className = `rotator-dot ${index === 0 ? 'active' : ''}`;
-                dot.onclick = () => goToSlide(category.name, index);
+                dot.onclick = () => goToSlide(containerId, index);
                 dotsContainer.appendChild(dot);
             });
             container.appendChild(dotsContainer);
             
-            // Add counter
+            // Counter
             const counter = document.createElement('div');
             counter.className = 'rotator-counter';
-            counter.textContent = `1 / ${validImages.length}`;
+            counter.textContent = `1 / ${images.length}`;
             container.appendChild(counter);
             
-            // Store current index
-            container.dataset.currentIndex = '0';
-            container.dataset.totalImages = validImages.length;
-            
-            // Start auto rotation (8 seconds)
-            if (rotatorIntervals[category.name]) {
-                clearInterval(rotatorIntervals[category.name]);
-            }
-            rotatorIntervals[category.name] = setInterval(() => {
-                nextSlide(category.name);
+            // Auto rotate
+            if (rotatorIntervals[containerId]) clearInterval(rotatorIntervals[containerId]);
+            rotatorIntervals[containerId] = setInterval(() => {
+                nextSlide(containerId);
             }, 8000);
         }
     }
-    
-    function nextSlide(categoryName) {
-        const container = document.getElementById(`${categoryName}ImageContainer`);
+
+    function showNoImages(containerId, categoryName) {
+        const container = document.getElementById(containerId);
         if (!container) return;
         
-        const images = container.querySelectorAll('.rotator-img:not([style*="display: none"])');
+        container.innerHTML = `
+            <div class="no-images">
+                <i class="fa-solid fa-image"></i>
+                <p>No ${categoryName} images available</p>
+                <p class="text-xs mt-2">Check back soon for updates</p>
+            </div>
+        `;
+    }
+
+    function nextSlide(containerId) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        
+        const images = container.querySelectorAll('.rotator-img');
         const dots = container.querySelectorAll('.rotator-dot');
         const counter = container.querySelector('.rotator-counter');
         
@@ -569,7 +546,7 @@
         images[currentIndex].classList.remove('active');
         images[nextIndex].classList.add('active');
         
-        if (dots.length > 0) {
+        if (dots.length) {
             dots[currentIndex].classList.remove('active');
             dots[nextIndex].classList.add('active');
         }
@@ -577,12 +554,10 @@
         if (counter) {
             counter.textContent = `${nextIndex + 1} / ${images.length}`;
         }
-        
-        container.dataset.currentIndex = nextIndex;
     }
-    
-    function goToSlide(categoryName, index) {
-        const container = document.getElementById(`${categoryName}ImageContainer`);
+
+    function goToSlide(containerId, index) {
+        const container = document.getElementById(containerId);
         if (!container) return;
         
         const images = container.querySelectorAll('.rotator-img');
@@ -591,19 +566,16 @@
         
         if (index >= images.length) return;
         
-        // Reset interval
-        if (rotatorIntervals[categoryName]) {
-            clearInterval(rotatorIntervals[categoryName]);
-            rotatorIntervals[categoryName] = setInterval(() => {
-                nextSlide(categoryName);
-            }, 8000);
+        if (rotatorIntervals[containerId]) {
+            clearInterval(rotatorIntervals[containerId]);
+            rotatorIntervals[containerId] = setInterval(() => nextSlide(containerId), 8000);
         }
         
         images.forEach((img, i) => {
             img.classList.toggle('active', i === index);
         });
         
-        if (dots.length > 0) {
+        if (dots.length) {
             dots.forEach((dot, i) => {
                 dot.classList.toggle('active', i === index);
             });
@@ -612,37 +584,31 @@
         if (counter) {
             counter.textContent = `${index + 1} / ${images.length}`;
         }
-        
-        container.dataset.currentIndex = index;
     }
-    
-    // Pause rotation on hover
+
+    // Pause on hover
     document.querySelectorAll('.gallery-card').forEach(card => {
         card.addEventListener('mouseenter', () => {
             for (const cat of categories) {
-                if (rotatorIntervals[cat.name]) {
-                    clearInterval(rotatorIntervals[cat.name]);
-                    delete rotatorIntervals[cat.name];
+                if (rotatorIntervals[cat.id]) {
+                    clearInterval(rotatorIntervals[cat.id]);
+                    delete rotatorIntervals[cat.id];
                 }
             }
         });
         
         card.addEventListener('mouseleave', () => {
             for (const cat of categories) {
-                const container = document.getElementById(`${cat.name}ImageContainer`);
-                if (container && container.querySelectorAll('.rotator-img').length > 1 && !rotatorIntervals[cat.name]) {
-                    rotatorIntervals[cat.name] = setInterval(() => {
-                        nextSlide(cat.name);
-                    }, 8000);
+                const container = document.getElementById(cat.id);
+                if (container && container.querySelectorAll('.rotator-img').length > 1 && !rotatorIntervals[cat.id]) {
+                    rotatorIntervals[cat.id] = setInterval(() => nextSlide(cat.id), 8000);
                 }
             }
         });
     });
-    
-    // Initialize on page load - call your existing API endpoint
-    document.addEventListener('DOMContentLoaded', () => {
-        fetchGalleryImages();
-    });
+
+    // Start loading
+    loadGalleryImages();
 </script>
 </body>
 </html>
