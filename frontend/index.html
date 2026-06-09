@@ -1,46 +1,422 @@
-<!-- login.html - Simple test version -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Pooja Catering & Wedding Associates | Premium Services</title>
+    <meta name="description" content="ISO 9001-2015 Certified Premium Pure Vegetarian Catering, Wedding Planning, and Associated Infrastructure across Tamil Nadu.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: { 
+                extend: { 
+                    colors: { 
+                        brandGreen: '#2c5f2d', 
+                        brandGold: '#bfa15f', 
+                        brandDark: '#1a331e', 
+                        brandSoft: '#fffaf0' 
+                    }, 
+                    fontFamily: { 
+                        sans: ['Inter', 'sans-serif'], 
+                        serif: ['Playfair Display', 'serif'] 
+                    }
+                } 
+            }
+        }
+    </script>
     <style>
-        body { font-family: Arial; padding: 50px; text-align: center; }
-        input { padding: 10px; margin: 10px; width: 250px; }
-        button { padding: 10px 30px; background: #2c5f2d; color: white; border: none; cursor: pointer; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        /* Remove overflow hidden to allow scrolling */
+        html, body { 
+            height: 100%; 
+            background: #f5f7f5;
+        }
+
+        /* Admin Modal Styles */
+        .admin-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .admin-modal.active { display: flex; }
+        .admin-modal-content {
+            background: white;
+            border-radius: 24px;
+            max-width: 420px;
+            width: 90%;
+            padding: 35px;
+            position: relative;
+            animation: modalSlideIn 0.3s ease;
+        }
+        @keyframes modalSlideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .close-modal {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+        .close-modal:hover { color: #333; }
+
+        /* Layout */
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .app-header {
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .app-content {
+            flex: 1;
+            padding: 20px;
+            background: #f5f7f5;
+        }
+        
+        /* Iframe styling */
+        #contentFrame {
+            width: 100%;
+            min-height: calc(100vh - 120px);
+            border: none;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+        }
+        
+        /* Navigation styles */
+        nav ul {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 4px;
+            padding: 8px 0;
+        }
+        
+        nav ul li a {
+            display: block;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #4a5568;
+        }
+        
+        nav ul li a:hover {
+            background: #e8f5e9;
+            color: #2c5f2d;
+        }
+        
+        nav ul li a.active {
+            background: #2c5f2d;
+            color: white;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .app-content {
+                padding: 10px;
+            }
+            
+            nav ul li a {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+            
+            .logo {
+                justify-content: center;
+                margin-bottom: 8px;
+            }
+        }
+        
+        /* Logo styles */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #bfa15f;
+        }
+        
+        .tagline {
+            font-size: 10px;
+            letter-spacing: 1px;
+        }
     </style>
+<base target="_blank">
 </head>
 <body>
-    <h2>Member Login</h2>
-    <form id="loginForm">
-        <div><input type="text" id="mobile" placeholder="Mobile Number" required></div>
-        <div><input type="password" id="password" placeholder="Password" required></div>
-        <button type="submit">Login</button>
-    </form>
-    <p><a href="register.html">New user? Register here</a></p>
-    
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const mobile = document.getElementById('mobile').value;
-            const password = document.getElementById('password').value;
+
+<div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex flex-col lg:flex-row justify-between items-center gap-3">
+                <!-- Logo Area -->
+                <div class="logo">
+                    <img src="uploads/logo/logo.jpeg" alt="Pooja Catering Logo" onerror="this.src='https://via.placeholder.com/50?text=PC'">
+                    <div class="text-center lg:text-left">
+                        <h1 class="font-serif text-lg lg:text-xl font-bold text-brandGreen tracking-wide">Pooja Catering Service</h1>
+                        <p class="tagline text-xs font-semibold uppercase tracking-wider text-brandGold">ISO 9001-2015 Certified | Since 1995</p>
+                    </div>
+                </div>
+                
+                <!-- Navigation -->
+                <nav class="w-full lg:w-auto overflow-x-auto">
+                    <ul class="flex flex-nowrap lg:flex-wrap justify-center gap-1">
+                        <li><a href="#" onclick="loadPage('home'); return false;" data-page="home">🏠 Home</a></li>
+                        <li><a href="#" onclick="loadPage('about'); return false;" data-page="about">📖 About</a></li>
+                        <li><a href="#" onclick="loadPage('services'); return false;" data-page="services">✨ Services</a></li>
+                        <li><a href="#" onclick="loadPage('menu'); return false;" data-page="menu">🍽️ Menu</a></li>
+                        <li><a href="#" onclick="loadPage('gallery'); return false;" data-page="gallery">📸 Gallery</a></li>
+                        <li><a href="#" onclick="showAdminModal(); return false;">👑 Admin</a></li>
+                        <li><a href="#" onclick="loadPage('register'); return false;" data-page="register">📝 Register</a></li>
+                        <li><a href="#" onclick="loadPage('login'); return false;" data-page="login">🔑 Login</a></li>
+                        <li><a href="#" onclick="loadPage('book'); return false;" data-page="book">📅 Book</a></li>
+                        <li><a href="#" onclick="loadPage('contact'); return false;" data-page="contact">📞 Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Iframe Content Area -->
+    <div class="app-content">
+        <iframe id="contentFrame" src="home_content.html" title="Page Content" onload="adjustIframeHeight()"></iframe>
+    </div>
+</div>
+
+<!-- Admin Login Modal -->
+<div id="adminModal" class="admin-modal">
+    <div class="admin-modal-content">
+        <span class="close-modal" onclick="closeAdminModal()">&times;</span>
+        <div class="text-center mb-6">
+            <i class="fa-solid fa-leaf text-5xl" style="color: #2c5f2d;"></i>
+            <h2 class="font-serif text-2xl font-bold text-gray-800 mt-3">Admin Login</h2>
+            <p class="text-gray-500 text-sm mt-2">Enter your credentials to access dashboard</p>
+        </div>
+        <form onsubmit="return handleAdminLogin(event)">
+            <div class="mb-4">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Username</label>
+                <input type="text" id="adminUsername" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-green-600 focus:ring-2 focus:ring-green-100">
+            </div>
+            <div class="mb-5">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+                <input type="password" id="adminPassword" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-green-600 focus:ring-2 focus:ring-green-100">
+            </div>
+            <button type="submit" class="w-full bg-green-700 text-white py-3 rounded-xl font-semibold hover:bg-green-800 transition">Login to Dashboard</button>
+        </form>
+        <p class="text-center text-xs text-gray-400 mt-4"><i class="fa-solid fa-lock"></i> Secure Admin Access</p>
+    </div>
+</div>
+
+<script>
+    const API_URL = window.location.origin + '/api';
+    let currentPage = 'home';
+
+    // Adjust iframe height dynamically
+    function adjustIframeHeight() {
+        const iframe = document.getElementById('contentFrame');
+        if (iframe && iframe.contentWindow) {
+            try {
+                const height = iframe.contentWindow.document.body.scrollHeight;
+                iframe.style.height = height + 'px';
+            } catch (e) {
+                console.log('Cannot access iframe content');
+            }
+        }
+    }
+
+    // Load page in iframe
+    function loadPage(page) {
+        const frame = document.getElementById('contentFrame');
+        const pages = {
+            'home': 'home_content.html',
+            'about': 'about.html',
+            'services': 'services.html',
+            'menu': 'catering-menu.html',
+            'gallery': 'gallery.html',
+            'register': 'register.html',
+            'login': 'login.html',
+            'book': 'appointment.html',
+            'contact': 'contact.html'
+        };
+
+        if (pages[page]) {
+            currentPage = page;
+            frame.src = pages[page];
             
-            const response = await fetch('/api/members/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ mobile, password })
+            // Update active nav state
+            document.querySelectorAll('nav ul li a').forEach(link => {
+                link.classList.remove('active');
+                link.style.background = '';
+                link.style.color = '#4a5568';
             });
             
-            const data = await response.json();
-            
-            if (data.success) {
-                localStorage.setItem('memberToken', data.token);
-                localStorage.setItem('memberData', JSON.stringify(data.member));
-                window.parent.postMessage({ type: 'memberLoginSuccess' }, '*');
-            } else {
-                alert(data.message);
+            const activeLink = document.querySelector(`nav ul li a[onclick*="loadPage('${page}')"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+                activeLink.style.background = '#2c5f2d';
+                activeLink.style.color = 'white';
             }
-        });
-    </script>
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+    }
+
+    // Show admin modal
+    function showAdminModal() {
+        document.getElementById('adminModal').classList.add('active');
+    }
+
+    function closeAdminModal() {
+        document.getElementById('adminModal').classList.remove('active');
+    }
+
+    // Handle admin login
+    async function handleAdminLogin(event) {
+        event.preventDefault();
+        const username = document.getElementById('adminUsername').value.trim();
+        const password = document.getElementById('adminPassword').value;
+        const btn = event.target.querySelector('button[type="submit"]');
+        const originalText = btn.innerHTML;
+
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Logging in...';
+        btn.disabled = true;
+
+        try {
+            const response = await fetch(`${API_URL}/auth/admin/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                const tokenString = data.admin?.id + ':' + username;
+                const base64Token = btoa(tokenString);
+
+                localStorage.setItem('adminToken', base64Token);
+                localStorage.setItem('adminUser', JSON.stringify(data.admin));
+                localStorage.setItem('adminLoggedIn', 'true');
+                localStorage.setItem('adminUsername', username);
+
+                window.location.href = 'admin/admin_dashboard.html';
+            } else {
+                alert('❌ ' + (data.message || 'Login failed'));
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            alert('❌ Server error: ' + error.message);
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
+        return false;
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const modal = document.getElementById('adminModal');
+        if (event.target === modal) closeAdminModal();
+    }
+
+    // Check for saved tokens on load
+    document.addEventListener('DOMContentLoaded', () => {
+        // Check admin token
+        const adminToken = localStorage.getItem('adminToken');
+        if (adminToken && !window.location.pathname.includes('admin_dashboard')) {
+            // Optional: redirect if admin is logged in
+            // window.location.href = 'admin/admin_dashboard.html';
+        }
+
+        // Check member token
+        const memberToken = localStorage.getItem('memberToken');
+        if (memberToken) {
+            const member = JSON.parse(localStorage.getItem('memberData') || '{}');
+            if (member.name) {
+                // Show logged in state in nav (optional)
+                console.log('Member logged in:', member.name);
+            }
+        }
+        
+        // Set active nav based on current iframe
+        setTimeout(() => {
+            const iframe = document.getElementById('contentFrame');
+            if (iframe && iframe.src) {
+                const src = iframe.src;
+                for (const [page, file] of Object.entries({
+                    'home': 'home_content.html',
+                    'about': 'about.html',
+                    'services': 'services.html',
+                    'menu': 'catering-menu.html',
+                    'gallery': 'gallery.html',
+                    'register': 'register.html',
+                    'login': 'login.html',
+                    'book': 'appointment.html',
+                    'contact': 'contact.html'
+                })) {
+                    if (src.includes(file)) {
+                        currentPage = page;
+                        const activeLink = document.querySelector(`nav ul li a[onclick*="loadPage('${page}')"]`);
+                        if (activeLink) {
+                            activeLink.classList.add('active');
+                            activeLink.style.background = '#2c5f2d';
+                            activeLink.style.color = 'white';
+                        }
+                        break;
+                    }
+                }
+            }
+        }, 100);
+    });
+
+    // Listen for messages from iframe (for login success)
+    window.addEventListener('message', function(event) {
+        if (event.data && event.data.type === 'memberLoginSuccess') {
+            // Redirect to member dashboard
+            window.location.href = 'member/member_dashboard.html';
+        }
+        if (event.data && event.data.type === 'adminLoginSuccess') {
+            window.location.href = 'admin/admin_dashboard.html';
+        }
+        if (event.data && event.data.type === 'logout') {
+            // Clear tokens
+            localStorage.removeItem('memberToken');
+            localStorage.removeItem('memberData');
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('adminUser');
+            // Reload home page
+            loadPage('home');
+        }
+    });
+</script>
+
 </body>
 </html>
