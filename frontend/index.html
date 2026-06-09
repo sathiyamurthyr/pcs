@@ -1,265 +1,46 @@
+<!-- login.html - Simple test version -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Pooja Catering & Wedding Associates | Premium Services</title>
-    <meta name="description" content="ISO 9001-2015 Certified Premium Pure Vegetarian Catering, Wedding Planning, and Associated Infrastructure across Tamil Nadu.">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: { 
-                extend: { 
-                    colors: { 
-                        brandGreen: '#2c5f2d', 
-                        brandGold: '#bfa15f', 
-                        brandDark: '#1a331e', 
-                        brandSoft: '#fffaf0' 
-                    }, 
-                    fontFamily: { 
-                        sans: ['Inter', 'sans-serif'], 
-                        serif: ['Playfair Display', 'serif'] 
-                    }
-                } 
-            }
-        }
-    </script>
+    <title>Login</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { height: 100%; overflow: hidden; }
-
-        /* Admin Modal Styles */
-        .admin-modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        .admin-modal.active { display: flex; }
-        .admin-modal-content {
-            background: white;
-            border-radius: 24px;
-            max-width: 420px;
-            width: 90%;
-            padding: 35px;
-            position: relative;
-            animation: modalSlideIn 0.3s ease;
-        }
-        @keyframes modalSlideIn {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        .close-modal {
-            position: absolute;
-            top: 15px; right: 20px;
-            font-size: 24px;
-            cursor: pointer;
-            color: #999;
-        }
-        .close-modal:hover { color: #333; }
-
-        /* Layout */
-        .app-container {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            width: 100vw;
-        }
-        .app-header {
-            flex-shrink: 0;
-            z-index: 50;
-        }
-        .app-content {
-            flex: 1;
-            overflow: hidden;
-            position: relative;
-        }
-        #contentFrame {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
-        }
+        body { font-family: Arial; padding: 50px; text-align: center; }
+        input { padding: 10px; margin: 10px; width: 250px; }
+        button { padding: 10px 30px; background: #2c5f2d; color: white; border: none; cursor: pointer; }
     </style>
-<base target="_blank">
 </head>
-<body class="font-sans bg-gray-50 text-gray-800 antialiased">
-
-<div class="app-container">
-    <!-- Header -->
-    <header class="app-header bg-white shadow-md border-b border-gray-100">
-        <div class="container mx-auto px-4 py-2 flex flex-col lg:flex-row justify-between items-center gap-2">
-            <!-- Logo Area -->
-            <div class="logo flex items-center gap-3">
-                <img src="uploads/logo/logo.jpeg" alt="Pooja Catering Logo" class="h-12 w-12 rounded-full object-cover border-2 border-brandGold">
-                <div class="text-center lg:text-left">
-                    <h1 class="font-serif text-lg lg:text-xl font-bold text-brandGreen tracking-wide leading-tight">Pooja Catering Service</h1>
-                    <p class="tagline text-[10px] font-semibold uppercase tracking-wider text-brandGold">ISO 9001-2015 Certified | Since 1995</p>
-                </div>
-            </div>
-            <!-- Navigation -->
-            <nav class="w-full lg:w-auto overflow-x-auto">
-                <ul class="flex flex-nowrap justify-center lg:justify-end gap-1 text-xs lg:text-sm font-medium whitespace-nowrap">
-                    <li><a href="#" id="nav-home" class="block px-2 py-1.5 rounded-md bg-brandGreen text-white font-semibold" onclick="loadPage('home'); return false;">Home</a></li>
-                    <li><a href="#" id="nav-about" class="block px-2 py-1.5 rounded-md text-gray-600 hover:text-brandGreen hover:bg-gray-50" onclick="loadPage('about'); return false;">About</a></li>
-                    <li><a href="#" id="nav-services" class="block px-2 py-1.5 rounded-md text-gray-600 hover:text-brandGreen hover:bg-gray-50" onclick="loadPage('services'); return false;">Services</a></li>
-                    <li><a href="#" id="nav-menu" class="block px-2 py-1.5 rounded-md text-gray-600 hover:text-brandGreen hover:bg-gray-50" onclick="loadPage('menu'); return false;">Menu</a></li>
-                    <li><a href="#" id="nav-gallery" class="block px-2 py-1.5 rounded-md text-gray-600 hover:text-brandGreen hover:bg-gray-50" onclick="loadPage('gallery'); return false;">Gallery</a></li>
-                    <li><a href="#" class="block px-2 py-1.5 rounded-md text-gray-600 hover:text-brandGreen hover:bg-gray-50" onclick="showAdminModal(); return false;">Admin</a></li>
-                    <li><a href="#" id="nav-register" class="block px-2 py-1.5 rounded-md text-gray-600 hover:text-brandGreen hover:bg-gray-50" onclick="loadPage('register'); return false;">Register</a></li>
-                    <li><a href="#" id="nav-login" class="block px-2 py-1.5 rounded-md text-gray-600 hover:text-brandGreen hover:bg-gray-50" onclick="loadPage('login'); return false;">login</a></li>
-                    <li><a href="#" id="nav-book" class="block px-2 py-1.5 rounded-md text-gray-600 hover:text-brandGreen hover:bg-gray-50" onclick="loadPage('book'); return false;">Book</a></li>
-                    <li><a href="#" id="nav-contact" class="block px-2 py-1.5 rounded-md text-gray-600 hover:text-brandGreen hover:bg-gray-50" onclick="loadPage('contact'); return false;">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-    <!-- Iframe Content Area -->
-    <div class="app-content">
-        <iframe id="contentFrame" src="home_content.html" title="Page Content"></iframe>
-    </div>
-</div>
-
-<!-- Admin Login Modal -->
-<div id="adminModal" class="admin-modal">
-    <div class="admin-modal-content">
-        <span class="close-modal" onclick="closeAdminModal()">&times;</span>
-        <div class="text-center mb-6">
-            <i class="fa-solid fa-leaf text-5xl" style="color: #2c5f2d;"></i>
-            <h2 class="font-serif text-2xl font-bold text-gray-800 mt-3">Admin Login</h2>
-            <p class="text-gray-500 text-sm mt-2">Enter your credentials to access dashboard</p>
-        </div>
-        <form onsubmit="return handleAdminLogin(event)">
-            <div class="mb-4">
-                <label class="block text-sm font-semibold text-gray-700 mb-2">Username</label>
-                <input type="text" id="adminUsername" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-green-600">
-            </div>
-            <div class="mb-5">
-                <label class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
-                <input type="password" id="adminPassword" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-green-600">
-            </div>
-            <button type="submit" class="w-full bg-green-700 text-white py-3 rounded-xl font-semibold hover:bg-green-800 transition">Login to Dashboard</button>
-        </form>
-        <p class="text-center text-xs text-gray-400 mt-4"><i class="fa-solid fa-lock"></i> Secure Admin Access</p>
-    </div>
-</div>
-
-<script>
-    const API_URL = window.location.origin + '/api';
-
-    function showAdminModal() {
-        document.getElementById('adminModal').classList.add('active');
-    }
-
-    function closeAdminModal() {
-        document.getElementById('adminModal').classList.remove('active');
-    }
-
-    async function handleAdminLogin(event) {
-        event.preventDefault();
-        const username = document.getElementById('adminUsername').value.trim();
-        const password = document.getElementById('adminPassword').value;
-        const btn = event.target.querySelector('button[type="submit"]');
-
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Logging in...';
-        btn.disabled = true;
-
-        try {
-            const response = await fetch(`${API_URL}/auth/admin/login`, {
+<body>
+    <h2>Member Login</h2>
+    <form id="loginForm">
+        <div><input type="text" id="mobile" placeholder="Mobile Number" required></div>
+        <div><input type="password" id="password" placeholder="Password" required></div>
+        <button type="submit">Login</button>
+    </form>
+    <p><a href="register.html">New user? Register here</a></p>
+    
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const mobile = document.getElementById('mobile').value;
+            const password = document.getElementById('password').value;
+            
+            const response = await fetch('/api/members/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
+                body: JSON.stringify({ mobile, password })
             });
-
+            
             const data = await response.json();
-
+            
             if (data.success) {
-                const adminId = data.admin?.id || 1;
-                const tokenString = adminId + ':' + username;
-                const base64Token = btoa(tokenString);
-
-                localStorage.setItem('adminToken', base64Token);
-                localStorage.setItem('adminUser', JSON.stringify(data.admin));
-                localStorage.setItem('adminLoggedIn', 'true');
-                localStorage.setItem('adminUsername', username);
-
-                window.location.href = 'admin/admin_dashboard.html';
+                localStorage.setItem('memberToken', data.token);
+                localStorage.setItem('memberData', JSON.stringify(data.member));
+                window.parent.postMessage({ type: 'memberLoginSuccess' }, '*');
             } else {
-                alert('❌ ' + (data.message || 'Login failed'));
-                btn.innerHTML = 'Login to Dashboard';
-                btn.disabled = false;
+                alert(data.message);
             }
-        } catch (error) {
-            console.error('Login error:', error);
-            alert('❌ Server error: ' + error.message);
-            btn.innerHTML = 'Login to Dashboard';
-            btn.disabled = false;
-        }
-        return false;
-    }
-
-    window.onclick = function(event) {
-        const modal = document.getElementById('adminModal');
-        if (event.target === modal) closeAdminModal();
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const token = localStorage.getItem('adminToken');
-        if (token && !window.location.pathname.includes('admin_dashboard')) {
-            window.location.href = 'admin/admin_dashboard.html';
-        }
-
-        const memberToken = localStorage.getItem('memberToken');
-        if (memberToken && !window.location.pathname.includes('member_dashboard') && !window.location.pathname.includes('admin_dashboard')) {
-            window.location.href = 'member/member_dashboard.html';
-        }
-    });
-
-    function loadPage(page) {
-        const frame = document.getElementById('contentFrame');
-        const pages = {
-            'home': 'home_content.html',
-            'about': 'about.html',
-            'services': 'services.html',
-            'menu': 'catering-menu.html',
-            'gallery': 'gallery.html',
-            'register': 'register.html',
-            'login': 'login.html',
-            'book': 'appointment.html',
-            'contact': 'contact.html'
-        };
-
-        if (pages[page]) {
-            frame.src = pages[page];
-
-            document.querySelectorAll('nav a[id^="nav-"]').forEach(a => {
-                a.classList.remove('bg-brandGreen', 'text-white', 'font-semibold');
-                a.classList.add('text-gray-600');
-            });
-            const activeNav = document.getElementById('nav-' + page);
-            if (activeNav) {
-                activeNav.classList.remove('text-gray-600');
-                activeNav.classList.add('bg-brandGreen', 'text-white', 'font-semibold');
-            }
-        }
-    }
-
-    window.addEventListener('message', function(event) {
-        if (event.data && event.data.type === 'memberLoginSuccess') {
-            window.location.href = 'member/member_dashboard.html';
-        }
-        if (event.data && event.data.type === 'adminLoginSuccess') {
-            window.location.href = 'admin/admin_dashboard.html';
-        }
-    });
-</script>
-
+        });
+    </script>
 </body>
 </html>
